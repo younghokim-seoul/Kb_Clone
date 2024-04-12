@@ -47,12 +47,55 @@ class $AssetsFontsGen {
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/ic_bear.png
+  AssetGenImage get icBear => const AssetGenImage('assets/images/ic_bear.png');
+
+  /// File path: assets/images/ic_bell.png
+  AssetGenImage get icBell => const AssetGenImage('assets/images/ic_bell.png');
+
+  /// File path: assets/images/ic_menu.png
+  AssetGenImage get icMenu => const AssetGenImage('assets/images/ic_menu.png');
+
+  /// File path: assets/images/ic_my_page.png
+  AssetGenImage get icMyPage =>
+      const AssetGenImage('assets/images/ic_my_page.png');
+
+  /// File path: assets/images/ic_news.png
+  AssetGenImage get icNews => const AssetGenImage('assets/images/ic_news.png');
+
+  /// File path: assets/images/ic_rebit.png
+  AssetGenImage get icRebit =>
+      const AssetGenImage('assets/images/ic_rebit.png');
+
+  /// File path: assets/images/ic_search.png
+  AssetGenImage get icSearch =>
+      const AssetGenImage('assets/images/ic_search.png');
+
+  /// File path: assets/images/ic_short_clip.png
+  AssetGenImage get icShortClip =>
+      const AssetGenImage('assets/images/ic_short_clip.png');
+
   /// File path: assets/images/splash_logo.png
   AssetGenImage get splashLogo =>
       const AssetGenImage('assets/images/splash_logo.png');
 
+  /// File path: assets/images/title_log.png
+  AssetGenImage get titleLog =>
+      const AssetGenImage('assets/images/title_log.png');
+
   /// List of all assets
-  List<AssetGenImage> get values => [splashLogo];
+  List<AssetGenImage> get values => [
+        icBear,
+        icBell,
+        icMenu,
+        icMyPage,
+        icNews,
+        icRebit,
+        icSearch,
+        icShortClip,
+        splashLogo,
+        titleLog
+      ];
 }
 
 class Assets {

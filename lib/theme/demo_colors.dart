@@ -28,4 +28,18 @@ abstract class DemoColors {
 
   /// Card grey
   static const Color cardGrey = Color(0xFFCCCCCC);
+
+  /// Dark shadow 1
+  static const Color darkShadow1 = Color(0x0C000000);
+
+  /// Dark shadow 2
+  static const Color darkShadow2 = Color(0x33000000);
+
+  /// Dark shadow 3
+  static const Color darkShadow3 = Color(0x3F000000);
+
+  /// Dark shadow 4
+  static const Color darkShadow4 = Color(0x4C000000);
+
+  static const Color yellow = Color(0xFFFFE05A);
 }

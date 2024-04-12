@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:kb_bank_clone/assets/assets.gen.dart';
 import 'package:kb_bank_clone/utils/router/app_route.dart';
 
-
 @RoutePage()
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
