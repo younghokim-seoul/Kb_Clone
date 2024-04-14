@@ -56,7 +56,9 @@ class FlexIconButton extends StatelessWidget {
             child: InkWell(
               splashFactory: InkRipple.splashFactory,
               customBorder: const CircleBorder(),
-              mouseCursor: onPressed == null ? SystemMouseCursors.basic : SystemMouseCursors.click,
+              mouseCursor: onPressed == null
+                  ? SystemMouseCursors.basic
+                  : SystemMouseCursors.click,
               onTap: onPressed,
               child: Center(
                 child: Icon(
@@ -65,7 +67,9 @@ class FlexIconButton extends StatelessWidget {
                     (FlatIconButtonSize.medium) => 24,
                     (FlatIconButtonSize.large) => 16,
                   },
-                  color: onPressed == null ? Colors.black.withOpacity(0.5) : Colors.black,
+                  color: onPressed == null
+                      ? Colors.black.withOpacity(0.5)
+                      : Colors.black,
                 ),
               ),
             ),

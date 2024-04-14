@@ -5,8 +5,14 @@ abstract class DemoColors {
   /// Dark
   static const Color primaryColor = Color(0xFF1C1D21);
 
+  static const Color primaryTextColor= Color(0xFF1C1D21);
+
+  static const Color primaryBoxColor = Color(0xFF26282C);
+
+  static const Color primaryDivideColor = Color(0xFF8C949E);
+
   /// Grey
-  static const Color grey = Color(0xFF717171);
+  static const Color grey = Color(0xFFDDE1E4);
 
   /// Divider
   static const Color divider = Color(0xFFE7E6E6);

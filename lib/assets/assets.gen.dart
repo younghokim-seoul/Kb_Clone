@@ -47,54 +47,153 @@ class $AssetsFontsGen {
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/ic_1_minute_news.png
+  AssetGenImage get ic1MinuteNews =>
+      const AssetGenImage('assets/images/ic_1_minute_news.png');
+
+  /// File path: assets/images/ic_ad_reword.png
+  AssetGenImage get icAdReword =>
+      const AssetGenImage('assets/images/ic_ad_reword.png');
+
   /// File path: assets/images/ic_bear.png
   AssetGenImage get icBear => const AssetGenImage('assets/images/ic_bear.png');
 
   /// File path: assets/images/ic_bell.png
   AssetGenImage get icBell => const AssetGenImage('assets/images/ic_bell.png');
 
+  /// File path: assets/images/ic_calendar_check.png
+  AssetGenImage get icCalendarCheck =>
+      const AssetGenImage('assets/images/ic_calendar_check.png');
+
+  /// File path: assets/images/ic_celebrate_reward.png
+  AssetGenImage get icCelebrateReward =>
+      const AssetGenImage('assets/images/ic_celebrate_reward.png');
+
+  /// File path: assets/images/ic_check_plus.png
+  AssetGenImage get icCheckPlus =>
+      const AssetGenImage('assets/images/ic_check_plus.png');
+
+  /// File path: assets/images/ic_coupon.png
+  AssetGenImage get icCoupon =>
+      const AssetGenImage('assets/images/ic_coupon.png');
+
+  /// File path: assets/images/ic_donate.png
+  AssetGenImage get icDonate =>
+      const AssetGenImage('assets/images/ic_donate.png');
+
+  /// File path: assets/images/ic_feed_sample.png
+  AssetGenImage get icFeedSample =>
+      const AssetGenImage('assets/images/ic_feed_sample.png');
+
+  /// File path: assets/images/ic_finance.png
+  AssetGenImage get icFinance =>
+      const AssetGenImage('assets/images/ic_finance.png');
+
+  /// File path: assets/images/ic_get_point_triple.png
+  AssetGenImage get icGetPointTriple =>
+      const AssetGenImage('assets/images/ic_get_point_triple.png');
+
+  /// File path: assets/images/ic_home.png
+  AssetGenImage get icHome => const AssetGenImage('assets/images/ic_home.png');
+
+  /// File path: assets/images/ic_kb_stock.png
+  AssetGenImage get icKbStock =>
+      const AssetGenImage('assets/images/ic_kb_stock.png');
+
+  /// File path: assets/images/ic_live_reword.png
+  AssetGenImage get icLiveReword =>
+      const AssetGenImage('assets/images/ic_live_reword.png');
+
   /// File path: assets/images/ic_menu.png
   AssetGenImage get icMenu => const AssetGenImage('assets/images/ic_menu.png');
+
+  /// File path: assets/images/ic_mobile_specification.png
+  AssetGenImage get icMobileSpecification =>
+      const AssetGenImage('assets/images/ic_mobile_specification.png');
 
   /// File path: assets/images/ic_my_page.png
   AssetGenImage get icMyPage =>
       const AssetGenImage('assets/images/ic_my_page.png');
 
-  /// File path: assets/images/ic_news.png
-  AssetGenImage get icNews => const AssetGenImage('assets/images/ic_news.png');
+  /// File path: assets/images/ic_my_search.png
+  AssetGenImage get icMySearch =>
+      const AssetGenImage('assets/images/ic_my_search.png');
 
   /// File path: assets/images/ic_rebit.png
   AssetGenImage get icRebit =>
       const AssetGenImage('assets/images/ic_rebit.png');
 
+  /// File path: assets/images/ic_reward_news.png
+  AssetGenImage get icRewardNews =>
+      const AssetGenImage('assets/images/ic_reward_news.png');
+
   /// File path: assets/images/ic_search.png
   AssetGenImage get icSearch =>
       const AssetGenImage('assets/images/ic_search.png');
+
+  /// File path: assets/images/ic_season_event.png
+  AssetGenImage get icSeasonEvent =>
+      const AssetGenImage('assets/images/ic_season_event.png');
 
   /// File path: assets/images/ic_short_clip.png
   AssetGenImage get icShortClip =>
       const AssetGenImage('assets/images/ic_short_clip.png');
 
+  /// File path: assets/images/ic_today_horoscope.png
+  AssetGenImage get icTodayHoroscope =>
+      const AssetGenImage('assets/images/ic_today_horoscope.png');
+
+  /// File path: assets/images/ic_today_quiz.png
+  AssetGenImage get icTodayQuiz =>
+      const AssetGenImage('assets/images/ic_today_quiz.png');
+
+  /// File path: assets/images/ic_tv.png
+  AssetGenImage get icTv => const AssetGenImage('assets/images/ic_tv.png');
+
+  /// File path: assets/images/ic_wallet.png
+  AssetGenImage get icWallet =>
+      const AssetGenImage('assets/images/ic_wallet.png');
+
   /// File path: assets/images/splash_logo.png
   AssetGenImage get splashLogo =>
       const AssetGenImage('assets/images/splash_logo.png');
 
-  /// File path: assets/images/title_log.png
-  AssetGenImage get titleLog =>
-      const AssetGenImage('assets/images/title_log.png');
+  /// File path: assets/images/title_logo.png
+  AssetGenImage get titleLogo =>
+      const AssetGenImage('assets/images/title_logo.png');
 
   /// List of all assets
   List<AssetGenImage> get values => [
+        ic1MinuteNews,
+        icAdReword,
         icBear,
         icBell,
+        icCalendarCheck,
+        icCelebrateReward,
+        icCheckPlus,
+        icCoupon,
+        icDonate,
+        icFeedSample,
+        icFinance,
+        icGetPointTriple,
+        icHome,
+        icKbStock,
+        icLiveReword,
         icMenu,
+        icMobileSpecification,
         icMyPage,
-        icNews,
+        icMySearch,
         icRebit,
+        icRewardNews,
         icSearch,
+        icSeasonEvent,
         icShortClip,
+        icTodayHoroscope,
+        icTodayQuiz,
+        icTv,
+        icWallet,
         splashLogo,
-        titleLog
+        titleLogo
       ];
 }
 
