@@ -14,6 +14,9 @@ abstract class DemoColors {
   static const Color primaryBoxColorLight = Color(0xFF3D4046);
   static const Color primaryBoxGreyColorLight = Color(0xFF696E76);
 
+  static const Color lightMoneyColor = Color(0xFFFF5D5D);
+  static const Color lightButtonLabelText = Color(0xFF474747);
+
   /// Grey
   static const Color grey = Color(0xFFDDE1E4);
 

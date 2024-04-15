@@ -55,6 +55,10 @@ class $AssetsImagesGen {
   AssetGenImage get icAdReword =>
       const AssetGenImage('assets/images/ic_ad_reword.png');
 
+  /// File path: assets/images/ic_arrow_down.png
+  AssetGenImage get icArrowDown =>
+      const AssetGenImage('assets/images/ic_arrow_down.png');
+
   /// File path: assets/images/ic_bear.png
   AssetGenImage get icBear => const AssetGenImage('assets/images/ic_bear.png');
 
@@ -69,9 +73,17 @@ class $AssetsImagesGen {
   AssetGenImage get icCelebrateReward =>
       const AssetGenImage('assets/images/ic_celebrate_reward.png');
 
+  /// File path: assets/images/ic_chart.png
+  AssetGenImage get icChart =>
+      const AssetGenImage('assets/images/ic_chart.png');
+
   /// File path: assets/images/ic_check_plus.png
   AssetGenImage get icCheckPlus =>
       const AssetGenImage('assets/images/ic_check_plus.png');
+
+  /// File path: assets/images/ic_close.png
+  AssetGenImage get icClose =>
+      const AssetGenImage('assets/images/ic_close.png');
 
   /// File path: assets/images/ic_coupon.png
   AssetGenImage get icCoupon =>
@@ -89,6 +101,9 @@ class $AssetsImagesGen {
   AssetGenImage get icExpectedPaymentAmount =>
       const AssetGenImage('assets/images/ic_expected_payment_amount.png');
 
+  /// File path: assets/images/ic_fab.png
+  AssetGenImage get icFab => const AssetGenImage('assets/images/ic_fab.png');
+
   /// File path: assets/images/ic_feed_sample.png
   AssetGenImage get icFeedSample =>
       const AssetGenImage('assets/images/ic_feed_sample.png');
@@ -100,6 +115,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/ic_get_point_triple.png
   AssetGenImage get icGetPointTriple =>
       const AssetGenImage('assets/images/ic_get_point_triple.png');
+
+  /// File path: assets/images/ic_guide.png
+  AssetGenImage get icGuide =>
+      const AssetGenImage('assets/images/ic_guide.png');
 
   /// File path: assets/images/ic_home.png
   AssetGenImage get icHome => const AssetGenImage('assets/images/ic_home.png');
@@ -201,18 +220,23 @@ class $AssetsImagesGen {
   List<AssetGenImage> get values => [
         ic1MinuteNews,
         icAdReword,
+        icArrowDown,
         icBear,
         icBell,
         icCalendarCheck,
         icCelebrateReward,
+        icChart,
         icCheckPlus,
+        icClose,
         icCoupon,
         icCustomerServic,
         icDonate,
         icExpectedPaymentAmount,
+        icFab,
         icFeedSample,
         icFinance,
         icGetPointTriple,
+        icGuide,
         icHome,
         icIncomeDeduction,
         icKbStock,

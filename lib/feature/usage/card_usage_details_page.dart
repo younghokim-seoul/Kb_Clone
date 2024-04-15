@@ -52,28 +52,21 @@ class CardUsageDetailsPage extends ConsumerWidget {
           padding: EdgeInsets.symmetric(horizontal: 16.w),
           child: Column(
             children: [
-              DecoratedBox(
-                decoration: BoxDecoration(color: DemoColors.primaryBoxColor, borderRadius: BorderRadius.circular(8)),
-                child: SizedBox(
-                  width: 1.sw,
-                  child: Text(
-                    "간편하게 카드이용내역을 확인해 보세요!",
-                    style: DemoTextStyles.bodyLarge
-                        .copyWith(color: DemoColors.primaryDivideColor, fontSize: 17, fontWeight: FontWeight.w300),
-                  ).paddingSymmetric(vertical: 20.h, horizontal: 16.w),
-                ),
-              ),
+              _buildHeader(),
               Gap(48.h),
               UsageItemBody(
-                icon: Assets.images.icExpectedPaymentAmount.image(fit: BoxFit.contain),
+                icon: Assets.images.icExpectedPaymentAmount
+                    .image(fit: BoxFit.contain),
                 title: "결제예정금액",
                 subTitle: "이번달/다음달 결제금액 확인",
               ),
               Gap(16.h),
               InkWell(
-                onTap: () => context.router.push(const UsageFeeStatementRoute()),
+                onTap: () =>
+                    context.router.push(const UsageFeeStatementRoute()),
                 child: UsageItemBody(
-                  icon: Assets.images.icStatementOfUsageFee.image(fit: BoxFit.contain),
+                  icon: Assets.images.icStatementOfUsageFee
+                      .image(fit: BoxFit.contain),
                   title: "이용대금명세서",
                   subTitle: "월별 이용내역과 소비리포트를\n한번에 확인",
                 ),
@@ -86,13 +79,32 @@ class CardUsageDetailsPage extends ConsumerWidget {
               ),
               Gap(16.h),
               UsageItemBody(
-                icon: Assets.images.icIncomeDeduction.image(fit: BoxFit.contain),
+                icon:
+                    Assets.images.icIncomeDeduction.image(fit: BoxFit.contain),
                 title: "신용카드소득공제",
                 subTitle: "연말정산을 위한\n신용카드 등 사용금액확인서 확인",
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildHeader() {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+          color: DemoColors.primaryBoxColor,
+          borderRadius: BorderRadius.circular(8)),
+      child: SizedBox(
+        width: 1.sw,
+        child: Text(
+          "간편하게 카드이용내역을 확인해 보세요!",
+          style: DemoTextStyles.bodyLarge.copyWith(
+              color: DemoColors.primaryDivideColor,
+              fontSize: 17,
+              fontWeight: FontWeight.w300),
+        ).paddingSymmetric(vertical: 20.h, horizontal: 16.w),
       ),
     );
   }
