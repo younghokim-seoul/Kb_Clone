@@ -15,6 +15,12 @@ abstract class _$AppRouter extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
+    CardUsageDetailsRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const CardUsageDetailsPage(),
+      );
+    },
     HomeRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -33,7 +39,27 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const SplashPage(),
       );
     },
+    UsageFeeStatementRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const UsageFeeStatementPage(),
+      );
+    },
   };
+}
+
+/// generated route for
+/// [CardUsageDetailsPage]
+class CardUsageDetailsRoute extends PageRouteInfo<void> {
+  const CardUsageDetailsRoute({List<PageRouteInfo>? children})
+      : super(
+          CardUsageDetailsRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'CardUsageDetailsRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
@@ -74,6 +100,20 @@ class SplashRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'SplashRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [UsageFeeStatementPage]
+class UsageFeeStatementRoute extends PageRouteInfo<void> {
+  const UsageFeeStatementRoute({List<PageRouteInfo>? children})
+      : super(
+          UsageFeeStatementRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'UsageFeeStatementRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

@@ -113,7 +113,8 @@ class CustomAppBarState extends State<CustomAppBar> {
                     id: _CustomAppBarSlot.title,
                     child: Text(
                       widget.title!,
-                      style: DemoTextStyles.labelSmall,
+                      style: DemoTextStyles.labelSmall
+                          .copyWith(color: DemoColors.grey, fontSize: 20, fontWeight: FontWeight.w500,height: 1),
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),

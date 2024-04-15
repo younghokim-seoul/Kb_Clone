@@ -68,8 +68,8 @@ class FlexIconButton extends StatelessWidget {
                     (FlatIconButtonSize.large) => 16,
                   },
                   color: onPressed == null
-                      ? Colors.black.withOpacity(0.5)
-                      : Colors.black,
+                      ? Colors.white.withOpacity(0.5)
+                      : Colors.white,
                 ),
               ),
             ),

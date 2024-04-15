@@ -4,24 +4,20 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:kb_bank_clone/assets/assets.gen.dart';
-import 'package:kb_bank_clone/feature/home/component/event_view.dart';
-import 'package:kb_bank_clone/feature/home/component/feed_view.dart';
-import 'package:kb_bank_clone/feature/home/component/menu_view.dart';
-import 'package:kb_bank_clone/feature/home/component/point_reward_view.dart';
-import 'package:kb_bank_clone/feature/home/component/watch_reward_view.dart';
-import 'package:kb_bank_clone/feature/widget/app_list_item_body.dart';
+import 'package:kb_bank_clone/feature/setting/component/setting_body_view.dart';
+import 'package:kb_bank_clone/feature/setting/component/setting_header_view.dart';
+import 'package:kb_bank_clone/feature/setting/model/setting_items.dart';
+import 'package:kb_bank_clone/feature/setting/privder/toggle_state.dart';
 import 'package:kb_bank_clone/feature/widget/appbar/custom_app_bar.dart';
-import 'package:kb_bank_clone/theme/demo_colors.dart';
-import 'package:kb_bank_clone/utils/dev_log.dart';
 
 @RoutePage()
-class SettingPage extends ConsumerWidget {
+class SettingPage extends StatelessWidget {
   const SettingPage({super.key});
 
   static const routeName = '/setting';
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
         padding: const EdgeInsets.symmetric(
@@ -39,18 +35,41 @@ class SettingPage extends ConsumerWidget {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
+      body: Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: 20,
           ),
-          child: Column(
-            children: [
-
+          child: CustomScrollView(
+            slivers: [
+              const SliverPadding(
+                padding: EdgeInsets.zero,
+                sliver: SliverToBoxAdapter(child: SettingHeaderView()),
+              ),
+              _buildDisplayView(),
             ],
-          ),
-        ),
-      ),
+          )),
     );
+  }
+
+  Widget _buildDisplayView() {
+    return Consumer(builder: (context, ref, _) {
+      final state = ref.watch(toggleProvider);
+      final items = (state == ToggleType.pay ? kbPayDisplayMap : cardDisplayMap).entries.toList();
+
+      return SliverPadding(
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        sliver: SliverList.builder(
+          itemCount: items.length,
+          itemBuilder: (context, index) {
+            final model = items[index];
+            return SettingBodyView(
+              key: ValueKey(index),
+              title: model.key,
+              items: model.value,
+            );
+          },
+        ),
+      );
+    });
   }
 }

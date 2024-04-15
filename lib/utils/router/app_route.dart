@@ -2,6 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:kb_bank_clone/feature/home/home_page.dart';
 import 'package:kb_bank_clone/feature/setting/setting_page.dart';
 import 'package:kb_bank_clone/feature/splash/splash_page.dart';
+import 'package:kb_bank_clone/feature/usage/card_usage_details_page.dart';
+import 'package:kb_bank_clone/feature/usage/statement/usage_fee_statement_page.dart';
 
 part 'app_route.gr.dart';
 
@@ -23,6 +25,14 @@ class AppRouter extends _$AppRouter {
         CupertinoRoute(
           path: SettingPage.routeName,
           page: SettingRoute.page,
+        ),
+        CupertinoRoute(
+          path: CardUsageDetailsPage.routeName,
+          page: CardUsageDetailsRoute.page,
+        ),
+        CupertinoRoute(
+          path: UsageFeeStatementPage.routeName,
+          page: UsageFeeStatementRoute.page,
         )
       ];
 }

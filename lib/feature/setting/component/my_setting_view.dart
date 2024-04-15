@@ -17,27 +17,27 @@ class MySettingView extends StatelessWidget {
       child: Row(
         children: [
           Flexible(
-            child: AppCardBody(
-              title: '금융',
-              icon: Assets.images.icFinance.image(),
+            child: AppCardBody.medium(
+              title: '내 정보',
+              icon: Assets.images.icMyProfile.image(),
             ),
           ),
           Flexible(
-            child: AppCardBody(
-              title: '국민지갑',
-              icon: Assets.images.icWallet.image(),
+            child: AppCardBody.medium(
+              title: '고객센터',
+              icon: Assets.images.icCustomerServic.image(),
             ),
           ),
           Flexible(
-            child: AppCardBody(
-              title: '주식',
-              icon: Assets.images.icKbStock.image(),
+            child: AppCardBody.medium(
+              title: '이벤트',
+              icon: Assets.images.icMyEvent.image(),
             ),
           ),
           Flexible(
-            child: AppCardBody(
-              title: '쿠폰함',
-              icon: Assets.images.icCoupon.image(),
+            child: AppCardBody.medium(
+              title: '설정',
+              icon: Assets.images.icMySetting.image(),
             ),
           ),
         ],

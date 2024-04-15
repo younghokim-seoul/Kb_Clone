@@ -11,6 +11,9 @@ abstract class DemoColors {
 
   static const Color primaryDivideColor = Color(0xFF8C949E);
 
+  static const Color primaryBoxColorLight = Color(0xFF3D4046);
+  static const Color primaryBoxGreyColorLight = Color(0xFF696E76);
+
   /// Grey
   static const Color grey = Color(0xFFDDE1E4);
 

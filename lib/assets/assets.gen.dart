@@ -77,9 +77,17 @@ class $AssetsImagesGen {
   AssetGenImage get icCoupon =>
       const AssetGenImage('assets/images/ic_coupon.png');
 
+  /// File path: assets/images/ic_customer_servic.png
+  AssetGenImage get icCustomerServic =>
+      const AssetGenImage('assets/images/ic_customer_servic.png');
+
   /// File path: assets/images/ic_donate.png
   AssetGenImage get icDonate =>
       const AssetGenImage('assets/images/ic_donate.png');
+
+  /// File path: assets/images/ic_expected_payment_amount.png
+  AssetGenImage get icExpectedPaymentAmount =>
+      const AssetGenImage('assets/images/ic_expected_payment_amount.png');
 
   /// File path: assets/images/ic_feed_sample.png
   AssetGenImage get icFeedSample =>
@@ -96,6 +104,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/ic_home.png
   AssetGenImage get icHome => const AssetGenImage('assets/images/ic_home.png');
 
+  /// File path: assets/images/ic_income_deduction.png
+  AssetGenImage get icIncomeDeduction =>
+      const AssetGenImage('assets/images/ic_income_deduction.png');
+
   /// File path: assets/images/ic_kb_stock.png
   AssetGenImage get icKbStock =>
       const AssetGenImage('assets/images/ic_kb_stock.png');
@@ -111,13 +123,28 @@ class $AssetsImagesGen {
   AssetGenImage get icMobileSpecification =>
       const AssetGenImage('assets/images/ic_mobile_specification.png');
 
+  /// File path: assets/images/ic_my_event.png
+  AssetGenImage get icMyEvent =>
+      const AssetGenImage('assets/images/ic_my_event.png');
+
   /// File path: assets/images/ic_my_page.png
   AssetGenImage get icMyPage =>
       const AssetGenImage('assets/images/ic_my_page.png');
 
+  /// File path: assets/images/ic_my_profile.png
+  AssetGenImage get icMyProfile =>
+      const AssetGenImage('assets/images/ic_my_profile.png');
+
   /// File path: assets/images/ic_my_search.png
   AssetGenImage get icMySearch =>
       const AssetGenImage('assets/images/ic_my_search.png');
+
+  /// File path: assets/images/ic_my_setting.png
+  AssetGenImage get icMySetting =>
+      const AssetGenImage('assets/images/ic_my_setting.png');
+
+  /// File path: assets/images/ic_pin.png
+  AssetGenImage get icPin => const AssetGenImage('assets/images/ic_pin.png');
 
   /// File path: assets/images/ic_rebit.png
   AssetGenImage get icRebit =>
@@ -126,6 +153,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/ic_reward_news.png
   AssetGenImage get icRewardNews =>
       const AssetGenImage('assets/images/ic_reward_news.png');
+
+  /// File path: assets/images/ic_sales_slip.png
+  AssetGenImage get icSalesSlip =>
+      const AssetGenImage('assets/images/ic_sales_slip.png');
 
   /// File path: assets/images/ic_search.png
   AssetGenImage get icSearch =>
@@ -138,6 +169,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/ic_short_clip.png
   AssetGenImage get icShortClip =>
       const AssetGenImage('assets/images/ic_short_clip.png');
+
+  /// File path: assets/images/ic_statement_of_usage_fee.png
+  AssetGenImage get icStatementOfUsageFee =>
+      const AssetGenImage('assets/images/ic_statement_of_usage_fee.png');
 
   /// File path: assets/images/ic_today_horoscope.png
   AssetGenImage get icTodayHoroscope =>
@@ -172,22 +207,31 @@ class $AssetsImagesGen {
         icCelebrateReward,
         icCheckPlus,
         icCoupon,
+        icCustomerServic,
         icDonate,
+        icExpectedPaymentAmount,
         icFeedSample,
         icFinance,
         icGetPointTriple,
         icHome,
+        icIncomeDeduction,
         icKbStock,
         icLiveReword,
         icMenu,
         icMobileSpecification,
+        icMyEvent,
         icMyPage,
+        icMyProfile,
         icMySearch,
+        icMySetting,
+        icPin,
         icRebit,
         icRewardNews,
+        icSalesSlip,
         icSearch,
         icSeasonEvent,
         icShortClip,
+        icStatementOfUsageFee,
         icTodayHoroscope,
         icTodayQuiz,
         icTv,

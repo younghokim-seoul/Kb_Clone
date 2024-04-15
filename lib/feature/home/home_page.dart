@@ -1,4 +1,3 @@
-import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,7 +15,6 @@ import 'package:kb_bank_clone/feature/home/component/watch_reward_view.dart';
 import 'package:kb_bank_clone/feature/widget/app_list_item_body.dart';
 import 'package:kb_bank_clone/feature/widget/appbar/custom_app_bar.dart';
 import 'package:kb_bank_clone/theme/demo_colors.dart';
-import 'package:kb_bank_clone/utils/dev_log.dart';
 import 'package:kb_bank_clone/utils/router/app_route.dart';
 
 @RoutePage()
@@ -42,11 +40,11 @@ class HomePage extends ConsumerWidget {
         ),
         actions: [
           Assets.images.icMyPage.image(fit: BoxFit.contain),
-          Gap(16.w),
+          Gap(8.w),
           Assets.images.icSearch.image(fit: BoxFit.contain),
-          Gap(16.w),
+          Gap(8.w),
           Assets.images.icBell.image(fit: BoxFit.contain),
-          Gap(16.w),
+          Gap(8.w),
           InkWell(
             onTap: () => context.router.push(const SettingRoute()),
             child: Assets.images.icMenu.image(fit: BoxFit.contain),
