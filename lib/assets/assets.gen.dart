@@ -65,6 +65,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/ic_bell.png
   AssetGenImage get icBell => const AssetGenImage('assets/images/ic_bell.png');
 
+  /// File path: assets/images/ic_calendar.png
+  AssetGenImage get icCalendar =>
+      const AssetGenImage('assets/images/ic_calendar.png');
+
   /// File path: assets/images/ic_calendar_check.png
   AssetGenImage get icCalendarCheck =>
       const AssetGenImage('assets/images/ic_calendar_check.png');
@@ -223,6 +227,7 @@ class $AssetsImagesGen {
         icArrowDown,
         icBear,
         icBell,
+        icCalendar,
         icCalendarCheck,
         icCelebrateReward,
         icChart,

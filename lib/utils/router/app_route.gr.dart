@@ -51,6 +51,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const UsageFeeStatementPage(),
       );
     },
+    UsageFeeWriteRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const UsageFeeWritePage(),
+      );
+    },
   };
 }
 
@@ -134,6 +140,20 @@ class UsageFeeStatementRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'UsageFeeStatementRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [UsageFeeWritePage]
+class UsageFeeWriteRoute extends PageRouteInfo<void> {
+  const UsageFeeWriteRoute({List<PageRouteInfo>? children})
+      : super(
+          UsageFeeWriteRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'UsageFeeWriteRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

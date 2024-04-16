@@ -8,6 +8,7 @@ import 'package:kb_bank_clone/feature/widget/appbar/custom_app_bar.dart';
 import 'package:kb_bank_clone/theme/demo_colors.dart';
 import 'package:kb_bank_clone/theme/demo_text_styles.dart';
 import 'package:kb_bank_clone/utils/extension/margin_extension.dart';
+import 'package:kb_bank_clone/utils/router/app_route.dart';
 
 @RoutePage()
 class UsageFeeDetailsPage extends ConsumerStatefulWidget {
@@ -42,6 +43,23 @@ class _UsageFeeDetailsPageState extends ConsumerState<UsageFeeDetailsPage> {
             sliver: SliverToBoxAdapter(child: _buildUsageFeeHeader()),
           ),
         ],
+      ),
+      floatingActionButton: InkWell(
+        onTap: () => context.router.push(const UsageFeeWriteRoute()),
+        child: Container(
+          width: 1.sw,
+          height: 56.h,
+          color: DemoColors.primaryColor,
+          alignment: Alignment.center,
+          child: Text(
+            '전체내역보기',
+            style: DemoTextStyles.labelSmall.copyWith(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
       ),
     );
   }
