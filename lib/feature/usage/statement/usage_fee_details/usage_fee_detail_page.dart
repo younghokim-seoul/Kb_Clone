@@ -4,10 +4,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:kb_bank_clone/assets/assets.gen.dart';
+import 'package:kb_bank_clone/di/app_provider.dart';
+import 'package:kb_bank_clone/feature/usage/statement/usage_fee_details/usage_fee_detail_view_model.dart';
 import 'package:kb_bank_clone/feature/widget/appbar/custom_app_bar.dart';
 import 'package:kb_bank_clone/theme/demo_colors.dart';
 import 'package:kb_bank_clone/theme/demo_text_styles.dart';
 import 'package:kb_bank_clone/utils/extension/margin_extension.dart';
+import 'package:kb_bank_clone/utils/extension/value_extension.dart';
 import 'package:kb_bank_clone/utils/router/app_route.dart';
 
 @RoutePage()
@@ -21,6 +24,16 @@ class UsageFeeDetailsPage extends ConsumerStatefulWidget {
 }
 
 class _UsageFeeDetailsPageState extends ConsumerState<UsageFeeDetailsPage> {
+  late UsageFeeDetailsViewModel _viewModel;
+
+  @override
+  void initState() {
+    super.initState();
+    _viewModel = ref.read(usageFeeDetailViewModelProvider);
+    _viewModel.collectCardTransactions(
+        DateTime.now().month.toString().padLeft(2, '0'));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,6 +99,52 @@ class _UsageFeeDetailsPageState extends ConsumerState<UsageFeeDetailsPage> {
             ],
           ),
           Gap(24.h),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                '전체',
+                style: DemoTextStyles.labelSmall.copyWith(
+                  color: DemoColors.grey,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              Assets.images.icArrowDown.image(fit: BoxFit.cover),
+            ],
+          ),
+          Gap(17.h),
+          Container(color: DemoColors.primaryBoxColorLight, height: 1.h),
+          Gap(20.h),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              RichText(
+                text: TextSpan(
+                  text: '총',
+                  style: DemoTextStyles.labelSmall.copyWith(
+                    color: DemoColors.grey,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  children: [
+                    WidgetSpan(child: SizedBox(width: 5.w)),
+                    TextSpan(text: '3', style: TextStyle(color: Colors.red)),
+                    TextSpan(text: '건'),
+                  ],
+                ),
+              ),
+              Text(
+                '${2000000.toCurrency()}원',
+                style: DemoTextStyles.labelSmall.copyWith(
+                  color: DemoColors.grey,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+          Gap(25.h),
         ],
       ).paddingSymmetric(horizontal: 16.w),
     );

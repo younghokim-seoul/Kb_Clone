@@ -141,22 +141,17 @@ class _$KbDao extends KbDao {
   final DeletionAdapter<CardTransaction> _cardTransactionDeletionAdapter;
 
   @override
-  Future<List<CardTransaction>> findAllCardTransactions() async {
+  Future<List<CardTransaction>> findAllCardTransactions(String month) async {
     return _queryAdapter.queryList(
-        'SELECT * FROM CardTransaction ORDER BY createdAt',
-        mapper: (Map<String, Object?> row) => CardTransaction(
-            row['id'] as int?,
-            row['merchantName'] as String,
-            _dateTimeConverter.decode(row['createAt'] as int),
-            row['amount'] as int,
-            row['paymentType'] as int,
-            row['reward'] as int));
+        'SELECT * FROM CardTransaction WHERE strftime(\"%m\", createAt / 1000, \"unixepoch\") = ?1 ORDER BY createAt',
+        mapper: (Map<String, Object?> row) => CardTransaction(row['id'] as int?, row['merchantName'] as String, _dateTimeConverter.decode(row['createAt'] as int), row['amount'] as int, row['paymentType'] as int, row['reward'] as int),
+        arguments: [month]);
   }
 
   @override
-  Stream<List<CardTransaction>> flowCardTransactions() {
+  Stream<List<CardTransaction>> flowCardTransactions(String month) {
     return _queryAdapter.queryListStream(
-        'SELECT * FROM CardTransaction ORDER BY createdAt',
+        'SELECT * FROM CardTransaction WHERE strftime(\"%m\", createAt / 1000, \"unixepoch\") = ?1 ORDER BY createAt',
         mapper: (Map<String, Object?> row) => CardTransaction(
             row['id'] as int?,
             row['merchantName'] as String,
@@ -164,6 +159,7 @@ class _$KbDao extends KbDao {
             row['amount'] as int,
             row['paymentType'] as int,
             row['reward'] as int),
+        arguments: [month],
         queryableName: 'CardTransaction',
         isView: false);
   }

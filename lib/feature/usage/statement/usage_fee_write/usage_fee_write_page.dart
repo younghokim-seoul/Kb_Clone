@@ -7,6 +7,7 @@ import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:kb_bank_clone/assets/assets.gen.dart';
 import 'package:kb_bank_clone/di/app_provider.dart';
+import 'package:kb_bank_clone/domain/card_transaction_entity.dart';
 import 'package:kb_bank_clone/feature/usage/statement/usage_fee_write/usage_fee_write_view_model.dart';
 import 'package:kb_bank_clone/feature/widget/appbar/custom_app_bar.dart';
 import 'package:kb_bank_clone/feature/widget/labeled_input_field.dart';
@@ -31,13 +32,30 @@ class UsageFeeWritePage extends ConsumerStatefulWidget {
 
 class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
   late UsageFeeWriteViewModel _viewModel;
+  late TextEditingController _merchantNameController;
   late TextEditingController _dateController;
+  late TextEditingController _amountController;
+  late TextEditingController _paymentType;
+  late TextEditingController _reward;
   DateTime? selectedDate;
+
+  bool get isAnyControllerEmpty =>
+      _merchantNameController.text.isEmpty ||
+      _dateController.text.isEmpty ||
+      _amountController.text.isEmpty ||
+      _paymentType.text.isEmpty ||
+      _reward.text.isEmpty ||
+      selectedDate == null;
 
   @override
   void initState() {
     super.initState();
     _viewModel = ref.read(usageFeeWriteViewModelProvider);
+    _dateController = TextEditingController();
+    _merchantNameController = TextEditingController();
+    _amountController = TextEditingController();
+    _paymentType = TextEditingController();
+    _reward = TextEditingController();
   }
 
   @override
@@ -62,7 +80,8 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
         child: Column(
           children: [
             Gap(40.h),
-            const LabeledInputField(
+            LabeledInputField(
+              controller: _merchantNameController,
               label: '상호명',
               hintText: '상호명을 입력해주세요.',
               keyboardType: TextInputType.name,
@@ -74,7 +93,8 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
                   builder: (context, watch, child) {
                     final selectedDate = ref.watch(dateSelectedProvider);
                     if (selectedDate != null) {
-                      _dateController.text = DateFormat('yyyy.MM.dd').format(selectedDate);
+                      _dateController.text =
+                          DateFormat('yyyy.MM.dd').format(selectedDate);
                     } else {
                       _dateController.text = '';
                     }
@@ -95,13 +115,15 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
                     onTap: () {
                       final today = DateTime.now();
                       final firstDayOfMonth = DateTime(today.year, today.month);
-                      final lastDayOfMonth = DateTime(today.year, today.month + 1).subtract(
+                      final lastDayOfMonth =
+                          DateTime(today.year, today.month + 1).subtract(
                         const Duration(days: 1),
                       );
                       _showDialog(CupertinoTheme(
                         data: CupertinoThemeData(
                           textTheme: CupertinoTextThemeData(
-                            dateTimePickerTextStyle: DemoTextStyles.labelMedium.copyWith(
+                            dateTimePickerTextStyle:
+                                DemoTextStyles.labelMedium.copyWith(
                               fontSize: 20,
                               color: DemoColors.grey,
                             ),
@@ -130,18 +152,21 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
             ),
             Gap(24.h),
             LabeledInputField(
+              controller: _amountController,
               label: '사용금액',
               hintText: '원단위 입력',
               keyboardType: TextInputType.number,
             ),
             Gap(24.h),
             LabeledInputField(
+              controller: _paymentType,
               label: '일시불/할부',
               hintText: '0개월',
               keyboardType: TextInputType.number,
             ),
             Gap(24.h),
             LabeledInputField(
+              controller: _reward,
               label: '적립 · 혜택',
               hintText: '원단위 입력',
               keyboardType: TextInputType.number,
@@ -150,42 +175,22 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
         ),
       ),
       bottomNavigationBar: IntrinsicHeight(
-          child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            children: [
-              Gap(24.w),
-              Expanded(
-                  child: InkWell(
-                onTap: () => context.router.popForced(),
-                child: DecoratedBox(
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                    color: DemoColors.white,
-                  ),
-                  child: Text(
-                    '취소',
-                    textAlign: TextAlign.center,
-                    style: DemoTextStyles.headlineMedium.copyWith(
-                      color: DemoColors.primaryColor,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ).paddingSymmetric(vertical: 15.h),
-                ),
-              )),
-              Gap(12.w),
-              Expanded(
-                child: InkWell(
-                  onTap: () {},
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: [
+                Gap(24.w),
+                Expanded(
+                    child: InkWell(
+                  onTap: () => context.router.popForced(),
                   child: DecoratedBox(
                     decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(8)),
-                      color: DemoColors.primaryYellowLightColor,
+                      color: DemoColors.white,
                     ),
                     child: Text(
-                      '저장',
+                      '취소',
                       textAlign: TextAlign.center,
                       style: DemoTextStyles.headlineMedium.copyWith(
                         color: DemoColors.primaryColor,
@@ -194,14 +199,58 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
                       ),
                     ).paddingSymmetric(vertical: 15.h),
                   ),
+                )),
+                Gap(12.w),
+                Expanded(
+                  child: InkWell(
+                    onTap: () async {
+                      if (isAnyControllerEmpty) {
+                        Log.e('::::공백존재.. return');
+                        return;
+                      }
+
+                      try {
+                        await _viewModel.insertCardTransaction(
+                          CardTransactionEntity.empty().copyWith(
+                            merchantName: _merchantNameController.text,
+                            createAt: selectedDate!,
+                            amount: int.parse(_amountController.text),
+                            paymentType: int.parse(_paymentType.text),
+                            reward: int.parse(_reward.text),
+                          ),
+                        );
+                        Log.d(':::save... success');
+                        if (context.mounted) {
+                          context.router.popForced();
+                        }
+                      } catch (e) {
+                        Log.e(":::save fail.. $e");
+                      }
+                    },
+                    child: DecoratedBox(
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                        color: DemoColors.primaryYellowLightColor,
+                      ),
+                      child: Text(
+                        '저장',
+                        textAlign: TextAlign.center,
+                        style: DemoTextStyles.headlineMedium.copyWith(
+                          color: DemoColors.primaryColor,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ).paddingSymmetric(vertical: 15.h),
+                    ),
+                  ),
                 ),
-              ),
-              Gap(24.w),
-            ],
-          ),
-          Gap(24.h),
-        ],
-      )),
+                Gap(24.w),
+              ],
+            ),
+            Gap(24.h),
+          ],
+        ),
+      ),
     );
   }
 
@@ -249,7 +298,8 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
           type: MaterialType.transparency,
           child: InkWell(
             onTap: () {
-              ref.read(dateSelectedProvider.notifier).state = selectedDate ?? DateTime.now();
+              selectedDate = selectedDate ?? DateTime.now();
+              ref.read(dateSelectedProvider.notifier).state = selectedDate;
               context.router.popForced();
             },
             child: Center(

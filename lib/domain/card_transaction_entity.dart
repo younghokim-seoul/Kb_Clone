@@ -1,5 +1,3 @@
-import 'package:equatable/equatable.dart';
-import 'package:floor/floor.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'card_transaction_entity.freezed.dart';

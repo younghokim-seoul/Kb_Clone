@@ -9,7 +9,6 @@ class UsageFeeWriteViewModel implements ViewModelInterface {
   final KbDao dao;
 
   Future<void> insertCardTransaction(CardTransactionEntity model) async {
-    if (model == CardTransactionEntity.empty()) return;
     await dao.insertCardTransaction(
       CardTransaction.create(
         merchantName: model.merchantName,
