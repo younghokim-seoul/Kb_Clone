@@ -4,11 +4,18 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kb_bank_clone/app_provider.dart';
+import 'package:kb_bank_clone/data/local/kb_database.dart';
+import 'package:kb_bank_clone/di/kb_service.dart';
 import 'package:kb_bank_clone/theme/demo_colors.dart';
 import 'package:kb_bank_clone/theme/demo_text_styles.dart';
 import 'package:kb_bank_clone/utils/dev_log.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final db = await $FloorAppDatabase.databaseBuilder('kb.db').build();
+  registerServiceInstance(db);
+
   runApp(
     const ProviderScope(
       child: MyApp(),

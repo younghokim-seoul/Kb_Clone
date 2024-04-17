@@ -41,10 +41,7 @@ class CardUsageDetailsPage extends ConsumerWidget {
         ),
         title: "카드이용내역 조회",
         actions: [
-          InkWell(
-            onTap: () => context.router.push(const SettingRoute()),
-            child: Assets.images.icMenu.image(fit: BoxFit.contain),
-          )
+          Assets.images.icMenu.image(fit: BoxFit.contain)
         ],
       ),
       body: SingleChildScrollView(

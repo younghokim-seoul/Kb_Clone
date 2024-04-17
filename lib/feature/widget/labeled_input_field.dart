@@ -47,8 +47,7 @@ class _LabeledInputFieldState extends State<LabeledInputField> {
 
   FocusNode get _effectiveFocusNode => widget.focusNode ?? _internalFocusNode;
 
-  TextEditingController get _effectiveController =>
-      widget.controller ?? _internalController;
+  TextEditingController get _effectiveController => widget.controller ?? _internalController;
 
   @override
   void dispose() {
@@ -66,8 +65,7 @@ class _LabeledInputFieldState extends State<LabeledInputField> {
           padding: EdgeInsets.zero,
           child: Text(
             widget.label,
-            style: DemoTextStyles.bodyLarge
-                .copyWith(color: DemoColors.grey, fontSize: 14),
+            style: DemoTextStyles.bodyLarge.copyWith(color: DemoColors.grey, fontSize: 14),
             overflow: TextOverflow.ellipsis,
           ),
         ),
@@ -117,11 +115,13 @@ class _LabeledInputFieldState extends State<LabeledInputField> {
                         duration: const Duration(milliseconds: 100),
                         curve: Curves.easeInOut,
                         child: GestureDetector(
-                          child: const Icon(
-                            CupertinoIcons.clear,
-                            size: 24,
-                            color: DemoColors.grey,
-                          ),
+                          child: widget.enabled
+                              ? const Icon(
+                                  CupertinoIcons.clear,
+                                  size: 24,
+                                  color: DemoColors.grey,
+                                )
+                              : const SizedBox.square(dimension: 24),
                           onTap: () {
                             if (widget.enabled) {
                               _effectiveFocusNode.requestFocus();

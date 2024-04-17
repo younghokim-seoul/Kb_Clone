@@ -4,13 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:intl/intl.dart';
 import 'package:kb_bank_clone/assets/assets.gen.dart';
+import 'package:kb_bank_clone/di/app_provider.dart';
+import 'package:kb_bank_clone/feature/usage/statement/usage_fee_write/usage_fee_write_view_model.dart';
 import 'package:kb_bank_clone/feature/widget/appbar/custom_app_bar.dart';
 import 'package:kb_bank_clone/feature/widget/labeled_input_field.dart';
 import 'package:kb_bank_clone/theme/demo_colors.dart';
 import 'package:kb_bank_clone/theme/demo_text_styles.dart';
 import 'package:kb_bank_clone/utils/dev_log.dart';
 import 'package:kb_bank_clone/utils/extension/margin_extension.dart';
+
+final dateSelectedProvider = StateProvider.autoDispose<DateTime?>((ref) {
+  return null;
+});
 
 @RoutePage()
 class UsageFeeWritePage extends ConsumerStatefulWidget {
@@ -23,7 +30,15 @@ class UsageFeeWritePage extends ConsumerStatefulWidget {
 }
 
 class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
-  TextEditingController? _minuteController;
+  late UsageFeeWriteViewModel _viewModel;
+  late TextEditingController _dateController;
+  DateTime? selectedDate;
+
+  @override
+  void initState() {
+    super.initState();
+    _viewModel = ref.read(usageFeeWriteViewModelProvider);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,8 +62,7 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
         child: Column(
           children: [
             Gap(40.h),
-            LabeledInputField(
-              controller: _minuteController,
+            const LabeledInputField(
               label: '상호명',
               hintText: '상호명을 입력해주세요.',
               keyboardType: TextInputType.name,
@@ -56,12 +70,23 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
             Gap(24.h),
             Stack(
               children: [
-                LabeledInputField(
-                  controller: _minuteController,
-                  label: '날짜',
-                  enabled: false,
-                  hintText: '년, 월 일 순으로 기재',
-                  keyboardType: TextInputType.name,
+                Consumer(
+                  builder: (context, watch, child) {
+                    final selectedDate = ref.watch(dateSelectedProvider);
+                    if (selectedDate != null) {
+                      _dateController.text = DateFormat('yyyy.MM.dd').format(selectedDate);
+                    } else {
+                      _dateController.text = '';
+                    }
+
+                    return LabeledInputField(
+                      controller: _dateController,
+                      label: '날짜',
+                      enabled: false,
+                      hintText: '년, 월 일 순으로 기재',
+                      keyboardType: TextInputType.name,
+                    );
+                  },
                 ),
                 Positioned(
                   right: 10.w,
@@ -70,15 +95,13 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
                     onTap: () {
                       final today = DateTime.now();
                       final firstDayOfMonth = DateTime(today.year, today.month);
-                      final lastDayOfMonth =
-                          DateTime(today.year, today.month + 1).subtract(
+                      final lastDayOfMonth = DateTime(today.year, today.month + 1).subtract(
                         const Duration(days: 1),
                       );
                       _showDialog(CupertinoTheme(
                         data: CupertinoThemeData(
                           textTheme: CupertinoTextThemeData(
-                            dateTimePickerTextStyle:
-                                DemoTextStyles.labelMedium.copyWith(
+                            dateTimePickerTextStyle: DemoTextStyles.labelMedium.copyWith(
                               fontSize: 20,
                               color: DemoColors.grey,
                             ),
@@ -92,7 +115,7 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
                           minimumDate: firstDayOfMonth,
                           maximumDate: lastDayOfMonth,
                           onDateTimeChanged: (DateTime newDate) {
-                            Log.d(":::Selected + $newDate");
+                            selectedDate = newDate;
                           },
                         ),
                       ));
@@ -107,21 +130,18 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
             ),
             Gap(24.h),
             LabeledInputField(
-              controller: _minuteController,
               label: '사용금액',
               hintText: '원단위 입력',
               keyboardType: TextInputType.number,
             ),
             Gap(24.h),
             LabeledInputField(
-              controller: _minuteController,
               label: '일시불/할부',
               hintText: '0개월',
               keyboardType: TextInputType.number,
             ),
             Gap(24.h),
             LabeledInputField(
-              controller: _minuteController,
               label: '적립 · 혜택',
               hintText: '원단위 입력',
               keyboardType: TextInputType.number,
@@ -129,6 +149,59 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
           ],
         ),
       ),
+      bottomNavigationBar: IntrinsicHeight(
+          child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            children: [
+              Gap(24.w),
+              Expanded(
+                  child: InkWell(
+                onTap: () => context.router.popForced(),
+                child: DecoratedBox(
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                    color: DemoColors.white,
+                  ),
+                  child: Text(
+                    '취소',
+                    textAlign: TextAlign.center,
+                    style: DemoTextStyles.headlineMedium.copyWith(
+                      color: DemoColors.primaryColor,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ).paddingSymmetric(vertical: 15.h),
+                ),
+              )),
+              Gap(12.w),
+              Expanded(
+                child: InkWell(
+                  onTap: () {},
+                  child: DecoratedBox(
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                      color: DemoColors.primaryYellowLightColor,
+                    ),
+                    child: Text(
+                      '저장',
+                      textAlign: TextAlign.center,
+                      style: DemoTextStyles.headlineMedium.copyWith(
+                        color: DemoColors.primaryColor,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ).paddingSymmetric(vertical: 15.h),
+                  ),
+                ),
+              ),
+              Gap(24.w),
+            ],
+          ),
+          Gap(24.h),
+        ],
+      )),
     );
   }
 
@@ -151,6 +224,7 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
         child: SafeArea(
           top: false,
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Expanded(child: child),
               _buildButton(
@@ -167,21 +241,29 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
 
   Widget _buildButton({required String title, Color? color}) {
     return DecoratedBox(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: color ?? DemoColors.primaryYellowLightColor,
-      ),
-      child: Center(
-        child: Text(
-          title,
-          style: DemoTextStyles.headlineMedium.copyWith(
-            color: DemoColors.primaryColor,
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-            decoration: TextDecoration.none,
-          ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: color ?? DemoColors.primaryYellowLightColor,
         ),
-      ).paddingSymmetric(horizontal: 32.w, vertical: 16.h),
-    );
+        child: Material(
+          type: MaterialType.transparency,
+          child: InkWell(
+            onTap: () {
+              ref.read(dateSelectedProvider.notifier).state = selectedDate ?? DateTime.now();
+              context.router.popForced();
+            },
+            child: Center(
+              child: Text(
+                title,
+                style: DemoTextStyles.headlineMedium.copyWith(
+                  color: DemoColors.primaryColor,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  decoration: TextDecoration.none,
+                ),
+              ),
+            ).paddingSymmetric(horizontal: 32.w, vertical: 16.h),
+          ),
+        ));
   }
 }

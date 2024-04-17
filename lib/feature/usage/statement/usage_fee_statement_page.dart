@@ -48,10 +48,7 @@ class _UsageFeeStatementPageState extends ConsumerState<UsageFeeStatementPage> {
         ),
         title: "이용대금명세서",
         actions: [
-          InkWell(
-            onTap: () => context.router.push(const SettingRoute()),
-            child: Assets.images.icMenu.image(fit: BoxFit.cover),
-          )
+          Assets.images.icMenu.image(fit: BoxFit.contain),
         ],
       ),
       body: SafeArea(
