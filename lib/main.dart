@@ -1,3 +1,4 @@
+import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -9,6 +10,10 @@ import 'package:kb_bank_clone/di/kb_service.dart';
 import 'package:kb_bank_clone/theme/demo_colors.dart';
 import 'package:kb_bank_clone/theme/demo_text_styles.dart';
 import 'package:kb_bank_clone/utils/dev_log.dart';
+
+
+EventBus eventBus = EventBus();
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -17,6 +17,8 @@ abstract class DemoColors {
   static const Color lightMoneyColor = Color(0xFFFF5D5D);
   static const Color lightButtonLabelText = Color(0xFF474747);
 
+  static const Color rewardColor = Color(0xFFF58A01);
+
 
   static const Color primaryYellowLightColor = Color(0xFFFFCC00);
   /// Grey

@@ -1,23 +1,15 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:intl/intl.dart';
 import 'package:kb_bank_clone/assets/assets.gen.dart';
-import 'package:kb_bank_clone/feature/home/component/acade_view.dart';
-import 'package:kb_bank_clone/feature/home/component/event_view.dart';
-import 'package:kb_bank_clone/feature/home/component/feed_view.dart';
-import 'package:kb_bank_clone/feature/home/component/menu_view.dart';
-import 'package:kb_bank_clone/feature/home/component/point_reward_view.dart';
-import 'package:kb_bank_clone/feature/home/component/season_event_view.dart';
-import 'package:kb_bank_clone/feature/home/component/special_price_view.dart';
-import 'package:kb_bank_clone/feature/home/component/watch_reward_view.dart';
-import 'package:kb_bank_clone/feature/widget/app_list_item_body.dart';
+import 'package:kb_bank_clone/di/app_provider.dart';
+import 'package:kb_bank_clone/feature/usage/statement/usage_fee_statement_view_model.dart';
 import 'package:kb_bank_clone/feature/widget/appbar/custom_app_bar.dart';
 import 'package:kb_bank_clone/feature/widget/appbar/flex_icon_button.dart';
-import 'package:kb_bank_clone/feature/widget/usage_item_body.dart';
 import 'package:kb_bank_clone/theme/demo_colors.dart';
 import 'package:kb_bank_clone/theme/demo_text_styles.dart';
 import 'package:kb_bank_clone/utils/extension/margin_extension.dart';
@@ -35,6 +27,23 @@ class UsageFeeStatementPage extends ConsumerStatefulWidget {
 }
 
 class _UsageFeeStatementPageState extends ConsumerState<UsageFeeStatementPage> {
+  late UsageFeeStatementViewModel _viewModel;
+
+  @override
+  void initState() {
+    super.initState();
+    _viewModel = ref.read(usageFeeStatementViewModelProvider);
+    _viewModel
+      ..findAllCardTransactions(DateTime.now().month.toString().padLeft(2, '0'))
+      ..subScribePaymentEvent();
+  }
+
+  @override
+  void dispose() {
+    _viewModel.disposeAll();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,30 +79,35 @@ class _UsageFeeStatementPageState extends ConsumerState<UsageFeeStatementPage> {
 
   Widget _buildHeader() {
     return DecoratedBox(
-      decoration: BoxDecoration(color: DemoColors.primaryBoxColorLight),
+      decoration: const BoxDecoration(color: DemoColors.primaryBoxColorLight),
       child: Row(
         children: [
           Gap(20.w),
           FlexIconButton.medium(
             icon: CupertinoIcons.left_chevron,
-            onPressed: () => context.router.popForced(),
+            onPressed: () => _viewModel.changeMonth(ChangeType.minus),
           ),
           Expanded(
-            child: Text(
-              '24년 1월 명세서',
-              style: DemoTextStyles.labelSmall.copyWith(
-                color: DemoColors.grey,
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
-                height: 1,
-              ),
-              textAlign: TextAlign.center,
-              overflow: TextOverflow.ellipsis,
-            ).paddingSymmetric(vertical: 22.h),
+            child: _viewModel.currentDateState.ui(builder: (context, state) {
+              if (!state.hasData || state.data.isNullOrEmpty) {
+                return const SizedBox.shrink();
+              }
+              return Text(
+                DateFormat('yy년 M월 명세서').format(state.data!),
+                style: DemoTextStyles.labelSmall.copyWith(
+                  color: DemoColors.grey,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  height: 1,
+                ),
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.ellipsis,
+              ).paddingSymmetric(vertical: 22.h);
+            }),
           ),
           FlexIconButton.medium(
             icon: CupertinoIcons.right_chevron,
-            onPressed: () => context.router.pop(),
+            onPressed: () => _viewModel.changeMonth(ChangeType.plus),
           ),
           Gap(20.w),
         ],
@@ -109,14 +123,16 @@ class _UsageFeeStatementPageState extends ConsumerState<UsageFeeStatementPage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              '작성기준일 24. 01. 03',
-              style: DemoTextStyles.labelSmall.copyWith(
-                color: DemoColors.grey,
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
+            _viewModel.usageFeeStatementState.ui(builder: (context, state) {
+              return Text(
+                '작성기준일  ${state.data.isNullOrEmpty ? '' : formatWrittenDate(state.data!.writtenDate)}',
+                style: DemoTextStyles.labelSmall.copyWith(
+                  color: DemoColors.grey,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                ),
+              );
+            }),
             Gap(20.w),
             DecoratedBox(
               decoration: BoxDecoration(
@@ -165,14 +181,17 @@ class _UsageFeeStatementPageState extends ConsumerState<UsageFeeStatementPage> {
           ],
         ),
         Gap(12.h),
-        Text(
-          '${2000000.toCurrency()}원',
-          style: DemoTextStyles.labelSmall.copyWith(
-            color: DemoColors.lightMoneyColor,
-            fontSize: 36,
-            fontWeight: FontWeight.w800,
-          ),
-        ),
+        _viewModel.usageFeeStatementState.ui(builder: (context, state) {
+          return Text(
+            '${state.data.isNullOrEmpty ? '' : state.data!.totalUsageFee.toCurrency()}원',
+            style: DemoTextStyles.labelSmall.copyWith(
+              color: DemoColors.rewardColor,
+              fontSize: 36,
+              height: 1,
+              fontWeight: FontWeight.w800,
+            ),
+          );
+        }),
       ],
     ).paddingSymmetric(horizontal: 24.w);
   }
@@ -199,19 +218,26 @@ class _UsageFeeStatementPageState extends ConsumerState<UsageFeeStatementPage> {
               ),
             ),
             Gap(12.h),
-            Text(
-              '${45921.toCurrency()}원',
-              style: DemoTextStyles.labelSmall.copyWith(
-                color: DemoColors.grey,
-                fontSize: 22,
-                fontWeight: FontWeight.w800,
-              ),
-            ),
+            _viewModel.usageFeeStatementState.ui(builder: (context, state) {
+              return Text(
+                '${state.data.isNullOrEmpty ? '' : state.data!.totalUsageFee.toCurrency()}원',
+                style: DemoTextStyles.labelSmall.copyWith(
+                  color: DemoColors.grey,
+                  fontSize: 22,
+                  fontWeight: FontWeight.w800,
+                ),
+              );
+            }),
             Gap(24.h),
             Row(
               children: [
                 InkWell(
-                  onTap: () => context.router.push(const UsageFeeDetailsRoute()),
+                  onTap: () => context.router.push(
+                    UsageFeeDetailsRoute(
+                      selectedYear: _viewModel.getYear(),
+                      selectedMonth: _viewModel.getMonth(),
+                    ),
+                  ),
                   child: _buildButton(title: '이용내역'),
                 ),
                 Gap(12.w),
@@ -229,7 +255,7 @@ class _UsageFeeStatementPageState extends ConsumerState<UsageFeeStatementPage> {
     ).paddingSymmetric(horizontal: 16.w, vertical: 8.h);
   }
 
-  Widget _buildSummary(){
+  Widget _buildSummary() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -280,5 +306,13 @@ class _UsageFeeStatementPageState extends ConsumerState<UsageFeeStatementPage> {
         ),
       ).paddingSymmetric(horizontal: 32.w, vertical: 10.h),
     );
+  }
+
+  String formatWrittenDate(DateTime? writtenDate) {
+    if (writtenDate == null) {
+      return '';
+    } else {
+      return DateFormat('yy. M. dd').format(writtenDate);
+    }
   }
 }

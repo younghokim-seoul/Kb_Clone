@@ -40,9 +40,14 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     UsageFeeDetailsRoute.name: (routeData) {
+      final args = routeData.argsAs<UsageFeeDetailsRouteArgs>();
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const UsageFeeDetailsPage(),
+        child: UsageFeeDetailsPage(
+          selectedYear: args.selectedYear,
+          selectedMonth: args.selectedMonth,
+          key: args.key,
+        ),
       );
     },
     UsageFeeStatementRoute.name: (routeData) {
@@ -52,9 +57,14 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     UsageFeeWriteRoute.name: (routeData) {
+      final args = routeData.argsAs<UsageFeeWriteRouteArgs>();
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const UsageFeeWritePage(),
+        child: UsageFeeWritePage(
+          selectedYear: args.selectedYear,
+          selectedMonth: args.selectedMonth,
+          key: args.key,
+        ),
       );
     },
   };
@@ -118,16 +128,45 @@ class SplashRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [UsageFeeDetailsPage]
-class UsageFeeDetailsRoute extends PageRouteInfo<void> {
-  const UsageFeeDetailsRoute({List<PageRouteInfo>? children})
-      : super(
+class UsageFeeDetailsRoute extends PageRouteInfo<UsageFeeDetailsRouteArgs> {
+  UsageFeeDetailsRoute({
+    required int selectedYear,
+    required int selectedMonth,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
           UsageFeeDetailsRoute.name,
+          args: UsageFeeDetailsRouteArgs(
+            selectedYear: selectedYear,
+            selectedMonth: selectedMonth,
+            key: key,
+          ),
           initialChildren: children,
         );
 
   static const String name = 'UsageFeeDetailsRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static const PageInfo<UsageFeeDetailsRouteArgs> page =
+      PageInfo<UsageFeeDetailsRouteArgs>(name);
+}
+
+class UsageFeeDetailsRouteArgs {
+  const UsageFeeDetailsRouteArgs({
+    required this.selectedYear,
+    required this.selectedMonth,
+    this.key,
+  });
+
+  final int selectedYear;
+
+  final int selectedMonth;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'UsageFeeDetailsRouteArgs{selectedYear: $selectedYear, selectedMonth: $selectedMonth, key: $key}';
+  }
 }
 
 /// generated route for
@@ -146,14 +185,43 @@ class UsageFeeStatementRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [UsageFeeWritePage]
-class UsageFeeWriteRoute extends PageRouteInfo<void> {
-  const UsageFeeWriteRoute({List<PageRouteInfo>? children})
-      : super(
+class UsageFeeWriteRoute extends PageRouteInfo<UsageFeeWriteRouteArgs> {
+  UsageFeeWriteRoute({
+    required int selectedYear,
+    required int selectedMonth,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
           UsageFeeWriteRoute.name,
+          args: UsageFeeWriteRouteArgs(
+            selectedYear: selectedYear,
+            selectedMonth: selectedMonth,
+            key: key,
+          ),
           initialChildren: children,
         );
 
   static const String name = 'UsageFeeWriteRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static const PageInfo<UsageFeeWriteRouteArgs> page =
+      PageInfo<UsageFeeWriteRouteArgs>(name);
+}
+
+class UsageFeeWriteRouteArgs {
+  const UsageFeeWriteRouteArgs({
+    required this.selectedYear,
+    required this.selectedMonth,
+    this.key,
+  });
+
+  final int selectedYear;
+
+  final int selectedMonth;
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'UsageFeeWriteRouteArgs{selectedYear: $selectedYear, selectedMonth: $selectedMonth, key: $key}';
+  }
 }

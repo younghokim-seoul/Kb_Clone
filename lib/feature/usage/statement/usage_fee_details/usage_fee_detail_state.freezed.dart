@@ -16,9 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$UsageFeeDetailState {
-  List<CardTransactionEntity> get items => throw _privateConstructorUsedError;
-  int get totalFee => throw _privateConstructorUsedError;
-  int get transactionCount => throw _privateConstructorUsedError;
+  List<CardTransactionItems> get items => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $UsageFeeDetailStateCopyWith<UsageFeeDetailState> get copyWith =>
@@ -31,8 +29,7 @@ abstract class $UsageFeeDetailStateCopyWith<$Res> {
           UsageFeeDetailState value, $Res Function(UsageFeeDetailState) then) =
       _$UsageFeeDetailStateCopyWithImpl<$Res, UsageFeeDetailState>;
   @useResult
-  $Res call(
-      {List<CardTransactionEntity> items, int totalFee, int transactionCount});
+  $Res call({List<CardTransactionItems> items});
 }
 
 /// @nodoc
@@ -49,22 +46,12 @@ class _$UsageFeeDetailStateCopyWithImpl<$Res, $Val extends UsageFeeDetailState>
   @override
   $Res call({
     Object? items = null,
-    Object? totalFee = null,
-    Object? transactionCount = null,
   }) {
     return _then(_value.copyWith(
       items: null == items
           ? _value.items
           : items // ignore: cast_nullable_to_non_nullable
-              as List<CardTransactionEntity>,
-      totalFee: null == totalFee
-          ? _value.totalFee
-          : totalFee // ignore: cast_nullable_to_non_nullable
-              as int,
-      transactionCount: null == transactionCount
-          ? _value.transactionCount
-          : transactionCount // ignore: cast_nullable_to_non_nullable
-              as int,
+              as List<CardTransactionItems>,
     ) as $Val);
   }
 }
@@ -77,8 +64,7 @@ abstract class _$$UsageFeeDetailStateImplCopyWith<$Res>
       __$$UsageFeeDetailStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {List<CardTransactionEntity> items, int totalFee, int transactionCount});
+  $Res call({List<CardTransactionItems> items});
 }
 
 /// @nodoc
@@ -93,22 +79,12 @@ class __$$UsageFeeDetailStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? items = null,
-    Object? totalFee = null,
-    Object? transactionCount = null,
   }) {
     return _then(_$UsageFeeDetailStateImpl(
       items: null == items
           ? _value._items
           : items // ignore: cast_nullable_to_non_nullable
-              as List<CardTransactionEntity>,
-      totalFee: null == totalFee
-          ? _value.totalFee
-          : totalFee // ignore: cast_nullable_to_non_nullable
-              as int,
-      transactionCount: null == transactionCount
-          ? _value.transactionCount
-          : transactionCount // ignore: cast_nullable_to_non_nullable
-              as int,
+              as List<CardTransactionItems>,
     ));
   }
 }
@@ -116,28 +92,20 @@ class __$$UsageFeeDetailStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$UsageFeeDetailStateImpl implements _UsageFeeDetailState {
-  _$UsageFeeDetailStateImpl(
-      {required final List<CardTransactionEntity> items,
-      required this.totalFee,
-      required this.transactionCount})
+  _$UsageFeeDetailStateImpl({required final List<CardTransactionItems> items})
       : _items = items;
 
-  final List<CardTransactionEntity> _items;
+  final List<CardTransactionItems> _items;
   @override
-  List<CardTransactionEntity> get items {
+  List<CardTransactionItems> get items {
     if (_items is EqualUnmodifiableListView) return _items;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_items);
   }
 
   @override
-  final int totalFee;
-  @override
-  final int transactionCount;
-
-  @override
   String toString() {
-    return 'UsageFeeDetailState(items: $items, totalFee: $totalFee, transactionCount: $transactionCount)';
+    return 'UsageFeeDetailState(items: $items)';
   }
 
   @override
@@ -145,16 +113,12 @@ class _$UsageFeeDetailStateImpl implements _UsageFeeDetailState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$UsageFeeDetailStateImpl &&
-            const DeepCollectionEquality().equals(other._items, _items) &&
-            (identical(other.totalFee, totalFee) ||
-                other.totalFee == totalFee) &&
-            (identical(other.transactionCount, transactionCount) ||
-                other.transactionCount == transactionCount));
+            const DeepCollectionEquality().equals(other._items, _items));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType,
-      const DeepCollectionEquality().hash(_items), totalFee, transactionCount);
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_items));
 
   @JsonKey(ignore: true)
   @override
@@ -166,16 +130,11 @@ class _$UsageFeeDetailStateImpl implements _UsageFeeDetailState {
 
 abstract class _UsageFeeDetailState implements UsageFeeDetailState {
   factory _UsageFeeDetailState(
-      {required final List<CardTransactionEntity> items,
-      required final int totalFee,
-      required final int transactionCount}) = _$UsageFeeDetailStateImpl;
+          {required final List<CardTransactionItems> items}) =
+      _$UsageFeeDetailStateImpl;
 
   @override
-  List<CardTransactionEntity> get items;
-  @override
-  int get totalFee;
-  @override
-  int get transactionCount;
+  List<CardTransactionItems> get items;
   @override
   @JsonKey(ignore: true)
   _$$UsageFeeDetailStateImplCopyWith<_$UsageFeeDetailStateImpl> get copyWith =>

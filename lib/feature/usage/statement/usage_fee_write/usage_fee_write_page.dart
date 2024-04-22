@@ -11,10 +11,12 @@ import 'package:kb_bank_clone/domain/card_transaction_entity.dart';
 import 'package:kb_bank_clone/feature/usage/statement/usage_fee_write/usage_fee_write_view_model.dart';
 import 'package:kb_bank_clone/feature/widget/appbar/custom_app_bar.dart';
 import 'package:kb_bank_clone/feature/widget/labeled_input_field.dart';
+import 'package:kb_bank_clone/main.dart';
 import 'package:kb_bank_clone/theme/demo_colors.dart';
 import 'package:kb_bank_clone/theme/demo_text_styles.dart';
 import 'package:kb_bank_clone/utils/dev_log.dart';
 import 'package:kb_bank_clone/utils/extension/margin_extension.dart';
+import 'package:kb_bank_clone/utils/global/payment_add_event.dart';
 
 final dateSelectedProvider = StateProvider.autoDispose<DateTime?>((ref) {
   return null;
@@ -22,9 +24,15 @@ final dateSelectedProvider = StateProvider.autoDispose<DateTime?>((ref) {
 
 @RoutePage()
 class UsageFeeWritePage extends ConsumerStatefulWidget {
-  const UsageFeeWritePage({super.key});
+  const UsageFeeWritePage({
+    required this.selectedYear,
+    required this.selectedMonth,
+    super.key,
+  });
 
   static const routeName = '/usage_fee_write';
+  final int selectedYear;
+  final int selectedMonth;
 
   @override
   ConsumerState createState() => _UsageFeeWritePageState();
@@ -93,8 +101,7 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
                   builder: (context, watch, child) {
                     final selectedDate = ref.watch(dateSelectedProvider);
                     if (selectedDate != null) {
-                      _dateController.text =
-                          DateFormat('yyyy.MM.dd').format(selectedDate);
+                      _dateController.text = DateFormat('yyyy.MM.dd').format(selectedDate);
                     } else {
                       _dateController.text = '';
                     }
@@ -113,27 +120,24 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
                   bottom: 12.h,
                   child: InkWell(
                     onTap: () {
-                      final today = DateTime.now();
-                      final firstDayOfMonth = DateTime(today.year, today.month);
-                      final lastDayOfMonth =
-                          DateTime(today.year, today.month + 1).subtract(
+                      final firstDayOfMonth = DateTime(widget.selectedYear, widget.selectedMonth);
+                      final lastDayOfMonth = DateTime(widget.selectedYear,  widget.selectedMonth + 1).subtract(
                         const Duration(days: 1),
                       );
                       _showDialog(CupertinoTheme(
                         data: CupertinoThemeData(
                           textTheme: CupertinoTextThemeData(
-                            dateTimePickerTextStyle:
-                                DemoTextStyles.labelMedium.copyWith(
+                            dateTimePickerTextStyle: DemoTextStyles.labelMedium.copyWith(
                               fontSize: 20,
                               color: DemoColors.grey,
                             ),
                           ),
                         ),
                         child: CupertinoDatePicker(
-                          initialDateTime: today,
+                          initialDateTime: DateTime(widget.selectedYear, widget.selectedMonth),
                           mode: CupertinoDatePickerMode.date,
-                          minimumYear: today.year,
-                          maximumYear: today.year,
+                          minimumYear: widget.selectedYear,
+                          maximumYear: widget.selectedYear,
                           minimumDate: firstDayOfMonth,
                           maximumDate: lastDayOfMonth,
                           onDateTimeChanged: (DateTime newDate) {
@@ -221,6 +225,7 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
                         );
                         Log.d(':::save... success');
                         if (context.mounted) {
+                          eventBus.fire(const PaymentAddEvent());
                           context.router.popForced();
                         }
                       } catch (e) {
