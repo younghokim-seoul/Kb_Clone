@@ -31,10 +31,6 @@ is commented out by default.
 .pub-cache/
 .pub/
 /build/
-pubspec.lock
-macos/
-ios/
-.metadata
 
 # Symbolication related
 app.*.symbols
