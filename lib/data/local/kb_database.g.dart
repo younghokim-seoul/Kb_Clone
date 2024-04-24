@@ -85,7 +85,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `CardTransaction` (`id` INTEGER, `merchantName` TEXT NOT NULL, `createAt` INTEGER NOT NULL, `amount` INTEGER NOT NULL, `paymentType` INTEGER NOT NULL, `reward` INTEGER NOT NULL, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `CardTransaction` (`id` INTEGER, `merchantName` TEXT NOT NULL, `createAt` INTEGER NOT NULL, `amount` INTEGER NOT NULL, `paymentType` TEXT NOT NULL, `reward` INTEGER NOT NULL, `commission` INTEGER NOT NULL, `usageAmount` INTEGER NOT NULL, `balance` INTEGER NOT NULL, PRIMARY KEY (`id`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -113,7 +113,10 @@ class _$KbDao extends KbDao {
                   'createAt': _dateTimeConverter.encode(item.createAt),
                   'amount': item.amount,
                   'paymentType': item.paymentType,
-                  'reward': item.reward
+                  'reward': item.reward,
+                  'commission': item.commission,
+                  'usageAmount': item.usageAmount,
+                  'balance': item.balance
                 },
             changeListener),
         _cardTransactionDeletionAdapter = DeletionAdapter(
@@ -126,7 +129,10 @@ class _$KbDao extends KbDao {
                   'createAt': _dateTimeConverter.encode(item.createAt),
                   'amount': item.amount,
                   'paymentType': item.paymentType,
-                  'reward': item.reward
+                  'reward': item.reward,
+                  'commission': item.commission,
+                  'usageAmount': item.usageAmount,
+                  'balance': item.balance
                 },
             changeListener);
 
@@ -141,25 +147,34 @@ class _$KbDao extends KbDao {
   final DeletionAdapter<CardTransaction> _cardTransactionDeletionAdapter;
 
   @override
-  Future<List<CardTransaction>> findAllCardTransactions(String month) async {
+  Future<List<CardTransaction>> findAllCardTransactions(
+    String year,
+    String month,
+  ) async {
     return _queryAdapter.queryList(
-        'SELECT * FROM CardTransaction WHERE strftime(\"%m\", createAt / 1000, \"unixepoch\") = ?1 ORDER BY createAt',
-        mapper: (Map<String, Object?> row) => CardTransaction(row['id'] as int?, row['merchantName'] as String, _dateTimeConverter.decode(row['createAt'] as int), row['amount'] as int, row['paymentType'] as int, row['reward'] as int),
-        arguments: [month]);
+        'SELECT * FROM CardTransaction WHERE strftime(\"%Y\", createAt / 1000, \"unixepoch\") = ?1 AND strftime(\"%m\", createAt / 1000, \"unixepoch\") = ?2 ORDER BY createAt',
+        mapper: (Map<String, Object?> row) => CardTransaction(row['id'] as int?, row['merchantName'] as String, _dateTimeConverter.decode(row['createAt'] as int), row['amount'] as int, row['paymentType'] as String, row['reward'] as int, row['commission'] as int, row['usageAmount'] as int, row['balance'] as int),
+        arguments: [year, month]);
   }
 
   @override
-  Stream<List<CardTransaction>> flowCardTransactions(String month) {
+  Stream<List<CardTransaction>> flowCardTransactions(
+    String year,
+    String month,
+  ) {
     return _queryAdapter.queryListStream(
-        'SELECT * FROM CardTransaction WHERE strftime(\"%m\", createAt / 1000, \"unixepoch\") = ?1 ORDER BY createAt',
+        'SELECT * FROM CardTransaction WHERE strftime(\"%Y\", createAt / 1000, \"unixepoch\") = ?1 AND strftime(\"%m\", createAt / 1000, \"unixepoch\") = ?2 ORDER BY createAt',
         mapper: (Map<String, Object?> row) => CardTransaction(
             row['id'] as int?,
             row['merchantName'] as String,
             _dateTimeConverter.decode(row['createAt'] as int),
             row['amount'] as int,
-            row['paymentType'] as int,
-            row['reward'] as int),
-        arguments: [month],
+            row['paymentType'] as String,
+            row['reward'] as int,
+            row['commission'] as int,
+            row['usageAmount'] as int,
+            row['balance'] as int),
+        arguments: [year, month],
         queryableName: 'CardTransaction',
         isView: false);
   }

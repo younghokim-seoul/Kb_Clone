@@ -16,6 +16,9 @@ class UsageFeeWriteViewModel implements ViewModelInterface {
         amount: model.amount,
         paymentType: model.paymentType,
         reward: model.reward,
+        commission: model.commission,
+        usageAmount: model.usageAmount,
+        balance: model.balance,
       ),
     );
   }

@@ -45,6 +45,9 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
   late TextEditingController _amountController;
   late TextEditingController _paymentType;
   late TextEditingController _reward;
+  late TextEditingController _commission;
+  late TextEditingController _usageAmount;
+  late TextEditingController _balance;
   DateTime? selectedDate;
 
   bool get isAnyControllerEmpty =>
@@ -53,6 +56,9 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
       _amountController.text.isEmpty ||
       _paymentType.text.isEmpty ||
       _reward.text.isEmpty ||
+      _commission.text.isEmpty ||
+      _usageAmount.text.isEmpty ||
+      _balance.text.isEmpty ||
       selectedDate == null;
 
   @override
@@ -64,6 +70,11 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
     _amountController = TextEditingController();
     _paymentType = TextEditingController();
     _reward = TextEditingController();
+    _commission = TextEditingController();
+    _usageAmount = TextEditingController();
+    _balance = TextEditingController();
+
+    Log.d(':::selectedYear ${widget.selectedYear}' "selectedMonth ${widget.selectedMonth}");
   }
 
   @override
@@ -121,7 +132,7 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
                   child: InkWell(
                     onTap: () {
                       final firstDayOfMonth = DateTime(widget.selectedYear, widget.selectedMonth);
-                      final lastDayOfMonth = DateTime(widget.selectedYear,  widget.selectedMonth + 1).subtract(
+                      final lastDayOfMonth = DateTime(widget.selectedYear, widget.selectedMonth + 1).subtract(
                         const Duration(days: 1),
                       );
                       _showDialog(CupertinoTheme(
@@ -157,7 +168,28 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
             Gap(24.h),
             LabeledInputField(
               controller: _amountController,
-              label: '사용금액',
+              label: '원금',
+              hintText: '원단위 입력',
+              keyboardType: TextInputType.text,
+            ),
+            Gap(24.h),
+            LabeledInputField(
+              controller: _commission,
+              label: '수수료(이자)',
+              hintText: '수수료(이자) 원단위 입력',
+              keyboardType: TextInputType.text,
+            ),
+            Gap(24.h),
+            LabeledInputField(
+              controller: _usageAmount,
+              label: '이용금액',
+              hintText: '원단위 입력',
+              keyboardType: TextInputType.text,
+            ),
+            Gap(24.h),
+            LabeledInputField(
+              controller: _balance,
+              label: '결제후 잔액',
               hintText: '원단위 입력',
               keyboardType: TextInputType.text,
             ),
@@ -165,7 +197,7 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
             LabeledInputField(
               controller: _paymentType,
               label: '일시불/할부',
-              hintText: '0개월',
+              hintText: '일시불/할부 입력',
               keyboardType: TextInputType.text,
             ),
             Gap(24.h),
@@ -175,6 +207,7 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
               hintText: '원단위 입력',
               keyboardType: TextInputType.text,
             ),
+            Gap(24.h),
           ],
         ),
       ),
@@ -219,8 +252,11 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
                             merchantName: _merchantNameController.text,
                             createAt: selectedDate!,
                             amount: int.parse(_amountController.text),
-                            paymentType: int.parse(_paymentType.text),
+                            paymentType: _paymentType.text,
                             reward: int.parse(_reward.text),
+                            commission: int.parse(_commission.text),
+                            usageAmount: int.parse(_usageAmount.text),
+                            balance: int.parse(_balance.text),
                           ),
                         );
                         Log.d(':::save... success');
@@ -303,7 +339,11 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
           type: MaterialType.transparency,
           child: InkWell(
             onTap: () {
-              selectedDate = selectedDate ?? DateTime.now();
+              selectedDate = selectedDate ??
+                  DateTime(
+                    widget.selectedYear,
+                    widget.selectedMonth,
+                  );
               ref.read(dateSelectedProvider.notifier).state = selectedDate;
               context.router.popForced();
             },

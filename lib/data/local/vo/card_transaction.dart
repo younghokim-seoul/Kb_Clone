@@ -3,14 +3,27 @@ import 'package:floor/floor.dart';
 
 @entity
 class CardTransaction extends Equatable {
-  const CardTransaction(this.id, this.merchantName, this.createAt, this.amount, this.paymentType, this.reward);
+  const CardTransaction(
+    this.id,
+    this.merchantName,
+    this.createAt,
+    this.amount,
+    this.paymentType,
+    this.reward,
+    this.commission,
+    this.usageAmount,
+    this.balance,
+  );
 
   factory CardTransaction.create({
     required String merchantName,
     required DateTime createAt,
     required int amount,
-    required int paymentType,
+    required String paymentType,
     required int reward,
+    required int commission,
+    required int usageAmount,
+    required int balance,
     int? id,
   }) {
     return CardTransaction(
@@ -20,6 +33,9 @@ class CardTransaction extends Equatable {
       amount,
       paymentType,
       reward,
+      commission,
+      usageAmount,
+      balance,
     );
   }
 
@@ -29,16 +45,22 @@ class CardTransaction extends Equatable {
   final String merchantName;
   final DateTime createAt;
   final int amount;
-  final int paymentType;
+  final String paymentType;
   final int reward;
+  final int commission;
+  final int usageAmount;
+  final int balance;
 
   CardTransaction copyWith({
     int? id,
     String? merchantName,
     DateTime? createAt,
     int? amount,
-    int? paymentType,
+    String? paymentType,
     int? reward,
+    int? commission,
+    int? usageAmount,
+    int? balance,
   }) {
     return CardTransaction(
       id ?? this.id,
@@ -47,6 +69,9 @@ class CardTransaction extends Equatable {
       amount ?? this.amount,
       paymentType ?? this.paymentType,
       reward ?? this.reward,
+      commission ?? this.commission,
+      usageAmount ?? this.usageAmount,
+      balance ?? this.balance,
     );
   }
 
@@ -58,5 +83,8 @@ class CardTransaction extends Equatable {
         amount,
         paymentType,
         reward,
+        commission,
+        usageAmount,
+        balance,
       ];
 }

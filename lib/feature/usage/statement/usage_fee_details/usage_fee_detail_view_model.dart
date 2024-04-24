@@ -10,8 +10,8 @@ class UsageFeeDetailsViewModel implements ViewModelInterface {
   final KbDao dao;
   final uiState = UsageFeeDetailState(items: []).sbj;
 
-  void collectCardTransactions(String month) {
-    dao.flowCardTransactions(month).map((event) {
+  void collectCardTransactions(String year, String month) {
+    dao.flowCardTransactions(year, month).map((event) {
       final header = CardTransactionHeader(
         totalFee: event.fold<int>(
           0,
@@ -28,6 +28,9 @@ class UsageFeeDetailsViewModel implements ViewModelInterface {
                   amount: e.amount,
                   paymentType: e.paymentType,
                   reward: e.reward,
+                  commission: e.commission,
+                  usageAmount: e.usageAmount,
+                  balance: e.balance,
                   createAt: e.createAt),
             ),
           )
@@ -40,7 +43,6 @@ class UsageFeeDetailsViewModel implements ViewModelInterface {
       } else {
         return [header, ...contents];
       }
-
     }).listen((event) {
       final state = uiState.val as UsageFeeDetailState;
       loadState(state.copyWith(items: event));

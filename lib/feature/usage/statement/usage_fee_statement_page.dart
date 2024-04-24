@@ -29,12 +29,14 @@ class UsageFeeStatementPage extends ConsumerStatefulWidget {
 class _UsageFeeStatementPageState extends ConsumerState<UsageFeeStatementPage> {
   late UsageFeeStatementViewModel _viewModel;
 
+  final initialDate = DateTime(2024, 4);
+
   @override
   void initState() {
     super.initState();
     _viewModel = ref.read(usageFeeStatementViewModelProvider);
     _viewModel
-      ..findAllCardTransactions(DateTime.now().month.toString().padLeft(2, '0'))
+      ..findAllCardTransactions(initialDate.year.toString(), initialDate.month.toString().padLeft(2, '0'))
       ..subScribePaymentEvent();
   }
 
@@ -88,22 +90,24 @@ class _UsageFeeStatementPageState extends ConsumerState<UsageFeeStatementPage> {
             onPressed: () => _viewModel.changeMonth(ChangeType.minus),
           ),
           Expanded(
-            child: _viewModel.currentDateState.ui(builder: (context, state) {
-              if (!state.hasData || state.data.isNullOrEmpty) {
-                return const SizedBox.shrink();
-              }
-              return Text(
-                DateFormat('yy년 M월 명세서').format(state.data!),
-                style: DemoTextStyles.labelSmall.copyWith(
-                  color: DemoColors.grey,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                  height: 1,
-                ),
-                textAlign: TextAlign.center,
-                overflow: TextOverflow.ellipsis,
-              ).paddingSymmetric(vertical: 22.h);
-            }),
+            child: _viewModel.currentDateState.ui(
+              builder: (context, state) {
+                if (!state.hasData || state.data.isNullOrEmpty) {
+                  return const SizedBox.shrink();
+                }
+                return Text(
+                  DateFormat('yy년 M월 명세서').format(state.data!),
+                  style: DemoTextStyles.labelSmall.copyWith(
+                    color: DemoColors.grey,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    height: 1,
+                  ),
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis,
+                ).paddingSymmetric(vertical: 22.h);
+              },
+            ),
           ),
           FlexIconButton.medium(
             icon: CupertinoIcons.right_chevron,
@@ -163,7 +167,7 @@ class _UsageFeeStatementPageState extends ConsumerState<UsageFeeStatementPage> {
         Row(
           children: [
             Text(
-              '가가가',
+              '김현진',
               style: DemoTextStyles.labelSmall.copyWith(
                 color: DemoColors.grey,
                 fontSize: 20,
@@ -259,26 +263,40 @@ class _UsageFeeStatementPageState extends ConsumerState<UsageFeeStatementPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          "결제일 : 24.09.09",
-          style: DemoTextStyles.labelSmall.copyWith(
-            color: DemoColors.grey,
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-          ),
+        _viewModel.currentDateState.ui(
+          builder: (context, state) {
+            if (!state.hasData || state.data.isNullOrEmpty) {
+              return const SizedBox.shrink();
+            }
+            return Text(
+              DateFormat('결제일 : yy.MM.27').format(state.data!),
+              style: DemoTextStyles.labelSmall.copyWith(
+                color: DemoColors.grey,
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+              ),
+            );
+          },
+        ),
+        Gap(12.h),
+        _viewModel.currentDateState.ui(
+          builder: (context, state) {
+            if (!state.hasData || state.data.isNullOrEmpty) {
+              return const SizedBox.shrink();
+            }
+            return Text(
+              DateFormat('실제출금일 : yy.MM.27').format(state.data!),
+              style: DemoTextStyles.labelSmall.copyWith(
+                color: DemoColors.grey,
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+              ),
+            );
+          },
         ),
         Gap(12.h),
         Text(
-          "실제출금일 : 24. 09.09",
-          style: DemoTextStyles.labelSmall.copyWith(
-            color: DemoColors.grey,
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-        Gap(12.h),
-        Text(
-          "결제계좌 : 국민은행 000000-**-***000",
+          "결제계좌 : 기업은행 525040*****018",
           style: DemoTextStyles.labelSmall.copyWith(
             color: DemoColors.grey,
             fontSize: 14,

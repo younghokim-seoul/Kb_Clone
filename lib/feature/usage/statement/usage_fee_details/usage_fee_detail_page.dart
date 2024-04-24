@@ -12,6 +12,7 @@ import 'package:kb_bank_clone/feature/usage/statement/usage_fee_details/usage_fe
 import 'package:kb_bank_clone/feature/widget/appbar/custom_app_bar.dart';
 import 'package:kb_bank_clone/theme/demo_colors.dart';
 import 'package:kb_bank_clone/theme/demo_text_styles.dart';
+import 'package:kb_bank_clone/utils/dev_log.dart';
 import 'package:kb_bank_clone/utils/extension/margin_extension.dart';
 import 'package:kb_bank_clone/utils/extension/value_extension.dart';
 import 'package:kb_bank_clone/utils/router/app_route.dart';
@@ -35,13 +36,29 @@ class UsageFeeDetailsPage extends ConsumerStatefulWidget {
 
 class _UsageFeeDetailsPageState extends ConsumerState<UsageFeeDetailsPage> {
   late UsageFeeDetailsViewModel _viewModel;
-
   @override
   void initState() {
     super.initState();
     _viewModel = ref.read(usageFeeDetailViewModelProvider);
-    _viewModel.collectCardTransactions(widget.selectedMonth.toString().padLeft(2, '0'));
+    _viewModel.collectCardTransactions(widget.selectedYear.toString(),widget.selectedMonth.toString().padLeft(2, '0'));
+
   }
+
+  String getCardCode() {
+    final startOffset = DateTime(2022, 04);
+    final endOffset = DateTime(2023, 12);
+
+    final baseDate = DateTime(widget.selectedYear,widget.selectedMonth);
+
+    Log.d('baseDate : $baseDate   offset ' + startOffset.toString()+ " | " + endOffset.toString());
+
+    if (baseDate.isAfter(startOffset) && baseDate.isBefore(endOffset)) {
+      return '마스터 005';
+    }else{
+      return '마스터 049';
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -188,7 +205,7 @@ class _UsageFeeDetailsPageState extends ConsumerState<UsageFeeDetailsPage> {
                 ),
                 Gap(16.h),
                 Text(
-                  "${DateFormat('yyyy.MM.dd').format(item.createAt)} | 본인 | 국내033 |",
+                  "${DateFormat('yyyy.MM.dd').format(item.createAt)} | 본인 | ${getCardCode()} |",
                   style: DemoTextStyles.bodyLarge.copyWith(
                     color: DemoColors.primaryDivideColor,
                     fontSize: 12,
@@ -196,7 +213,7 @@ class _UsageFeeDetailsPageState extends ConsumerState<UsageFeeDetailsPage> {
                   ),
                 ),
                 Text(
-                  item.paymentType == 0 ? '일시불' : "할부",
+                  item.paymentType,
                   style: DemoTextStyles.bodyLarge.copyWith(
                     color: DemoColors.primaryDivideColor,
                     fontSize: 12,
@@ -229,12 +246,13 @@ class _UsageFeeDetailsPageState extends ConsumerState<UsageFeeDetailsPage> {
             ),
             const Spacer(),
             Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Row(
                   children: [
                     Text(
-                      item.amount.toCurrency(),
+                      "원금 ${item.amount.toCurrency()}",
                       style: DemoTextStyles.bodyLarge.copyWith(
                         color: DemoColors.grey,
                         fontSize: 18,
@@ -247,12 +265,43 @@ class _UsageFeeDetailsPageState extends ConsumerState<UsageFeeDetailsPage> {
                       style: DemoTextStyles.bodyLarge.copyWith(
                         color: DemoColors.primaryDivideColor,
                         fontSize: 16,
-                        height: 1,
+                        height: 1.5,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
                   ],
-                )
+                ),
+                Gap(10.h),
+                Text(
+                  "수수료(이자) ${item.commission.toCurrency()}원",
+                  style: DemoTextStyles.bodyLarge.copyWith(
+                    color: DemoColors.primaryDivideColor,
+                    fontSize: 14,
+                    height: 1,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                Gap(6.h),
+                Text(
+                  "이용금액 ${item.usageAmount.toCurrency()}원",
+                  style: DemoTextStyles.bodyLarge.copyWith(
+                    color: DemoColors.primaryDivideColor,
+                    fontSize: 14,
+                    height: 1,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                Gap(6.h),
+                Text(
+                  "결제후 잔액 ${item.balance.toCurrency()}원",
+                  style: DemoTextStyles.bodyLarge.copyWith(
+                    color: DemoColors.primaryDivideColor,
+                    fontSize: 14,
+                    height: 1,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                Gap(6.h),
               ],
             ),
             Gap(16.w),

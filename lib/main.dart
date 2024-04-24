@@ -58,6 +58,7 @@ class MyApp extends ConsumerWidget {
           Log.d(":::child..  $child");
           return AnnotatedRegion<SystemUiOverlayStyle>(
             value: SystemUiOverlayStyle.light.copyWith(
+              statusBarColor: DemoColors.primaryColor,
               systemNavigationBarColor: DemoColors.primaryColor,
               systemNavigationBarIconBrightness: Brightness.dark,
             ),
