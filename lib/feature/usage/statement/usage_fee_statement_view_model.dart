@@ -6,6 +6,7 @@ import 'package:kb_bank_clone/main.dart';
 import 'package:kb_bank_clone/utils/dev_log.dart';
 import 'package:kb_bank_clone/utils/global/payment_add_event.dart';
 import 'package:kb_bank_clone/utils/reactive/arc_subject.dart';
+import 'package:kb_bank_clone/utils/timeUtils.dart';
 import 'package:kb_bank_clone/viewmodel_interface.dart';
 
 class UsageFeeStatementViewModel implements ViewModelInterface {
@@ -23,12 +24,17 @@ class UsageFeeStatementViewModel implements ViewModelInterface {
     paymentAddEvent = eventBus.on<PaymentAddEvent>().listen((event) {
       Log.d(":::PaymentAddEvent event => $event");
       final currentDate = currentDateState.val as DateTime;
-      findAllCardTransactions(currentDate.year.toString(), currentDate.month.toString().padLeft(2, '0'));
+      findAllCardTransactions(currentDate.year, currentDate.month);
     });
   }
 
-  Future<void> findAllCardTransactions(String year, String month) async {
-    final items = await dao.findAllCardTransactions(year, month);
+  Future<void> findAllCardTransactions(int year, int month) async {
+    final queryTimeStamp = TimeUtils.getStartAndEndTimestamps(year, month);
+
+    final items = await dao.findAllCardTransactions(
+      queryTimeStamp[0],
+      queryTimeStamp[1],
+    );
 
     final totalFee = items.fold<int>(
       0,
@@ -45,8 +51,10 @@ class UsageFeeStatementViewModel implements ViewModelInterface {
   void changeMonth(ChangeType type) {
     final currentDate = currentDateState.val as DateTime;
     Log.d(":::currentDate $currentDate");
-    final changeDate =
-        DateTime(currentDate.year, type == ChangeType.plus ? currentDate.month + 1 : currentDate.month - 1, 1);
+    final changeDate = DateTime(
+        currentDate.year,
+        type == ChangeType.plus ? currentDate.month + 1 : currentDate.month - 1,
+        1);
     Log.d(":::changeDate $changeDate");
 
     if (changeDate.isBefore(offsetStart) || changeDate.isAfter(offsetEnd)) {
@@ -56,7 +64,7 @@ class UsageFeeStatementViewModel implements ViewModelInterface {
 
     currentDateState.val = changeDate;
 
-    findAllCardTransactions(currentDate.year.toString(), changeDate.month.toString().padLeft(2, '0'));
+    findAllCardTransactions(changeDate.year, changeDate.month);
   }
 
   int getYear() {

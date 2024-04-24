@@ -67,14 +67,14 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
     _viewModel = ref.read(usageFeeWriteViewModelProvider);
     _dateController = TextEditingController();
     _merchantNameController = TextEditingController();
-    _amountController = TextEditingController();
-    _paymentType = TextEditingController();
-    _reward = TextEditingController();
-    _commission = TextEditingController();
-    _usageAmount = TextEditingController();
-    _balance = TextEditingController();
+    _amountController = TextEditingController(text: '10');
+    _paymentType = TextEditingController(text: '10');
+    _reward = TextEditingController(text: '10');
+    _commission = TextEditingController(text: '10');
+    _usageAmount = TextEditingController(text: '10');
+    _balance = TextEditingController(text: '10');
 
-    Log.d(':::selectedYear ${widget.selectedYear}' "selectedMonth ${widget.selectedMonth}");
+    Log.d(':::selectedYear ${widget.selectedYear}' 'selectedMonth ${widget.selectedMonth}');
   }
 
   @override

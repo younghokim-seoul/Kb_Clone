@@ -148,22 +148,22 @@ class _$KbDao extends KbDao {
 
   @override
   Future<List<CardTransaction>> findAllCardTransactions(
-    String year,
-    String month,
+    int startTimestamp,
+    int endTimestamp,
   ) async {
     return _queryAdapter.queryList(
-        'SELECT * FROM CardTransaction WHERE strftime(\"%Y\", createAt / 1000, \"unixepoch\") = ?1 AND strftime(\"%m\", createAt / 1000, \"unixepoch\") = ?2 ORDER BY createAt',
+        'SELECT * FROM CardTransaction WHERE createAt >= ?1 AND createAt < ?2 ORDER BY createAt',
         mapper: (Map<String, Object?> row) => CardTransaction(row['id'] as int?, row['merchantName'] as String, _dateTimeConverter.decode(row['createAt'] as int), row['amount'] as int, row['paymentType'] as String, row['reward'] as int, row['commission'] as int, row['usageAmount'] as int, row['balance'] as int),
-        arguments: [year, month]);
+        arguments: [startTimestamp, endTimestamp]);
   }
 
   @override
   Stream<List<CardTransaction>> flowCardTransactions(
-    String year,
-    String month,
+    int startTimestamp,
+    int endTimestamp,
   ) {
     return _queryAdapter.queryListStream(
-        'SELECT * FROM CardTransaction WHERE strftime(\"%Y\", createAt / 1000, \"unixepoch\") = ?1 AND strftime(\"%m\", createAt / 1000, \"unixepoch\") = ?2 ORDER BY createAt',
+        'SELECT * FROM CardTransaction WHERE createAt >= ?1 AND createAt < ?2 ORDER BY createAt',
         mapper: (Map<String, Object?> row) => CardTransaction(
             row['id'] as int?,
             row['merchantName'] as String,
@@ -174,7 +174,7 @@ class _$KbDao extends KbDao {
             row['commission'] as int,
             row['usageAmount'] as int,
             row['balance'] as int),
-        arguments: [year, month],
+        arguments: [startTimestamp, endTimestamp],
         queryableName: 'CardTransaction',
         isView: false);
   }

@@ -40,7 +40,7 @@ class _UsageFeeDetailsPageState extends ConsumerState<UsageFeeDetailsPage> {
   void initState() {
     super.initState();
     _viewModel = ref.read(usageFeeDetailViewModelProvider);
-    _viewModel.collectCardTransactions(widget.selectedYear.toString(),widget.selectedMonth.toString().padLeft(2, '0'));
+    _viewModel.collectCardTransactions(widget.selectedYear,widget.selectedMonth);
 
   }
 

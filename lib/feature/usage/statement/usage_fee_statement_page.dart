@@ -36,7 +36,7 @@ class _UsageFeeStatementPageState extends ConsumerState<UsageFeeStatementPage> {
     super.initState();
     _viewModel = ref.read(usageFeeStatementViewModelProvider);
     _viewModel
-      ..findAllCardTransactions(initialDate.year.toString(), initialDate.month.toString().padLeft(2, '0'))
+      ..findAllCardTransactions(initialDate.year, initialDate.month)
       ..subScribePaymentEvent();
   }
 

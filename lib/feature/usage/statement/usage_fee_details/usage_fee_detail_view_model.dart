@@ -2,6 +2,7 @@ import 'package:kb_bank_clone/data/local/kb_dao.dart';
 import 'package:kb_bank_clone/domain/card_transaction_entity.dart';
 import 'package:kb_bank_clone/feature/usage/statement/usage_fee_details/usage_fee_detail_state.dart';
 import 'package:kb_bank_clone/utils/reactive/arc_subject.dart';
+import 'package:kb_bank_clone/utils/timeUtils.dart';
 import 'package:kb_bank_clone/viewmodel_interface.dart';
 
 class UsageFeeDetailsViewModel implements ViewModelInterface {
@@ -10,8 +11,10 @@ class UsageFeeDetailsViewModel implements ViewModelInterface {
   final KbDao dao;
   final uiState = UsageFeeDetailState(items: []).sbj;
 
-  void collectCardTransactions(String year, String month) {
-    dao.flowCardTransactions(year, month).map((event) {
+  void collectCardTransactions(int year, int month) {
+    final queryTimeStamp = TimeUtils.getStartAndEndTimestamps(year, month);
+
+    dao.flowCardTransactions(queryTimeStamp[0], queryTimeStamp[1]).map((event) {
       final header = CardTransactionHeader(
         totalFee: event.fold<int>(
           0,
