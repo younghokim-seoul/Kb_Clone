@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
@@ -72,6 +73,8 @@ class _UsageFeeStatementPageState extends ConsumerState<UsageFeeStatementPage> {
               _buildTotalUsageFee(),
               Gap(65.h),
               _buildCardUsageFee(),
+              Gap(10.h),
+              _buildComment(),
             ],
           ),
         ),
@@ -127,9 +130,9 @@ class _UsageFeeStatementPageState extends ConsumerState<UsageFeeStatementPage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            _viewModel.usageFeeStatementState.ui(builder: (context, state) {
+            _viewModel.currentDateState.ui(builder: (context, state) {
               return Text(
-                '작성기준일  ${state.data.isNullOrEmpty ? '' : formatWrittenDate(state.data!.writtenDate)}',
+                '작성기준일  ${formatWrittenDate(state.data)}',
                 style: DemoTextStyles.labelSmall.copyWith(
                   color: DemoColors.grey,
                   fontSize: 14,
@@ -307,6 +310,17 @@ class _UsageFeeStatementPageState extends ConsumerState<UsageFeeStatementPage> {
     );
   }
 
+  Widget _buildComment() {
+    return  Text(
+      '※ 작성기준일은 현재 장기카드 대출 결제금액이  연체되었다며 안내되지 않을 수 있습니다.',
+      style: DemoTextStyles.labelSmall.copyWith(
+        color: DemoColors.grey,
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+      ),
+    ).paddingSymmetric(horizontal: 24.w);
+  }
+
   Widget _buildButton({required String title}) {
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -330,7 +344,7 @@ class _UsageFeeStatementPageState extends ConsumerState<UsageFeeStatementPage> {
     if (writtenDate == null) {
       return '';
     } else {
-      return DateFormat('yy. M. dd').format(writtenDate);
+      return DateFormat('yy. M. 15').format(writtenDate);
     }
   }
 }

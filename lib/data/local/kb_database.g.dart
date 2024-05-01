@@ -86,6 +86,8 @@ class _$AppDatabase extends AppDatabase {
       onCreate: (database, version) async {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `CardTransaction` (`id` INTEGER, `merchantName` TEXT NOT NULL, `createAt` INTEGER NOT NULL, `amount` INTEGER NOT NULL, `paymentType` TEXT NOT NULL, `reward` INTEGER NOT NULL, `commission` INTEGER NOT NULL, `usageAmount` INTEGER NOT NULL, `balance` INTEGER NOT NULL, PRIMARY KEY (`id`))');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `CardSummary` (`id` INTEGER, `totalMinimumPayment` INTEGER NOT NULL, `totalUsageAmount` INTEGER NOT NULL, `revolving` INTEGER NOT NULL, `isWrittenOff` INTEGER NOT NULL, `year` INTEGER NOT NULL, `month` INTEGER NOT NULL, PRIMARY KEY (`id`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -119,6 +121,18 @@ class _$KbDao extends KbDao {
                   'balance': item.balance
                 },
             changeListener),
+        _cardSummaryInsertionAdapter = InsertionAdapter(
+            database,
+            'CardSummary',
+            (CardSummary item) => <String, Object?>{
+                  'id': item.id,
+                  'totalMinimumPayment': item.totalMinimumPayment,
+                  'totalUsageAmount': item.totalUsageAmount,
+                  'revolving': item.revolving,
+                  'isWrittenOff': item.isWrittenOff ? 1 : 0,
+                  'year': item.year,
+                  'month': item.month
+                }),
         _cardTransactionDeletionAdapter = DeletionAdapter(
             database,
             'CardTransaction',
@@ -143,6 +157,8 @@ class _$KbDao extends KbDao {
   final QueryAdapter _queryAdapter;
 
   final InsertionAdapter<CardTransaction> _cardTransactionInsertionAdapter;
+
+  final InsertionAdapter<CardSummary> _cardSummaryInsertionAdapter;
 
   final DeletionAdapter<CardTransaction> _cardTransactionDeletionAdapter;
 
@@ -180,8 +196,32 @@ class _$KbDao extends KbDao {
   }
 
   @override
+  Future<CardSummary?> findCardSummary(
+    int year,
+    int month,
+  ) async {
+    return _queryAdapter.query(
+        'SELECT * FROM CardSummary WHERE year = ?1 AND month = ?2',
+        mapper: (Map<String, Object?> row) => CardSummary(
+            row['id'] as int?,
+            row['totalMinimumPayment'] as int,
+            row['totalUsageAmount'] as int,
+            row['revolving'] as int,
+            (row['isWrittenOff'] as int) != 0,
+            row['year'] as int,
+            row['month'] as int),
+        arguments: [year, month]);
+  }
+
+  @override
   Future<void> insertCardTransaction(CardTransaction model) async {
     await _cardTransactionInsertionAdapter.insert(
+        model, OnConflictStrategy.replace);
+  }
+
+  @override
+  Future<void> insertCardSummary(CardSummary model) async {
+    await _cardSummaryInsertionAdapter.insert(
         model, OnConflictStrategy.replace);
   }
 
