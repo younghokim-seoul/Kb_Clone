@@ -85,7 +85,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `CardTransaction` (`id` INTEGER, `merchantName` TEXT NOT NULL, `createAt` INTEGER NOT NULL, `amount` INTEGER NOT NULL, `paymentType` TEXT NOT NULL, `reward` INTEGER NOT NULL, `commission` INTEGER NOT NULL, `usageAmount` INTEGER NOT NULL, `balance` INTEGER NOT NULL, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `CardTransaction` (`id` INTEGER, `merchantName` TEXT NOT NULL, `usageAmount` INTEGER NOT NULL, `transactionAmount` TEXT NOT NULL, `rewardPoints` INTEGER NOT NULL, `installmentStart` INTEGER NOT NULL, `installmentEnd` INTEGER NOT NULL, `interestFreeBenefit` INTEGER NOT NULL, `commissionOrInterest` INTEGER NOT NULL, `balanceAfterPayment` INTEGER NOT NULL, `transactionType` INTEGER NOT NULL, `createAt` INTEGER NOT NULL, PRIMARY KEY (`id`))');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `CardSummary` (`id` INTEGER, `totalMinimumPayment` INTEGER NOT NULL, `totalUsageAmount` INTEGER NOT NULL, `revolving` INTEGER NOT NULL, `isWrittenOff` INTEGER NOT NULL, `year` INTEGER NOT NULL, `month` INTEGER NOT NULL, PRIMARY KEY (`id`))');
 
@@ -112,13 +112,16 @@ class _$KbDao extends KbDao {
             (CardTransaction item) => <String, Object?>{
                   'id': item.id,
                   'merchantName': item.merchantName,
-                  'createAt': _dateTimeConverter.encode(item.createAt),
-                  'amount': item.amount,
-                  'paymentType': item.paymentType,
-                  'reward': item.reward,
-                  'commission': item.commission,
                   'usageAmount': item.usageAmount,
-                  'balance': item.balance
+                  'transactionAmount': item.transactionAmount,
+                  'rewardPoints': item.rewardPoints,
+                  'installmentStart': item.installmentStart,
+                  'installmentEnd': item.installmentEnd,
+                  'interestFreeBenefit': item.interestFreeBenefit,
+                  'commissionOrInterest': item.commissionOrInterest,
+                  'balanceAfterPayment': item.balanceAfterPayment,
+                  'transactionType': item.transactionType.index,
+                  'createAt': _dateTimeConverter.encode(item.createAt)
                 },
             changeListener),
         _cardSummaryInsertionAdapter = InsertionAdapter(
@@ -140,13 +143,16 @@ class _$KbDao extends KbDao {
             (CardTransaction item) => <String, Object?>{
                   'id': item.id,
                   'merchantName': item.merchantName,
-                  'createAt': _dateTimeConverter.encode(item.createAt),
-                  'amount': item.amount,
-                  'paymentType': item.paymentType,
-                  'reward': item.reward,
-                  'commission': item.commission,
                   'usageAmount': item.usageAmount,
-                  'balance': item.balance
+                  'transactionAmount': item.transactionAmount,
+                  'rewardPoints': item.rewardPoints,
+                  'installmentStart': item.installmentStart,
+                  'installmentEnd': item.installmentEnd,
+                  'interestFreeBenefit': item.interestFreeBenefit,
+                  'commissionOrInterest': item.commissionOrInterest,
+                  'balanceAfterPayment': item.balanceAfterPayment,
+                  'transactionType': item.transactionType.index,
+                  'createAt': _dateTimeConverter.encode(item.createAt)
                 },
             changeListener);
 
@@ -169,7 +175,7 @@ class _$KbDao extends KbDao {
   ) async {
     return _queryAdapter.queryList(
         'SELECT * FROM CardTransaction WHERE createAt >= ?1 AND createAt < ?2 ORDER BY createAt',
-        mapper: (Map<String, Object?> row) => CardTransaction(row['id'] as int?, row['merchantName'] as String, _dateTimeConverter.decode(row['createAt'] as int), row['amount'] as int, row['paymentType'] as String, row['reward'] as int, row['commission'] as int, row['usageAmount'] as int, row['balance'] as int),
+        mapper: (Map<String, Object?> row) => CardTransaction(row['id'] as int?, row['merchantName'] as String, row['usageAmount'] as int, row['transactionAmount'] as String, row['rewardPoints'] as int, row['installmentStart'] as int, row['installmentEnd'] as int, row['interestFreeBenefit'] as int, row['commissionOrInterest'] as int, row['balanceAfterPayment'] as int, TransactionType.values[row['transactionType'] as int], _dateTimeConverter.decode(row['createAt'] as int)),
         arguments: [startTimestamp, endTimestamp]);
   }
 
@@ -183,13 +189,16 @@ class _$KbDao extends KbDao {
         mapper: (Map<String, Object?> row) => CardTransaction(
             row['id'] as int?,
             row['merchantName'] as String,
-            _dateTimeConverter.decode(row['createAt'] as int),
-            row['amount'] as int,
-            row['paymentType'] as String,
-            row['reward'] as int,
-            row['commission'] as int,
             row['usageAmount'] as int,
-            row['balance'] as int),
+            row['transactionAmount'] as String,
+            row['rewardPoints'] as int,
+            row['installmentStart'] as int,
+            row['installmentEnd'] as int,
+            row['interestFreeBenefit'] as int,
+            row['commissionOrInterest'] as int,
+            row['balanceAfterPayment'] as int,
+            TransactionType.values[row['transactionType'] as int],
+            _dateTimeConverter.decode(row['createAt'] as int)),
         arguments: [startTimestamp, endTimestamp],
         queryableName: 'CardTransaction',
         isView: false);
@@ -233,3 +242,4 @@ class _$KbDao extends KbDao {
 
 // ignore_for_file: unused_element
 final _dateTimeConverter = DateTimeConverter();
+final _transactionTypeConverter = TransactionTypeConverter();

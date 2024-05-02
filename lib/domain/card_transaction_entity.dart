@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:kb_bank_clone/data/local/vo/transaction_type.dart';
 
 part 'card_transaction_entity.freezed.dart';
 
@@ -7,24 +8,30 @@ class CardTransactionEntity with _$CardTransactionEntity {
   factory CardTransactionEntity({
     required int id,
     required String merchantName,
-    required int amount,
-    required String paymentType,
-    required int reward,
-    required int commission,
     required int usageAmount,
-    required int balance,
+    required String transactionAmount,
+    required int rewardPoints,
+    required int installmentStart,
+    required int installmentEnd,
+    required int interestFreeBenefit,
+    required int commissionOrInterest,
+    required int balanceAfterPayment,
+    required TransactionType transactionType,
     required DateTime createAt,
   }) = _CardTransactionEntity;
 
-  factory CardTransactionEntity.empty() => CardTransactionEntity(
-    id: 0,
+factory CardTransactionEntity.empty() => CardTransactionEntity(
+    id: -1,
     merchantName: '',
-    amount: 0,
-    paymentType: '',
-    reward: 0,
-    commission: 0,
     usageAmount: 0,
-    balance: 0,
+    transactionAmount: '',
+    rewardPoints: 0,
+    installmentStart: 0,
+    installmentEnd: 0,
+    interestFreeBenefit: 0,
+    commissionOrInterest: 0,
+    balanceAfterPayment: 0,
+    transactionType: TransactionType.revolving,
     createAt: DateTime.now(),
   );
 }

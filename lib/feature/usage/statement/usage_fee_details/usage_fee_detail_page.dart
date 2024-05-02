@@ -213,7 +213,7 @@ class _UsageFeeDetailsPageState extends ConsumerState<UsageFeeDetailsPage> {
                   ),
                 ),
                 Text(
-                  item.paymentType,
+                  item.transactionType.toString(),
                   style: DemoTextStyles.bodyLarge.copyWith(
                     color: DemoColors.primaryDivideColor,
                     fontSize: 12,
@@ -233,7 +233,7 @@ class _UsageFeeDetailsPageState extends ConsumerState<UsageFeeDetailsPage> {
                     ),
                     Gap(4.w),
                     Text(
-                      "${item.reward}원",
+                      "${item.rewardPoints}원",
                       style: DemoTextStyles.bodyLarge.copyWith(
                         color: DemoColors.primaryDivideColor,
                         fontSize: 12,
@@ -252,7 +252,7 @@ class _UsageFeeDetailsPageState extends ConsumerState<UsageFeeDetailsPage> {
                 Row(
                   children: [
                     Text(
-                      "원금 ${item.amount.toCurrency()}",
+                      "원금 ${item.usageAmount.toCurrency()}",
                       style: DemoTextStyles.bodyLarge.copyWith(
                         color: DemoColors.grey,
                         fontSize: 18,
@@ -273,7 +273,7 @@ class _UsageFeeDetailsPageState extends ConsumerState<UsageFeeDetailsPage> {
                 ),
                 Gap(10.h),
                 Text(
-                  "수수료(이자) ${item.commission.toCurrency()}원",
+                  "수수료(이자) ${item.commissionOrInterest.toCurrency()}원",
                   style: DemoTextStyles.bodyLarge.copyWith(
                     color: DemoColors.primaryDivideColor,
                     fontSize: 14,
@@ -293,7 +293,7 @@ class _UsageFeeDetailsPageState extends ConsumerState<UsageFeeDetailsPage> {
                 ),
                 Gap(6.h),
                 Text(
-                  "결제후 잔액 ${item.balance.toCurrency()}원",
+                  "결제후 잔액 ${item.balanceAfterPayment.toCurrency()}원",
                   style: DemoTextStyles.bodyLarge.copyWith(
                     color: DemoColors.primaryDivideColor,
                     fontSize: 14,

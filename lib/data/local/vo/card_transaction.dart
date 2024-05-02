@@ -1,41 +1,52 @@
 import 'package:equatable/equatable.dart';
 import 'package:floor/floor.dart';
+import 'package:kb_bank_clone/data/local/vo/card_transaction.dart';
+import 'package:kb_bank_clone/data/local/vo/transaction_type.dart';
 
 @entity
 class CardTransaction extends Equatable {
   const CardTransaction(
     this.id,
     this.merchantName,
-    this.createAt,
-    this.amount,
-    this.paymentType,
-    this.reward,
-    this.commission,
     this.usageAmount,
-    this.balance,
+    this.transactionAmount,
+    this.rewardPoints,
+    this.installmentStart,
+    this.installmentEnd,
+    this.interestFreeBenefit,
+    this.commissionOrInterest,
+    this.balanceAfterPayment,
+    this.transactionType,
+    this.createAt,
   );
 
   factory CardTransaction.create({
     required String merchantName,
-    required DateTime createAt,
-    required int amount,
-    required String paymentType,
-    required int reward,
-    required int commission,
     required int usageAmount,
-    required int balance,
+    required String transactionAmount,
+    required int rewardPoints,
+    required int installmentStart,
+    required int installmentEnd,
+    required int interestFreeBenefit,
+    required int commissionOrInterest,
+    required int balanceAfterPayment,
+    required TransactionType transactionType,
+    required DateTime createAt,
     int? id,
   }) {
     return CardTransaction(
       id,
       merchantName,
-      createAt,
-      amount,
-      paymentType,
-      reward,
-      commission,
       usageAmount,
-      balance,
+      transactionAmount,
+      rewardPoints,
+      installmentStart,
+      installmentEnd,
+      interestFreeBenefit,
+      commissionOrInterest,
+      balanceAfterPayment,
+      transactionType,
+      createAt,
     );
   }
 
@@ -43,35 +54,44 @@ class CardTransaction extends Equatable {
   final int? id;
 
   final String merchantName;
+  final int usageAmount; //사용금액
+  final String transactionAmount; //이용 금액
+  final int rewardPoints; // 적립
+  final int installmentStart; //할부시작
+  final int installmentEnd; //할부끝
+  final int interestFreeBenefit; //무이자 혜택
+  final int commissionOrInterest; //수수료(이자)
+  final int balanceAfterPayment; //결제 후 잔액
+  final TransactionType transactionType; //거래 유형
   final DateTime createAt;
-  final int amount;
-  final String paymentType;
-  final int reward;
-  final int commission;
-  final int usageAmount;
-  final int balance;
 
   CardTransaction copyWith({
     int? id,
     String? merchantName,
-    DateTime? createAt,
-    int? amount,
-    String? paymentType,
-    int? reward,
-    int? commission,
     int? usageAmount,
-    int? balance,
+    String? transactionAmount,
+    int? rewardPoints,
+    int? installmentStart,
+    int? installmentEnd,
+    int? interestFreeBenefit,
+    int? commissionOrInterest,
+    int? balanceAfterPayment,
+    TransactionType? transactionType,
+    DateTime? createAt,
   }) {
     return CardTransaction(
       id ?? this.id,
       merchantName ?? this.merchantName,
-      createAt ?? this.createAt,
-      amount ?? this.amount,
-      paymentType ?? this.paymentType,
-      reward ?? this.reward,
-      commission ?? this.commission,
       usageAmount ?? this.usageAmount,
-      balance ?? this.balance,
+      transactionAmount ?? this.transactionAmount,
+      rewardPoints ?? this.rewardPoints,
+      installmentStart ?? this.installmentStart,
+      installmentEnd ?? this.installmentEnd,
+      interestFreeBenefit ?? this.interestFreeBenefit,
+      commissionOrInterest ?? this.commissionOrInterest,
+      balanceAfterPayment ?? this.balanceAfterPayment,
+      transactionType ?? this.transactionType,
+      createAt ?? this.createAt,
     );
   }
 
@@ -79,12 +99,15 @@ class CardTransaction extends Equatable {
   List<Object?> get props => [
         id,
         merchantName,
-        createAt,
-        amount,
-        paymentType,
-        reward,
-        commission,
         usageAmount,
-        balance,
+        transactionAmount,
+        rewardPoints,
+        installmentStart,
+        installmentEnd,
+        interestFreeBenefit,
+        commissionOrInterest,
+        balanceAfterPayment,
+        transactionType,
+        createAt
       ];
 }

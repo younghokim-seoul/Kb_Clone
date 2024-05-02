@@ -38,7 +38,7 @@ class UsageFeeStatementViewModel implements ViewModelInterface {
 
     final totalFee = items.fold<int>(
       0,
-      (previousValue, element) => previousValue + element.amount,
+      (previousValue, element) => previousValue + element.usageAmount,
     );
     usageFeeStatementState.val = UsageFeeStatementState(
       totalUsageFee: totalFee,

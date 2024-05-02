@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:kb_bank_clone/assets/assets.gen.dart';
+import 'package:kb_bank_clone/data/local/vo/transaction_type.dart';
 import 'package:kb_bank_clone/di/app_provider.dart';
 import 'package:kb_bank_clone/domain/card_transaction_entity.dart';
 import 'package:kb_bank_clone/feature/usage/statement/usage_fee_write/usage_fee_write_view_model.dart';
@@ -21,6 +22,11 @@ import 'package:kb_bank_clone/utils/global/payment_add_event.dart';
 final dateSelectedProvider = StateProvider.autoDispose<DateTime?>((ref) {
   return null;
 });
+
+final selectedTransactionTypeProvider = StateProvider<TransactionType>((ref) {
+  return TransactionType.revolving;
+});
+
 
 @RoutePage()
 class UsageFeeWritePage extends ConsumerStatefulWidget {
@@ -247,18 +253,18 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
                       }
 
                       try {
-                        await _viewModel.insertCardTransaction(
-                          CardTransactionEntity.empty().copyWith(
-                            merchantName: _merchantNameController.text,
-                            createAt: selectedDate!,
-                            amount: int.parse(_amountController.text),
-                            paymentType: _paymentType.text,
-                            reward: int.parse(_reward.text),
-                            commission: int.parse(_commission.text),
-                            usageAmount: int.parse(_usageAmount.text),
-                            balance: int.parse(_balance.text),
-                          ),
-                        );
+                        // await _viewModel.insertCardTransaction(
+                        //   CardTransactionEntity.empty().copyWith(
+                        //     merchantName: _merchantNameController.text,
+                        //     createAt: selectedDate!,
+                        //     amount: int.parse(_amountController.text),
+                        //     paymentType: _paymentType.text,
+                        //     reward: int.parse(_reward.text),
+                        //     commission: int.parse(_commission.text),
+                        //     usageAmount: int.parse(_usageAmount.text),
+                        //     balance: int.parse(_balance.text),
+                        //   ),
+                        // );
                         Log.d(':::save... success');
                         if (context.mounted) {
                           eventBus.fire(const PaymentAddEvent());

@@ -18,7 +18,7 @@ class UsageFeeDetailsViewModel implements ViewModelInterface {
       final header = CardTransactionHeader(
         totalFee: event.fold<int>(
           0,
-          (previousValue, element) => previousValue + element.amount,
+          (previousValue, element) => previousValue + element.usageAmount,
         ),
         transactionCount: event.length,
       );
@@ -28,12 +28,15 @@ class UsageFeeDetailsViewModel implements ViewModelInterface {
               entity: CardTransactionEntity(
                   id: e.id!,
                   merchantName: e.merchantName,
-                  amount: e.amount,
-                  paymentType: e.paymentType,
-                  reward: e.reward,
-                  commission: e.commission,
                   usageAmount: e.usageAmount,
-                  balance: e.balance,
+                  transactionAmount: e.transactionAmount,
+                  rewardPoints: e.rewardPoints,
+                  installmentStart: e.installmentStart,
+                  installmentEnd: e.installmentEnd,
+                  interestFreeBenefit: e.interestFreeBenefit,
+                  commissionOrInterest: e.commissionOrInterest,
+                  balanceAfterPayment: e.balanceAfterPayment,
+                  transactionType: e.transactionType,
                   createAt: e.createAt),
             ),
           )

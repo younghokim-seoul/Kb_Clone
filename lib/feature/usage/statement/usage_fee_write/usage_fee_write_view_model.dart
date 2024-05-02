@@ -11,15 +11,17 @@ class UsageFeeWriteViewModel implements ViewModelInterface {
   Future<void> insertCardTransaction(CardTransactionEntity model) async {
     await dao.insertCardTransaction(
       CardTransaction.create(
-        merchantName: model.merchantName,
-        createAt: model.createAt,
-        amount: model.amount,
-        paymentType: model.paymentType,
-        reward: model.reward,
-        commission: model.commission,
-        usageAmount: model.usageAmount,
-        balance: model.balance,
-      ),
+          merchantName: model.merchantName,
+          usageAmount: model.usageAmount,
+          transactionAmount: model.transactionAmount,
+          rewardPoints: model.rewardPoints,
+          installmentStart: model.installmentStart,
+          installmentEnd: model.installmentEnd,
+          interestFreeBenefit: model.interestFreeBenefit,
+          commissionOrInterest: model.commissionOrInterest,
+          balanceAfterPayment: model.balanceAfterPayment,
+          transactionType: model.transactionType,
+          createAt: model.createAt),
     );
   }
 

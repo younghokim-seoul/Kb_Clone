@@ -18,12 +18,15 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$CardTransactionEntity {
   int get id => throw _privateConstructorUsedError;
   String get merchantName => throw _privateConstructorUsedError;
-  int get amount => throw _privateConstructorUsedError;
-  String get paymentType => throw _privateConstructorUsedError;
-  int get reward => throw _privateConstructorUsedError;
-  int get commission => throw _privateConstructorUsedError;
   int get usageAmount => throw _privateConstructorUsedError;
-  int get balance => throw _privateConstructorUsedError;
+  String get transactionAmount => throw _privateConstructorUsedError;
+  int get rewardPoints => throw _privateConstructorUsedError;
+  int get installmentStart => throw _privateConstructorUsedError;
+  int get installmentEnd => throw _privateConstructorUsedError;
+  int get interestFreeBenefit => throw _privateConstructorUsedError;
+  int get commissionOrInterest => throw _privateConstructorUsedError;
+  int get balanceAfterPayment => throw _privateConstructorUsedError;
+  TransactionType get transactionType => throw _privateConstructorUsedError;
   DateTime get createAt => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -40,12 +43,15 @@ abstract class $CardTransactionEntityCopyWith<$Res> {
   $Res call(
       {int id,
       String merchantName,
-      int amount,
-      String paymentType,
-      int reward,
-      int commission,
       int usageAmount,
-      int balance,
+      String transactionAmount,
+      int rewardPoints,
+      int installmentStart,
+      int installmentEnd,
+      int interestFreeBenefit,
+      int commissionOrInterest,
+      int balanceAfterPayment,
+      TransactionType transactionType,
       DateTime createAt});
 }
 
@@ -65,12 +71,15 @@ class _$CardTransactionEntityCopyWithImpl<$Res,
   $Res call({
     Object? id = null,
     Object? merchantName = null,
-    Object? amount = null,
-    Object? paymentType = null,
-    Object? reward = null,
-    Object? commission = null,
     Object? usageAmount = null,
-    Object? balance = null,
+    Object? transactionAmount = null,
+    Object? rewardPoints = null,
+    Object? installmentStart = null,
+    Object? installmentEnd = null,
+    Object? interestFreeBenefit = null,
+    Object? commissionOrInterest = null,
+    Object? balanceAfterPayment = null,
+    Object? transactionType = null,
     Object? createAt = null,
   }) {
     return _then(_value.copyWith(
@@ -82,30 +91,42 @@ class _$CardTransactionEntityCopyWithImpl<$Res,
           ? _value.merchantName
           : merchantName // ignore: cast_nullable_to_non_nullable
               as String,
-      amount: null == amount
-          ? _value.amount
-          : amount // ignore: cast_nullable_to_non_nullable
-              as int,
-      paymentType: null == paymentType
-          ? _value.paymentType
-          : paymentType // ignore: cast_nullable_to_non_nullable
-              as String,
-      reward: null == reward
-          ? _value.reward
-          : reward // ignore: cast_nullable_to_non_nullable
-              as int,
-      commission: null == commission
-          ? _value.commission
-          : commission // ignore: cast_nullable_to_non_nullable
-              as int,
       usageAmount: null == usageAmount
           ? _value.usageAmount
           : usageAmount // ignore: cast_nullable_to_non_nullable
               as int,
-      balance: null == balance
-          ? _value.balance
-          : balance // ignore: cast_nullable_to_non_nullable
+      transactionAmount: null == transactionAmount
+          ? _value.transactionAmount
+          : transactionAmount // ignore: cast_nullable_to_non_nullable
+              as String,
+      rewardPoints: null == rewardPoints
+          ? _value.rewardPoints
+          : rewardPoints // ignore: cast_nullable_to_non_nullable
               as int,
+      installmentStart: null == installmentStart
+          ? _value.installmentStart
+          : installmentStart // ignore: cast_nullable_to_non_nullable
+              as int,
+      installmentEnd: null == installmentEnd
+          ? _value.installmentEnd
+          : installmentEnd // ignore: cast_nullable_to_non_nullable
+              as int,
+      interestFreeBenefit: null == interestFreeBenefit
+          ? _value.interestFreeBenefit
+          : interestFreeBenefit // ignore: cast_nullable_to_non_nullable
+              as int,
+      commissionOrInterest: null == commissionOrInterest
+          ? _value.commissionOrInterest
+          : commissionOrInterest // ignore: cast_nullable_to_non_nullable
+              as int,
+      balanceAfterPayment: null == balanceAfterPayment
+          ? _value.balanceAfterPayment
+          : balanceAfterPayment // ignore: cast_nullable_to_non_nullable
+              as int,
+      transactionType: null == transactionType
+          ? _value.transactionType
+          : transactionType // ignore: cast_nullable_to_non_nullable
+              as TransactionType,
       createAt: null == createAt
           ? _value.createAt
           : createAt // ignore: cast_nullable_to_non_nullable
@@ -126,12 +147,15 @@ abstract class _$$CardTransactionEntityImplCopyWith<$Res>
   $Res call(
       {int id,
       String merchantName,
-      int amount,
-      String paymentType,
-      int reward,
-      int commission,
       int usageAmount,
-      int balance,
+      String transactionAmount,
+      int rewardPoints,
+      int installmentStart,
+      int installmentEnd,
+      int interestFreeBenefit,
+      int commissionOrInterest,
+      int balanceAfterPayment,
+      TransactionType transactionType,
       DateTime createAt});
 }
 
@@ -149,12 +173,15 @@ class __$$CardTransactionEntityImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? merchantName = null,
-    Object? amount = null,
-    Object? paymentType = null,
-    Object? reward = null,
-    Object? commission = null,
     Object? usageAmount = null,
-    Object? balance = null,
+    Object? transactionAmount = null,
+    Object? rewardPoints = null,
+    Object? installmentStart = null,
+    Object? installmentEnd = null,
+    Object? interestFreeBenefit = null,
+    Object? commissionOrInterest = null,
+    Object? balanceAfterPayment = null,
+    Object? transactionType = null,
     Object? createAt = null,
   }) {
     return _then(_$CardTransactionEntityImpl(
@@ -166,30 +193,42 @@ class __$$CardTransactionEntityImplCopyWithImpl<$Res>
           ? _value.merchantName
           : merchantName // ignore: cast_nullable_to_non_nullable
               as String,
-      amount: null == amount
-          ? _value.amount
-          : amount // ignore: cast_nullable_to_non_nullable
-              as int,
-      paymentType: null == paymentType
-          ? _value.paymentType
-          : paymentType // ignore: cast_nullable_to_non_nullable
-              as String,
-      reward: null == reward
-          ? _value.reward
-          : reward // ignore: cast_nullable_to_non_nullable
-              as int,
-      commission: null == commission
-          ? _value.commission
-          : commission // ignore: cast_nullable_to_non_nullable
-              as int,
       usageAmount: null == usageAmount
           ? _value.usageAmount
           : usageAmount // ignore: cast_nullable_to_non_nullable
               as int,
-      balance: null == balance
-          ? _value.balance
-          : balance // ignore: cast_nullable_to_non_nullable
+      transactionAmount: null == transactionAmount
+          ? _value.transactionAmount
+          : transactionAmount // ignore: cast_nullable_to_non_nullable
+              as String,
+      rewardPoints: null == rewardPoints
+          ? _value.rewardPoints
+          : rewardPoints // ignore: cast_nullable_to_non_nullable
               as int,
+      installmentStart: null == installmentStart
+          ? _value.installmentStart
+          : installmentStart // ignore: cast_nullable_to_non_nullable
+              as int,
+      installmentEnd: null == installmentEnd
+          ? _value.installmentEnd
+          : installmentEnd // ignore: cast_nullable_to_non_nullable
+              as int,
+      interestFreeBenefit: null == interestFreeBenefit
+          ? _value.interestFreeBenefit
+          : interestFreeBenefit // ignore: cast_nullable_to_non_nullable
+              as int,
+      commissionOrInterest: null == commissionOrInterest
+          ? _value.commissionOrInterest
+          : commissionOrInterest // ignore: cast_nullable_to_non_nullable
+              as int,
+      balanceAfterPayment: null == balanceAfterPayment
+          ? _value.balanceAfterPayment
+          : balanceAfterPayment // ignore: cast_nullable_to_non_nullable
+              as int,
+      transactionType: null == transactionType
+          ? _value.transactionType
+          : transactionType // ignore: cast_nullable_to_non_nullable
+              as TransactionType,
       createAt: null == createAt
           ? _value.createAt
           : createAt // ignore: cast_nullable_to_non_nullable
@@ -204,12 +243,15 @@ class _$CardTransactionEntityImpl implements _CardTransactionEntity {
   _$CardTransactionEntityImpl(
       {required this.id,
       required this.merchantName,
-      required this.amount,
-      required this.paymentType,
-      required this.reward,
-      required this.commission,
       required this.usageAmount,
-      required this.balance,
+      required this.transactionAmount,
+      required this.rewardPoints,
+      required this.installmentStart,
+      required this.installmentEnd,
+      required this.interestFreeBenefit,
+      required this.commissionOrInterest,
+      required this.balanceAfterPayment,
+      required this.transactionType,
       required this.createAt});
 
   @override
@@ -217,23 +259,29 @@ class _$CardTransactionEntityImpl implements _CardTransactionEntity {
   @override
   final String merchantName;
   @override
-  final int amount;
-  @override
-  final String paymentType;
-  @override
-  final int reward;
-  @override
-  final int commission;
-  @override
   final int usageAmount;
   @override
-  final int balance;
+  final String transactionAmount;
+  @override
+  final int rewardPoints;
+  @override
+  final int installmentStart;
+  @override
+  final int installmentEnd;
+  @override
+  final int interestFreeBenefit;
+  @override
+  final int commissionOrInterest;
+  @override
+  final int balanceAfterPayment;
+  @override
+  final TransactionType transactionType;
   @override
   final DateTime createAt;
 
   @override
   String toString() {
-    return 'CardTransactionEntity(id: $id, merchantName: $merchantName, amount: $amount, paymentType: $paymentType, reward: $reward, commission: $commission, usageAmount: $usageAmount, balance: $balance, createAt: $createAt)';
+    return 'CardTransactionEntity(id: $id, merchantName: $merchantName, usageAmount: $usageAmount, transactionAmount: $transactionAmount, rewardPoints: $rewardPoints, installmentStart: $installmentStart, installmentEnd: $installmentEnd, interestFreeBenefit: $interestFreeBenefit, commissionOrInterest: $commissionOrInterest, balanceAfterPayment: $balanceAfterPayment, transactionType: $transactionType, createAt: $createAt)';
   }
 
   @override
@@ -244,22 +292,43 @@ class _$CardTransactionEntityImpl implements _CardTransactionEntity {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.merchantName, merchantName) ||
                 other.merchantName == merchantName) &&
-            (identical(other.amount, amount) || other.amount == amount) &&
-            (identical(other.paymentType, paymentType) ||
-                other.paymentType == paymentType) &&
-            (identical(other.reward, reward) || other.reward == reward) &&
-            (identical(other.commission, commission) ||
-                other.commission == commission) &&
             (identical(other.usageAmount, usageAmount) ||
                 other.usageAmount == usageAmount) &&
-            (identical(other.balance, balance) || other.balance == balance) &&
+            (identical(other.transactionAmount, transactionAmount) ||
+                other.transactionAmount == transactionAmount) &&
+            (identical(other.rewardPoints, rewardPoints) ||
+                other.rewardPoints == rewardPoints) &&
+            (identical(other.installmentStart, installmentStart) ||
+                other.installmentStart == installmentStart) &&
+            (identical(other.installmentEnd, installmentEnd) ||
+                other.installmentEnd == installmentEnd) &&
+            (identical(other.interestFreeBenefit, interestFreeBenefit) ||
+                other.interestFreeBenefit == interestFreeBenefit) &&
+            (identical(other.commissionOrInterest, commissionOrInterest) ||
+                other.commissionOrInterest == commissionOrInterest) &&
+            (identical(other.balanceAfterPayment, balanceAfterPayment) ||
+                other.balanceAfterPayment == balanceAfterPayment) &&
+            (identical(other.transactionType, transactionType) ||
+                other.transactionType == transactionType) &&
             (identical(other.createAt, createAt) ||
                 other.createAt == createAt));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, merchantName, amount,
-      paymentType, reward, commission, usageAmount, balance, createAt);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      merchantName,
+      usageAmount,
+      transactionAmount,
+      rewardPoints,
+      installmentStart,
+      installmentEnd,
+      interestFreeBenefit,
+      commissionOrInterest,
+      balanceAfterPayment,
+      transactionType,
+      createAt);
 
   @JsonKey(ignore: true)
   @override
@@ -273,12 +342,15 @@ abstract class _CardTransactionEntity implements CardTransactionEntity {
   factory _CardTransactionEntity(
       {required final int id,
       required final String merchantName,
-      required final int amount,
-      required final String paymentType,
-      required final int reward,
-      required final int commission,
       required final int usageAmount,
-      required final int balance,
+      required final String transactionAmount,
+      required final int rewardPoints,
+      required final int installmentStart,
+      required final int installmentEnd,
+      required final int interestFreeBenefit,
+      required final int commissionOrInterest,
+      required final int balanceAfterPayment,
+      required final TransactionType transactionType,
       required final DateTime createAt}) = _$CardTransactionEntityImpl;
 
   @override
@@ -286,17 +358,23 @@ abstract class _CardTransactionEntity implements CardTransactionEntity {
   @override
   String get merchantName;
   @override
-  int get amount;
-  @override
-  String get paymentType;
-  @override
-  int get reward;
-  @override
-  int get commission;
-  @override
   int get usageAmount;
   @override
-  int get balance;
+  String get transactionAmount;
+  @override
+  int get rewardPoints;
+  @override
+  int get installmentStart;
+  @override
+  int get installmentEnd;
+  @override
+  int get interestFreeBenefit;
+  @override
+  int get commissionOrInterest;
+  @override
+  int get balanceAfterPayment;
+  @override
+  TransactionType get transactionType;
   @override
   DateTime get createAt;
   @override
