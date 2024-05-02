@@ -14,7 +14,7 @@ class UsageFeeStatementViewModel implements ViewModelInterface {
 
   final KbDao dao;
 
-  final currentDateState = DateTime.now().sbj;
+  final currentDateState = DateTime(2024,4).sbj;
   final usageFeeStatementState = ArcSubject<UsageFeeStatementState>();
   StreamSubscription<dynamic>? paymentAddEvent;
   final offsetStart = DateTime(2022, 4);

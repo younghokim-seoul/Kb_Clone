@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
@@ -9,6 +10,7 @@ import 'package:kb_bank_clone/assets/assets.gen.dart';
 import 'package:kb_bank_clone/data/local/vo/transaction_type.dart';
 import 'package:kb_bank_clone/di/app_provider.dart';
 import 'package:kb_bank_clone/domain/card_transaction_entity.dart';
+import 'package:kb_bank_clone/feature/usage/statement/usage_fee_write/component/usage_form_revolving.dart';
 import 'package:kb_bank_clone/feature/usage/statement/usage_fee_write/usage_fee_write_view_model.dart';
 import 'package:kb_bank_clone/feature/widget/appbar/custom_app_bar.dart';
 import 'package:kb_bank_clone/feature/widget/labeled_input_field.dart';
@@ -26,7 +28,6 @@ final dateSelectedProvider = StateProvider.autoDispose<DateTime?>((ref) {
 final selectedTransactionTypeProvider = StateProvider<TransactionType>((ref) {
   return TransactionType.revolving;
 });
-
 
 @RoutePage()
 class UsageFeeWritePage extends ConsumerStatefulWidget {
@@ -80,7 +81,8 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
     _usageAmount = TextEditingController(text: '10');
     _balance = TextEditingController(text: '10');
 
-    Log.d(':::selectedYear ${widget.selectedYear}' 'selectedMonth ${widget.selectedMonth}');
+    Log.d(':::selectedYear ${widget.selectedYear}'
+        'selectedMonth ${widget.selectedMonth}');
   }
 
   @override
@@ -118,7 +120,8 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
                   builder: (context, watch, child) {
                     final selectedDate = ref.watch(dateSelectedProvider);
                     if (selectedDate != null) {
-                      _dateController.text = DateFormat('yyyy.MM.dd').format(selectedDate);
+                      _dateController.text =
+                          DateFormat('yyyy.MM.dd').format(selectedDate);
                     } else {
                       _dateController.text = '';
                     }
@@ -137,21 +140,26 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
                   bottom: 12.h,
                   child: InkWell(
                     onTap: () {
-                      final firstDayOfMonth = DateTime(widget.selectedYear, widget.selectedMonth);
-                      final lastDayOfMonth = DateTime(widget.selectedYear, widget.selectedMonth + 1).subtract(
+                      final firstDayOfMonth =
+                          DateTime(widget.selectedYear, widget.selectedMonth);
+                      final lastDayOfMonth = DateTime(
+                              widget.selectedYear, widget.selectedMonth + 1)
+                          .subtract(
                         const Duration(days: 1),
                       );
                       _showDialog(CupertinoTheme(
                         data: CupertinoThemeData(
                           textTheme: CupertinoTextThemeData(
-                            dateTimePickerTextStyle: DemoTextStyles.labelMedium.copyWith(
+                            dateTimePickerTextStyle:
+                                DemoTextStyles.labelMedium.copyWith(
                               fontSize: 20,
                               color: DemoColors.grey,
                             ),
                           ),
                         ),
                         child: CupertinoDatePicker(
-                          initialDateTime: DateTime(widget.selectedYear, widget.selectedMonth),
+                          initialDateTime: DateTime(
+                              widget.selectedYear, widget.selectedMonth),
                           mode: CupertinoDatePickerMode.date,
                           minimumYear: widget.selectedYear,
                           maximumYear: widget.selectedYear,
@@ -172,47 +180,9 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
               ],
             ),
             Gap(24.h),
-            LabeledInputField(
-              controller: _amountController,
-              label: '원금',
-              hintText: '원단위 입력',
-              keyboardType: TextInputType.text,
-            ),
+            _buildTransactionButton(),
             Gap(24.h),
-            LabeledInputField(
-              controller: _commission,
-              label: '수수료(이자)',
-              hintText: '수수료(이자) 원단위 입력',
-              keyboardType: TextInputType.text,
-            ),
-            Gap(24.h),
-            LabeledInputField(
-              controller: _usageAmount,
-              label: '이용금액',
-              hintText: '원단위 입력',
-              keyboardType: TextInputType.text,
-            ),
-            Gap(24.h),
-            LabeledInputField(
-              controller: _balance,
-              label: '결제후 잔액',
-              hintText: '원단위 입력',
-              keyboardType: TextInputType.text,
-            ),
-            Gap(24.h),
-            LabeledInputField(
-              controller: _paymentType,
-              label: '일시불/할부',
-              hintText: '일시불/할부 입력',
-              keyboardType: TextInputType.text,
-            ),
-            Gap(24.h),
-            LabeledInputField(
-              controller: _reward,
-              label: '적립 · 혜택',
-              hintText: '원단위 입력',
-              keyboardType: TextInputType.text,
-            ),
+            _buildForm(),
             Gap(24.h),
           ],
         ),
@@ -335,36 +305,172 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
     );
   }
 
+  Widget _buildForm() {
+    return Consumer(
+      builder: (context, watch, child) {
+        final transactionType = ref.watch(selectedTransactionTypeProvider);
+
+        switch (transactionType) {
+          case TransactionType.revolving:
+            return const UsageFormRevolving();
+          case TransactionType.installment:
+            return Column(
+              children: [
+                LabeledInputField(
+                  controller: _paymentType,
+                  label: '원금',
+                  hintText: '원금 입력',
+                  keyboardType: TextInputType.number,
+                ),
+                Gap(24.h),
+                LabeledInputField(
+                  controller: _paymentType,
+                  label: '수수료(이자)',
+                  hintText: '수수료(이자) 입력',
+                  keyboardType: TextInputType.number,
+                ),
+                Gap(24.h),
+                LabeledInputField(
+                  controller: _paymentType,
+                  label: '이용금액',
+                  hintText: '이용금액 입력',
+                  keyboardType: TextInputType.number,
+                ),
+                Gap(24.h),
+                LabeledInputField(
+                  controller: _paymentType,
+                  label: '결제후 잔액',
+                  hintText: '결제후 잔액 입력',
+                  keyboardType: TextInputType.number,
+                ),
+              ],
+            );
+          case TransactionType.annual:
+            return LabeledInputField(
+              controller: _paymentType,
+              label: '연회비',
+              hintText: '연회비 입력',
+              keyboardType: TextInputType.text,
+            );
+        }
+      },
+    );
+  }
+
   Widget _buildButton({required String title, Color? color}) {
     return DecoratedBox(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: color ?? DemoColors.primaryYellowLightColor,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: color ?? DemoColors.primaryYellowLightColor,
+      ),
+      child: Material(
+        type: MaterialType.transparency,
+        child: InkWell(
+          onTap: () {
+            selectedDate = selectedDate ??
+                DateTime(
+                  widget.selectedYear,
+                  widget.selectedMonth,
+                );
+            ref.read(dateSelectedProvider.notifier).state = selectedDate;
+            context.router.popForced();
+          },
+          child: Center(
+            child: Text(
+              title,
+              style: DemoTextStyles.headlineMedium.copyWith(
+                color: DemoColors.primaryColor,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                decoration: TextDecoration.none,
+              ),
+            ),
+          ).paddingSymmetric(horizontal: 32.w, vertical: 16.h),
         ),
-        child: Material(
-          type: MaterialType.transparency,
+      ),
+    );
+  }
+
+  Widget _buildTransactionButton() {
+    return Row(
+      children: [
+        Expanded(
+            child: InkWell(
+          onTap: () => ref
+              .read(selectedTransactionTypeProvider.notifier)
+              .state = TransactionType.revolving,
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(Radius.circular(8)),
+              color: ref.watch(selectedTransactionTypeProvider) ==
+                      TransactionType.revolving
+                  ? DemoColors.primaryYellowLightColor
+                  : DemoColors.grey,
+            ),
+            child: Text(
+              '리볼빙 일시불',
+              textAlign: TextAlign.center,
+              style: DemoTextStyles.headlineMedium.copyWith(
+                color: DemoColors.primaryColor,
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+            ).paddingSymmetric(vertical: 15.h),
+          ),
+        )),
+        Gap(12.w),
+        Expanded(
           child: InkWell(
-            onTap: () {
-              selectedDate = selectedDate ??
-                  DateTime(
-                    widget.selectedYear,
-                    widget.selectedMonth,
-                  );
-              ref.read(dateSelectedProvider.notifier).state = selectedDate;
-              context.router.popForced();
-            },
-            child: Center(
+            onTap: () => ref
+                .read(selectedTransactionTypeProvider.notifier)
+                .state = TransactionType.installment,
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.all(Radius.circular(8)),
+                color: ref.watch(selectedTransactionTypeProvider) ==
+                        TransactionType.installment
+                    ? DemoColors.primaryYellowLightColor
+                    : DemoColors.grey,
+              ),
               child: Text(
-                title,
+                '할부',
+                textAlign: TextAlign.center,
                 style: DemoTextStyles.headlineMedium.copyWith(
                   color: DemoColors.primaryColor,
                   fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  decoration: TextDecoration.none,
+                  fontWeight: FontWeight.w600,
                 ),
-              ),
-            ).paddingSymmetric(horizontal: 32.w, vertical: 16.h),
+              ).paddingSymmetric(vertical: 15.h),
+            ),
           ),
-        ));
+        ),
+        Gap(12.w),
+        Expanded(
+          child: InkWell(
+            onTap: () => ref
+                .read(selectedTransactionTypeProvider.notifier)
+                .state = TransactionType.annual,
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.all(Radius.circular(8)),
+                color: ref.watch(selectedTransactionTypeProvider) ==
+                        TransactionType.annual
+                    ? DemoColors.primaryYellowLightColor
+                    : DemoColors.grey,
+              ),
+              child: Text(
+                '연회비',
+                textAlign: TextAlign.center,
+                style: DemoTextStyles.headlineMedium.copyWith(
+                  color: DemoColors.primaryColor,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ).paddingSymmetric(vertical: 15.h),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }

@@ -14,6 +14,7 @@ class LabeledInputField extends StatefulWidget {
     this.onChanged,
     this.enabled = true,
     this.fwMode = false,
+    this.onClear,
     super.key,
   });
 
@@ -34,6 +35,8 @@ class LabeledInputField extends StatefulWidget {
   final bool enabled;
 
   final bool fwMode;
+
+  final VoidCallback? onClear;
 
   bool get hasError => errorText != null && errorText!.isNotEmpty;
 
@@ -126,6 +129,7 @@ class _LabeledInputFieldState extends State<LabeledInputField> {
                             if (widget.enabled) {
                               _effectiveFocusNode.requestFocus();
                               _effectiveController.clear();
+                              widget.onClear?.call();
                             }
                           },
                         ),
