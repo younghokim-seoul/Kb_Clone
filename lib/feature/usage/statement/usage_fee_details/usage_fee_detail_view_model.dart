@@ -42,7 +42,7 @@ class UsageFeeDetailsViewModel implements ViewModelInterface {
           )
           .toList();
 
-      final footer = CardTransactionFooter();
+      final footer = CardTransactionFooter(transactionCount: event.length);
 
       if (header.transactionCount > 0) {
         return [header, ...contents, footer];

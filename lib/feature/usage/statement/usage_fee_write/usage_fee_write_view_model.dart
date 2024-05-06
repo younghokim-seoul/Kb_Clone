@@ -28,12 +28,6 @@ class UsageFeeWriteViewModel implements ViewModelInterface {
     );
   }
 
-
-  void revolveUpdate(CardTransactionEntity? entity) {
-    final mdoel =
-    writeSideEffect.add(RevolvingUpdated(entity: entity));
-  }
-
   @override
   disposeAll() {}
 

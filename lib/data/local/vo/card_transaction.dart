@@ -23,7 +23,7 @@ class CardTransaction extends Equatable {
   factory CardTransaction.create({
     required String merchantName,
     required int usageAmount,
-    required String transactionAmount,
+    required int transactionAmount,
     required int rewardPoints,
     required int installmentStart,
     required int installmentEnd,
@@ -55,7 +55,7 @@ class CardTransaction extends Equatable {
 
   final String merchantName;
   final int usageAmount; //사용금액
-  final String transactionAmount; //이용 금액
+  final int transactionAmount; //이용 금액
   final int rewardPoints; // 적립
   final int installmentStart; //할부시작
   final int installmentEnd; //할부끝
@@ -69,7 +69,7 @@ class CardTransaction extends Equatable {
     int? id,
     String? merchantName,
     int? usageAmount,
-    String? transactionAmount,
+    int? transactionAmount,
     int? rewardPoints,
     int? installmentStart,
     int? installmentEnd,

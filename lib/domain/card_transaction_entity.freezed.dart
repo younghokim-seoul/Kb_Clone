@@ -19,7 +19,7 @@ mixin _$CardTransactionEntity {
   int get id => throw _privateConstructorUsedError;
   String get merchantName => throw _privateConstructorUsedError;
   int get usageAmount => throw _privateConstructorUsedError;
-  String get transactionAmount => throw _privateConstructorUsedError;
+  int get transactionAmount => throw _privateConstructorUsedError;
   int get rewardPoints => throw _privateConstructorUsedError;
   int get installmentStart => throw _privateConstructorUsedError;
   int get installmentEnd => throw _privateConstructorUsedError;
@@ -44,7 +44,7 @@ abstract class $CardTransactionEntityCopyWith<$Res> {
       {int id,
       String merchantName,
       int usageAmount,
-      String transactionAmount,
+      int transactionAmount,
       int rewardPoints,
       int installmentStart,
       int installmentEnd,
@@ -98,7 +98,7 @@ class _$CardTransactionEntityCopyWithImpl<$Res,
       transactionAmount: null == transactionAmount
           ? _value.transactionAmount
           : transactionAmount // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       rewardPoints: null == rewardPoints
           ? _value.rewardPoints
           : rewardPoints // ignore: cast_nullable_to_non_nullable
@@ -148,7 +148,7 @@ abstract class _$$CardTransactionEntityImplCopyWith<$Res>
       {int id,
       String merchantName,
       int usageAmount,
-      String transactionAmount,
+      int transactionAmount,
       int rewardPoints,
       int installmentStart,
       int installmentEnd,
@@ -200,7 +200,7 @@ class __$$CardTransactionEntityImplCopyWithImpl<$Res>
       transactionAmount: null == transactionAmount
           ? _value.transactionAmount
           : transactionAmount // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       rewardPoints: null == rewardPoints
           ? _value.rewardPoints
           : rewardPoints // ignore: cast_nullable_to_non_nullable
@@ -261,7 +261,7 @@ class _$CardTransactionEntityImpl implements _CardTransactionEntity {
   @override
   final int usageAmount;
   @override
-  final String transactionAmount;
+  final int transactionAmount;
   @override
   final int rewardPoints;
   @override
@@ -343,7 +343,7 @@ abstract class _CardTransactionEntity implements CardTransactionEntity {
       {required final int id,
       required final String merchantName,
       required final int usageAmount,
-      required final String transactionAmount,
+      required final int transactionAmount,
       required final int rewardPoints,
       required final int installmentStart,
       required final int installmentEnd,
@@ -360,7 +360,7 @@ abstract class _CardTransactionEntity implements CardTransactionEntity {
   @override
   int get usageAmount;
   @override
-  String get transactionAmount;
+  int get transactionAmount;
   @override
   int get rewardPoints;
   @override

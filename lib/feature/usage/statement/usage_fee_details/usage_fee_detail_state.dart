@@ -46,6 +46,10 @@ class CardTransactionContent extends CardTransactionItems {
 }
 
 class CardTransactionFooter extends CardTransactionItems {
+  const CardTransactionFooter({
+    required this.transactionCount,
+  });
+  final int transactionCount;
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [transactionCount];
 }

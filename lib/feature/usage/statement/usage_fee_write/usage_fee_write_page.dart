@@ -7,9 +7,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:kb_bank_clone/assets/assets.gen.dart';
+import 'package:kb_bank_clone/data/local/vo/card_transaction.dart';
 import 'package:kb_bank_clone/data/local/vo/transaction_type.dart';
 import 'package:kb_bank_clone/di/app_provider.dart';
 import 'package:kb_bank_clone/domain/card_transaction_entity.dart';
+import 'package:kb_bank_clone/feature/usage/statement/usage_fee_write/component/usage_form_annual.dart';
+import 'package:kb_bank_clone/feature/usage/statement/usage_fee_write/component/usage_form_installment.dart';
 import 'package:kb_bank_clone/feature/usage/statement/usage_fee_write/component/usage_form_revolving.dart';
 import 'package:kb_bank_clone/feature/usage/statement/usage_fee_write/usage_fee_write_view_model.dart';
 import 'package:kb_bank_clone/feature/widget/appbar/custom_app_bar.dart';
@@ -25,7 +28,8 @@ final dateSelectedProvider = StateProvider.autoDispose<DateTime?>((ref) {
   return null;
 });
 
-final selectedTransactionTypeProvider = StateProvider<TransactionType>((ref) {
+final selectedTransactionTypeProvider =
+    StateProvider.autoDispose<TransactionType>((ref) {
   return TransactionType.revolving;
 });
 
@@ -55,18 +59,94 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
   late TextEditingController _commission;
   late TextEditingController _usageAmount;
   late TextEditingController _balance;
+
+  late TextEditingController _revolvingUsageAmount;
+  late TextEditingController _revolvingTransactionAmount;
+  late TextEditingController _revolvingRewardPoints;
+
+  late TextEditingController installmentStartController;
+  late TextEditingController installmentEndController;
+  late TextEditingController interestFreeBenefitController;
+  late TextEditingController installmentUsageAmountController;
+  late TextEditingController installmentcommissionOrInterestController;
+  late TextEditingController installmentTransactionAmountController;
+  late TextEditingController installmentbalanceAfterPaymentController;
+
+  late TextEditingController annualUsageAmount;
+  late TextEditingController annualTransactionAmount;
+
   DateTime? selectedDate;
 
-  bool get isAnyControllerEmpty =>
-      _merchantNameController.text.isEmpty ||
-      _dateController.text.isEmpty ||
-      _amountController.text.isEmpty ||
-      _paymentType.text.isEmpty ||
-      _reward.text.isEmpty ||
-      _commission.text.isEmpty ||
-      _usageAmount.text.isEmpty ||
-      _balance.text.isEmpty ||
-      selectedDate == null;
+  bool isValidField(TransactionType type) {
+    // 공통 필드 유효성 검사
+
+    Log.d("type $type");
+    final isCommonValid = _merchantNameController.text.isNotEmpty &&
+        _dateController.text.isNotEmpty &&
+        selectedDate != null;
+
+    // 트랜잭션 유형에 따른 필드 유효성 검사
+    bool isTypeValid = false;
+    switch (type) {
+      case TransactionType.revolving:
+        isTypeValid = _revolvingUsageAmount.text.isNotEmpty &&
+            _revolvingTransactionAmount.text.isNotEmpty &&
+            _revolvingRewardPoints.text.isNotEmpty;
+        break;
+      case TransactionType.installment:
+        isTypeValid = installmentStartController.text.isNotEmpty &&
+            installmentEndController.text.isNotEmpty &&
+            interestFreeBenefitController.text.isNotEmpty &&
+            installmentUsageAmountController.text.isNotEmpty &&
+            installmentcommissionOrInterestController.text.isNotEmpty &&
+            installmentTransactionAmountController.text.isNotEmpty &&
+            installmentbalanceAfterPaymentController.text.isNotEmpty;
+        break;
+      case TransactionType.annual:
+        isTypeValid = annualUsageAmount.text.isNotEmpty &&
+            annualTransactionAmount.text.isNotEmpty;
+        break;
+    }
+    // 공통 필드와 트랜잭션 유형 필드 모두 유효한 경우에만 true 반환
+    return isCommonValid && isTypeValid;
+  }
+
+  CardTransactionEntity createEntity(TransactionType type) {
+    final entity = CardTransactionEntity.empty().copyWith(
+      merchantName: _merchantNameController.text,
+      createAt: selectedDate!,
+    );
+
+    switch (type) {
+      case TransactionType.revolving:
+        return entity.copyWith(
+          usageAmount: int.parse(_revolvingUsageAmount.text),
+          transactionAmount: int.parse(_revolvingTransactionAmount.text),
+          rewardPoints: int.parse(_revolvingRewardPoints.text),
+          transactionType: type,
+        );
+      case TransactionType.installment:
+        return entity.copyWith(
+          installmentStart: int.parse(installmentStartController.text),
+          installmentEnd: int.parse(installmentEndController.text),
+          interestFreeBenefit: int.parse(interestFreeBenefitController.text),
+          usageAmount: int.parse(installmentUsageAmountController.text),
+          commissionOrInterest:
+              int.parse(installmentcommissionOrInterestController.text),
+          transactionAmount:
+              int.parse(installmentTransactionAmountController.text),
+          balanceAfterPayment:
+              int.parse(installmentbalanceAfterPaymentController.text),
+          transactionType: type,
+        );
+      case TransactionType.annual:
+        return entity.copyWith(
+          usageAmount: int.parse(annualUsageAmount.text),
+          transactionAmount: int.parse(annualTransactionAmount.text),
+          transactionType: type,
+        );
+    }
+  }
 
   @override
   void initState() {
@@ -81,8 +161,22 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
     _usageAmount = TextEditingController(text: '10');
     _balance = TextEditingController(text: '10');
 
-    Log.d(':::selectedYear ${widget.selectedYear}'
-        'selectedMonth ${widget.selectedMonth}');
+    _revolvingUsageAmount = TextEditingController(text: '10');
+    _revolvingTransactionAmount = TextEditingController(text: '10');
+    _revolvingRewardPoints = TextEditingController(text: '10');
+
+    installmentStartController = TextEditingController(text: '2');
+    installmentEndController = TextEditingController(text: '12');
+    interestFreeBenefitController = TextEditingController(text: '13');
+    installmentUsageAmountController = TextEditingController(text: '14');
+    installmentcommissionOrInterestController =
+        TextEditingController(text: '15');
+    installmentTransactionAmountController = TextEditingController(text: '16');
+    installmentbalanceAfterPaymentController =
+        TextEditingController(text: '17');
+
+    annualUsageAmount = TextEditingController(text: '20');
+    annualTransactionAmount = TextEditingController(text: '20');
   }
 
   @override
@@ -217,24 +311,16 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
                 Expanded(
                   child: InkWell(
                     onTap: () async {
-                      if (isAnyControllerEmpty) {
+                      final transactionType =
+                          ref.read(selectedTransactionTypeProvider);
+                      if (!isValidField(transactionType)) {
                         Log.e('::::공백존재.. return');
                         return;
                       }
 
                       try {
-                        // await _viewModel.insertCardTransaction(
-                        //   CardTransactionEntity.empty().copyWith(
-                        //     merchantName: _merchantNameController.text,
-                        //     createAt: selectedDate!,
-                        //     amount: int.parse(_amountController.text),
-                        //     paymentType: _paymentType.text,
-                        //     reward: int.parse(_reward.text),
-                        //     commission: int.parse(_commission.text),
-                        //     usageAmount: int.parse(_usageAmount.text),
-                        //     balance: int.parse(_balance.text),
-                        //   ),
-                        // );
+                        final entity = createEntity(transactionType);
+                        await _viewModel.insertCardTransaction(entity);
                         Log.d(':::save... success');
                         if (context.mounted) {
                           eventBus.fire(const PaymentAddEvent());
@@ -312,45 +398,29 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
 
         switch (transactionType) {
           case TransactionType.revolving:
-            return const UsageFormRevolving();
+            return UsageFormRevolving(
+              revolvingUsageAmount: _revolvingUsageAmount,
+              revolvingTransactionAmount: _revolvingTransactionAmount,
+              revolvingRewardPoints: _revolvingRewardPoints,
+            );
           case TransactionType.installment:
-            return Column(
-              children: [
-                LabeledInputField(
-                  controller: _paymentType,
-                  label: '원금',
-                  hintText: '원금 입력',
-                  keyboardType: TextInputType.number,
-                ),
-                Gap(24.h),
-                LabeledInputField(
-                  controller: _paymentType,
-                  label: '수수료(이자)',
-                  hintText: '수수료(이자) 입력',
-                  keyboardType: TextInputType.number,
-                ),
-                Gap(24.h),
-                LabeledInputField(
-                  controller: _paymentType,
-                  label: '이용금액',
-                  hintText: '이용금액 입력',
-                  keyboardType: TextInputType.number,
-                ),
-                Gap(24.h),
-                LabeledInputField(
-                  controller: _paymentType,
-                  label: '결제후 잔액',
-                  hintText: '결제후 잔액 입력',
-                  keyboardType: TextInputType.number,
-                ),
-              ],
+            return UsageFormInstallment(
+              installmentStartController: installmentStartController,
+              installmentEndController: installmentEndController,
+              interestFreeBenefitController: interestFreeBenefitController,
+              installmentUsageAmountController:
+                  installmentUsageAmountController,
+              installmentcommissionOrInterestController:
+                  installmentcommissionOrInterestController,
+              installmentTransactionAmountController:
+                  installmentTransactionAmountController,
+              installmentbalanceAfterPaymentController:
+                  installmentbalanceAfterPaymentController,
             );
           case TransactionType.annual:
-            return LabeledInputField(
-              controller: _paymentType,
-              label: '연회비',
-              hintText: '연회비 입력',
-              keyboardType: TextInputType.text,
+            return UsageFormAnnual(
+              annualUsageAmount: annualUsageAmount,
+              annualTransactionAmount: annualTransactionAmount,
             );
         }
       },
@@ -405,7 +475,7 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
               color: ref.watch(selectedTransactionTypeProvider) ==
                       TransactionType.revolving
                   ? DemoColors.primaryYellowLightColor
-                  : DemoColors.grey,
+                  : DemoColors.white,
             ),
             child: Text(
               '리볼빙 일시불',
@@ -415,7 +485,7 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
               ),
-            ).paddingSymmetric(vertical: 15.h),
+            ).paddingSymmetric(vertical: 10.h),
           ),
         )),
         Gap(12.w),
@@ -430,7 +500,7 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
                 color: ref.watch(selectedTransactionTypeProvider) ==
                         TransactionType.installment
                     ? DemoColors.primaryYellowLightColor
-                    : DemoColors.grey,
+                    : DemoColors.white,
               ),
               child: Text(
                 '할부',
@@ -440,7 +510,7 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                 ),
-              ).paddingSymmetric(vertical: 15.h),
+              ).paddingSymmetric(vertical: 10.h),
             ),
           ),
         ),
@@ -456,7 +526,7 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
                 color: ref.watch(selectedTransactionTypeProvider) ==
                         TransactionType.annual
                     ? DemoColors.primaryYellowLightColor
-                    : DemoColors.grey,
+                    : DemoColors.white,
               ),
               child: Text(
                 '연회비',
@@ -466,7 +536,7 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                 ),
-              ).paddingSymmetric(vertical: 15.h),
+              ).paddingSymmetric(vertical: 10.h),
             ),
           ),
         ),
