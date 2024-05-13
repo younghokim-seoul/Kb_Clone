@@ -18,21 +18,22 @@ class CardTransactionEntity with _$CardTransactionEntity {
     required int balanceAfterPayment,
     required TransactionType transactionType,
     required DateTime createAt,
+    required DateTime displayDateTime,
   }) = _CardTransactionEntity;
 
-factory CardTransactionEntity.empty() => CardTransactionEntity(
-    id: -1,
-    merchantName: '',
-    usageAmount: 0,
-    transactionAmount: 0,
-    rewardPoints: 0,
-    installmentStart: 0,
-    installmentEnd: 0,
-    interestFreeBenefit: 0,
-    commissionOrInterest: 0,
-    balanceAfterPayment: 0,
-    transactionType: TransactionType.revolving,
-    createAt: DateTime.now(),
-  );
+  factory CardTransactionEntity.empty() => CardTransactionEntity(
+        id: -1,
+        merchantName: '',
+        usageAmount: 0,
+        transactionAmount: 0,
+        rewardPoints: 0,
+        installmentStart: 0,
+        installmentEnd: 0,
+        interestFreeBenefit: 0,
+        commissionOrInterest: 0,
+        balanceAfterPayment: 0,
+        transactionType: TransactionType.revolving,
+        createAt: DateTime.now(),
+        displayDateTime: DateTime.now(),
+      );
 }
-

@@ -18,6 +18,7 @@ class CardTransaction extends Equatable {
     this.balanceAfterPayment,
     this.transactionType,
     this.createAt,
+    this.displayDateTime,
   );
 
   factory CardTransaction.create({
@@ -32,6 +33,7 @@ class CardTransaction extends Equatable {
     required int balanceAfterPayment,
     required TransactionType transactionType,
     required DateTime createAt,
+    required DateTime displayDateTime,
     int? id,
   }) {
     return CardTransaction(
@@ -47,6 +49,7 @@ class CardTransaction extends Equatable {
       balanceAfterPayment,
       transactionType,
       createAt,
+      displayDateTime,
     );
   }
 
@@ -64,6 +67,7 @@ class CardTransaction extends Equatable {
   final int balanceAfterPayment; //결제 후 잔액
   final TransactionType transactionType; //거래 유형
   final DateTime createAt;
+  final DateTime displayDateTime;
 
   CardTransaction copyWith({
     int? id,
@@ -78,6 +82,7 @@ class CardTransaction extends Equatable {
     int? balanceAfterPayment,
     TransactionType? transactionType,
     DateTime? createAt,
+    DateTime? displayDateTime,
   }) {
     return CardTransaction(
       id ?? this.id,
@@ -92,6 +97,7 @@ class CardTransaction extends Equatable {
       balanceAfterPayment ?? this.balanceAfterPayment,
       transactionType ?? this.transactionType,
       createAt ?? this.createAt,
+      displayDateTime ?? this.displayDateTime,
     );
   }
 
@@ -108,6 +114,7 @@ class CardTransaction extends Equatable {
         commissionOrInterest,
         balanceAfterPayment,
         transactionType,
-        createAt
+        createAt,
+        displayDateTime
       ];
 }

@@ -15,8 +15,7 @@ abstract class KbDao {
   Future<List<CardTransaction>> findAllCardTransactions(
       int startTimestamp, int endTimestamp);
 
-  @Query(
-      'SELECT * FROM CardTransaction WHERE createAt >= :startTimestamp AND createAt < :endTimestamp ORDER BY createAt')
+  @Query('SELECT * FROM CardTransaction WHERE createAt >= :startTimestamp AND createAt < :endTimestamp ORDER BY displayDateTime ASC')
   Stream<List<CardTransaction>> flowCardTransactions(
       int startTimestamp, int endTimestamp);
 

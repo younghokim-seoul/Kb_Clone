@@ -28,6 +28,7 @@ mixin _$CardTransactionEntity {
   int get balanceAfterPayment => throw _privateConstructorUsedError;
   TransactionType get transactionType => throw _privateConstructorUsedError;
   DateTime get createAt => throw _privateConstructorUsedError;
+  DateTime get displayDateTime => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $CardTransactionEntityCopyWith<CardTransactionEntity> get copyWith =>
@@ -52,7 +53,8 @@ abstract class $CardTransactionEntityCopyWith<$Res> {
       int commissionOrInterest,
       int balanceAfterPayment,
       TransactionType transactionType,
-      DateTime createAt});
+      DateTime createAt,
+      DateTime displayDateTime});
 }
 
 /// @nodoc
@@ -81,6 +83,7 @@ class _$CardTransactionEntityCopyWithImpl<$Res,
     Object? balanceAfterPayment = null,
     Object? transactionType = null,
     Object? createAt = null,
+    Object? displayDateTime = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -131,6 +134,10 @@ class _$CardTransactionEntityCopyWithImpl<$Res,
           ? _value.createAt
           : createAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      displayDateTime: null == displayDateTime
+          ? _value.displayDateTime
+          : displayDateTime // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ) as $Val);
   }
 }
@@ -156,7 +163,8 @@ abstract class _$$CardTransactionEntityImplCopyWith<$Res>
       int commissionOrInterest,
       int balanceAfterPayment,
       TransactionType transactionType,
-      DateTime createAt});
+      DateTime createAt,
+      DateTime displayDateTime});
 }
 
 /// @nodoc
@@ -183,6 +191,7 @@ class __$$CardTransactionEntityImplCopyWithImpl<$Res>
     Object? balanceAfterPayment = null,
     Object? transactionType = null,
     Object? createAt = null,
+    Object? displayDateTime = null,
   }) {
     return _then(_$CardTransactionEntityImpl(
       id: null == id
@@ -233,6 +242,10 @@ class __$$CardTransactionEntityImplCopyWithImpl<$Res>
           ? _value.createAt
           : createAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      displayDateTime: null == displayDateTime
+          ? _value.displayDateTime
+          : displayDateTime // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ));
   }
 }
@@ -252,7 +265,8 @@ class _$CardTransactionEntityImpl implements _CardTransactionEntity {
       required this.commissionOrInterest,
       required this.balanceAfterPayment,
       required this.transactionType,
-      required this.createAt});
+      required this.createAt,
+      required this.displayDateTime});
 
   @override
   final int id;
@@ -278,10 +292,12 @@ class _$CardTransactionEntityImpl implements _CardTransactionEntity {
   final TransactionType transactionType;
   @override
   final DateTime createAt;
+  @override
+  final DateTime displayDateTime;
 
   @override
   String toString() {
-    return 'CardTransactionEntity(id: $id, merchantName: $merchantName, usageAmount: $usageAmount, transactionAmount: $transactionAmount, rewardPoints: $rewardPoints, installmentStart: $installmentStart, installmentEnd: $installmentEnd, interestFreeBenefit: $interestFreeBenefit, commissionOrInterest: $commissionOrInterest, balanceAfterPayment: $balanceAfterPayment, transactionType: $transactionType, createAt: $createAt)';
+    return 'CardTransactionEntity(id: $id, merchantName: $merchantName, usageAmount: $usageAmount, transactionAmount: $transactionAmount, rewardPoints: $rewardPoints, installmentStart: $installmentStart, installmentEnd: $installmentEnd, interestFreeBenefit: $interestFreeBenefit, commissionOrInterest: $commissionOrInterest, balanceAfterPayment: $balanceAfterPayment, transactionType: $transactionType, createAt: $createAt, displayDateTime: $displayDateTime)';
   }
 
   @override
@@ -311,7 +327,9 @@ class _$CardTransactionEntityImpl implements _CardTransactionEntity {
             (identical(other.transactionType, transactionType) ||
                 other.transactionType == transactionType) &&
             (identical(other.createAt, createAt) ||
-                other.createAt == createAt));
+                other.createAt == createAt) &&
+            (identical(other.displayDateTime, displayDateTime) ||
+                other.displayDateTime == displayDateTime));
   }
 
   @override
@@ -328,7 +346,8 @@ class _$CardTransactionEntityImpl implements _CardTransactionEntity {
       commissionOrInterest,
       balanceAfterPayment,
       transactionType,
-      createAt);
+      createAt,
+      displayDateTime);
 
   @JsonKey(ignore: true)
   @override
@@ -351,7 +370,8 @@ abstract class _CardTransactionEntity implements CardTransactionEntity {
       required final int commissionOrInterest,
       required final int balanceAfterPayment,
       required final TransactionType transactionType,
-      required final DateTime createAt}) = _$CardTransactionEntityImpl;
+      required final DateTime createAt,
+      required final DateTime displayDateTime}) = _$CardTransactionEntityImpl;
 
   @override
   int get id;
@@ -377,6 +397,8 @@ abstract class _CardTransactionEntity implements CardTransactionEntity {
   TransactionType get transactionType;
   @override
   DateTime get createAt;
+  @override
+  DateTime get displayDateTime;
   @override
   @JsonKey(ignore: true)
   _$$CardTransactionEntityImplCopyWith<_$CardTransactionEntityImpl>

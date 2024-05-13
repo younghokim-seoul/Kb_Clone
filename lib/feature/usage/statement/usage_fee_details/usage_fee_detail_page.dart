@@ -46,18 +46,13 @@ class _UsageFeeDetailsPageState extends ConsumerState<UsageFeeDetailsPage> {
     super.initState();
     _viewModel = ref.read(usageFeeDetailViewModelProvider);
     _viewModel.collectCardTransactions(widget.selectedYear, widget.selectedMonth);
-
-
-    Log.d("::::수정모드................ " + widget.isWrittenOff.toString());
   }
 
-  String getCardCode() {
+  String getCardCode(DateTime targetTime) {
     final startOffset = DateTime(2022, 04);
     final endOffset = DateTime(2023, 12);
 
-    final baseDate = DateTime(widget.selectedYear, widget.selectedMonth);
-
-    if (baseDate.isAfter(startOffset) && baseDate.isBefore(endOffset)) {
+    if (targetTime.isAfter(startOffset) && targetTime.isBefore(endOffset)) {
       return '마스터 005';
     } else {
       return '마스터 049';
@@ -220,7 +215,7 @@ class _UsageFeeDetailsPageState extends ConsumerState<UsageFeeDetailsPage> {
                 ),
                 Gap(16.h),
                 Text(
-                  "${DateFormat('yyyy.MM.dd').format(item.createAt)} | 본인 | ${getCardCode()} |",
+                  "${DateFormat('yyyy.MM.dd').format(item.displayDateTime)} | 본인 | ${getCardCode(item.displayDateTime)} |",
                   style: DemoTextStyles.bodyLarge.copyWith(
                     color: DemoColors.primaryDivideColor,
                     fontSize: 12,
@@ -349,7 +344,7 @@ class _UsageFeeDetailsPageState extends ConsumerState<UsageFeeDetailsPage> {
                 ),
                 Gap(16.h),
                 Text(
-                  "${DateFormat('yyyy.MM.dd').format(item.createAt)} | 본인 | ${getCardCode()} |",
+                  "${DateFormat('yyyy.MM.dd').format(item.displayDateTime)} | 본인 | ${getCardCode(item.displayDateTime)} |",
                   style: DemoTextStyles.bodyLarge.copyWith(
                     color: DemoColors.primaryDivideColor,
                     fontSize: 12,
@@ -458,7 +453,7 @@ class _UsageFeeDetailsPageState extends ConsumerState<UsageFeeDetailsPage> {
                 ),
                 Gap(16.h),
                 Text(
-                  "${DateFormat('yyyy.MM.dd').format(item.createAt)} | 본인 | ${getCardCode()} |",
+                  "${DateFormat('yyyy.MM.dd').format(item.displayDateTime)} | 본인 | ${getCardCode(item.displayDateTime)} |",
                   style: DemoTextStyles.bodyLarge.copyWith(
                     color: DemoColors.primaryDivideColor,
                     fontSize: 12,

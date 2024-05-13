@@ -45,12 +45,11 @@ class UsageFeeDetailsViewModel implements ViewModelInterface {
                   commissionOrInterest: e.commissionOrInterest,
                   balanceAfterPayment: e.balanceAfterPayment,
                   transactionType: e.transactionType,
-                  createAt: e.createAt),
+                  createAt: e.createAt,
+                  displayDateTime: e.displayDateTime),
             ),
           )
           .toList();
-
-
 
       final footer = CardTransactionFooter(
         transactionCount: event.length,

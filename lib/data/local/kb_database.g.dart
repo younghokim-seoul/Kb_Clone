@@ -85,7 +85,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `CardTransaction` (`id` INTEGER, `merchantName` TEXT NOT NULL, `usageAmount` INTEGER NOT NULL, `transactionAmount` INTEGER NOT NULL, `rewardPoints` INTEGER NOT NULL, `installmentStart` INTEGER NOT NULL, `installmentEnd` INTEGER NOT NULL, `interestFreeBenefit` INTEGER NOT NULL, `commissionOrInterest` INTEGER NOT NULL, `balanceAfterPayment` INTEGER NOT NULL, `transactionType` INTEGER NOT NULL, `createAt` INTEGER NOT NULL, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `CardTransaction` (`id` INTEGER, `merchantName` TEXT NOT NULL, `usageAmount` INTEGER NOT NULL, `transactionAmount` INTEGER NOT NULL, `rewardPoints` INTEGER NOT NULL, `installmentStart` INTEGER NOT NULL, `installmentEnd` INTEGER NOT NULL, `interestFreeBenefit` INTEGER NOT NULL, `commissionOrInterest` INTEGER NOT NULL, `balanceAfterPayment` INTEGER NOT NULL, `transactionType` INTEGER NOT NULL, `createAt` INTEGER NOT NULL, `displayDateTime` INTEGER NOT NULL, PRIMARY KEY (`id`))');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `CardSummary` (`id` TEXT NOT NULL, `totalMinimumPayment` INTEGER NOT NULL, `isWrittenOff` INTEGER NOT NULL, PRIMARY KEY (`id`))');
 
@@ -121,7 +121,9 @@ class _$KbDao extends KbDao {
                   'commissionOrInterest': item.commissionOrInterest,
                   'balanceAfterPayment': item.balanceAfterPayment,
                   'transactionType': item.transactionType.index,
-                  'createAt': _dateTimeConverter.encode(item.createAt)
+                  'createAt': _dateTimeConverter.encode(item.createAt),
+                  'displayDateTime':
+                      _dateTimeConverter.encode(item.displayDateTime)
                 },
             changeListener),
         _cardSummaryInsertionAdapter = InsertionAdapter(
@@ -148,7 +150,9 @@ class _$KbDao extends KbDao {
                   'commissionOrInterest': item.commissionOrInterest,
                   'balanceAfterPayment': item.balanceAfterPayment,
                   'transactionType': item.transactionType.index,
-                  'createAt': _dateTimeConverter.encode(item.createAt)
+                  'createAt': _dateTimeConverter.encode(item.createAt),
+                  'displayDateTime':
+                      _dateTimeConverter.encode(item.displayDateTime)
                 },
             changeListener);
 
@@ -171,7 +175,7 @@ class _$KbDao extends KbDao {
   ) async {
     return _queryAdapter.queryList(
         'SELECT * FROM CardTransaction WHERE createAt >= ?1 AND createAt < ?2 ORDER BY createAt',
-        mapper: (Map<String, Object?> row) => CardTransaction(row['id'] as int?, row['merchantName'] as String, row['usageAmount'] as int, row['transactionAmount'] as int, row['rewardPoints'] as int, row['installmentStart'] as int, row['installmentEnd'] as int, row['interestFreeBenefit'] as int, row['commissionOrInterest'] as int, row['balanceAfterPayment'] as int, TransactionType.values[row['transactionType'] as int], _dateTimeConverter.decode(row['createAt'] as int)),
+        mapper: (Map<String, Object?> row) => CardTransaction(row['id'] as int?, row['merchantName'] as String, row['usageAmount'] as int, row['transactionAmount'] as int, row['rewardPoints'] as int, row['installmentStart'] as int, row['installmentEnd'] as int, row['interestFreeBenefit'] as int, row['commissionOrInterest'] as int, row['balanceAfterPayment'] as int, TransactionType.values[row['transactionType'] as int], _dateTimeConverter.decode(row['createAt'] as int), _dateTimeConverter.decode(row['displayDateTime'] as int)),
         arguments: [startTimestamp, endTimestamp]);
   }
 
@@ -181,7 +185,7 @@ class _$KbDao extends KbDao {
     int endTimestamp,
   ) {
     return _queryAdapter.queryListStream(
-        'SELECT * FROM CardTransaction WHERE createAt >= ?1 AND createAt < ?2 ORDER BY createAt',
+        'SELECT * FROM CardTransaction WHERE createAt >= ?1 AND createAt < ?2 ORDER BY displayDateTime ASC',
         mapper: (Map<String, Object?> row) => CardTransaction(
             row['id'] as int?,
             row['merchantName'] as String,
@@ -194,7 +198,8 @@ class _$KbDao extends KbDao {
             row['commissionOrInterest'] as int,
             row['balanceAfterPayment'] as int,
             TransactionType.values[row['transactionType'] as int],
-            _dateTimeConverter.decode(row['createAt'] as int)),
+            _dateTimeConverter.decode(row['createAt'] as int),
+            _dateTimeConverter.decode(row['displayDateTime'] as int)),
         arguments: [startTimestamp, endTimestamp],
         queryableName: 'CardTransaction',
         isView: false);

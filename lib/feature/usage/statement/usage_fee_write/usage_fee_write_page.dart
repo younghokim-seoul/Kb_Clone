@@ -1,13 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:kb_bank_clone/assets/assets.gen.dart';
-import 'package:kb_bank_clone/data/local/vo/card_transaction.dart';
 import 'package:kb_bank_clone/data/local/vo/transaction_type.dart';
 import 'package:kb_bank_clone/di/app_provider.dart';
 import 'package:kb_bank_clone/domain/card_transaction_entity.dart';
@@ -52,12 +50,6 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
   late UsageFeeWriteViewModel _viewModel;
   late TextEditingController _merchantNameController;
   late TextEditingController _dateController;
-  late TextEditingController _amountController;
-  late TextEditingController _paymentType;
-  late TextEditingController _reward;
-  late TextEditingController _commission;
-  late TextEditingController _usageAmount;
-  late TextEditingController _balance;
 
   late TextEditingController _revolvingUsageAmount;
   late TextEditingController _revolvingTransactionAmount;
@@ -111,7 +103,8 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
   CardTransactionEntity createEntity(TransactionType type) {
     final entity = CardTransactionEntity.empty().copyWith(
       merchantName: _merchantNameController.text,
-      createAt: selectedDate!,
+      createAt: DateTime(widget.selectedYear, widget.selectedMonth),
+      displayDateTime: selectedDate!,
     );
 
     switch (type) {
@@ -148,12 +141,7 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
     _viewModel = ref.read(usageFeeWriteViewModelProvider);
     _dateController = TextEditingController();
     _merchantNameController = TextEditingController();
-    _amountController = TextEditingController();
-    _paymentType = TextEditingController();
-    _reward = TextEditingController();
-    _commission = TextEditingController();
-    _usageAmount = TextEditingController();
-    _balance = TextEditingController();
+
 
     _revolvingUsageAmount = TextEditingController();
     _revolvingTransactionAmount = TextEditingController();
@@ -197,7 +185,7 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
               controller: _merchantNameController,
               label: '상호명',
               hintText: '상호명을 입력해주세요.',
-              keyboardType: TextInputType.name,
+              keyboardType: TextInputType.text,
             ),
             Gap(24.h),
             Stack(
@@ -216,7 +204,6 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
                       label: '날짜',
                       enabled: false,
                       hintText: '년, 월 일 순으로 기재',
-                      keyboardType: TextInputType.name,
                     );
                   },
                 ),
@@ -241,10 +228,8 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
                         child: CupertinoDatePicker(
                           initialDateTime: DateTime(widget.selectedYear, widget.selectedMonth),
                           mode: CupertinoDatePickerMode.date,
-                          minimumYear: widget.selectedYear,
-                          maximumYear: widget.selectedYear,
-                          minimumDate: firstDayOfMonth,
-                          maximumDate: lastDayOfMonth,
+                          minimumYear: widget.selectedYear - 3,
+                          maximumYear: widget.selectedYear + 3,
                           onDateTimeChanged: (DateTime newDate) {
                             selectedDate = newDate;
                           },
