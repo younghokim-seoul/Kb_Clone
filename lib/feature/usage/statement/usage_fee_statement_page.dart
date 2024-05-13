@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_switch/flutter_switch.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:kb_bank_clone/assets/assets.gen.dart';
@@ -13,6 +14,7 @@ import 'package:kb_bank_clone/feature/widget/appbar/custom_app_bar.dart';
 import 'package:kb_bank_clone/feature/widget/appbar/flex_icon_button.dart';
 import 'package:kb_bank_clone/theme/demo_colors.dart';
 import 'package:kb_bank_clone/theme/demo_text_styles.dart';
+import 'package:kb_bank_clone/utils/dev_log.dart';
 import 'package:kb_bank_clone/utils/extension/margin_extension.dart';
 import 'package:kb_bank_clone/utils/extension/value_extension.dart';
 import 'package:kb_bank_clone/utils/router/app_route.dart';
@@ -31,6 +33,7 @@ class _UsageFeeStatementPageState extends ConsumerState<UsageFeeStatementPage> {
   late UsageFeeStatementViewModel _viewModel;
 
   final initialDate = DateTime(2024, 4);
+  TextEditingController? _effectiveController;
 
   @override
   void initState() {
@@ -56,7 +59,7 @@ class _UsageFeeStatementPageState extends ConsumerState<UsageFeeStatementPage> {
         ),
         leading: FlexIconButton.medium(
           icon: CupertinoIcons.left_chevron,
-          onPressed: () => context.router.pop(),
+          onPressed: () => context.router.popForced(),
         ),
         title: "이용대금명세서",
         actions: [
@@ -185,6 +188,24 @@ class _UsageFeeStatementPageState extends ConsumerState<UsageFeeStatementPage> {
                 fontWeight: FontWeight.w400,
               ),
             ),
+            const Spacer(),
+            _viewModel.usageFeeStatementState.ui(
+              builder: (context, state) {
+                return FlutterSwitch(
+                  width: 80,
+                  height: 40,
+                  valueFontSize: 18,
+                  toggleSize: 30,
+                  value: state.data?.isWrittenOff ?? false,
+                  borderRadius: 30,
+                  padding: 8,
+                  activeColor: DemoColors.rewardColor,
+                  onToggle: (val) {
+                    _viewModel.toggle();
+                  },
+                );
+              },
+            ),
           ],
         ),
         Gap(12.h),
@@ -225,16 +246,74 @@ class _UsageFeeStatementPageState extends ConsumerState<UsageFeeStatementPage> {
               ),
             ),
             Gap(12.h),
-            _viewModel.usageFeeStatementState.ui(builder: (context, state) {
-              return Text(
-                '${state.data.isNullOrEmpty ? '' : state.data!.totalUsageFee.toCurrency()}원',
-                style: DemoTextStyles.labelSmall.copyWith(
-                  color: DemoColors.grey,
-                  fontSize: 22,
-                  fontWeight: FontWeight.w800,
+            _viewModel.usageFeeStatementState.ui(
+              builder: (context, state) {
+                return Text(
+                  '${state.data.isNullOrEmpty ? '' : state.data!.totalUsageFee.toCurrency()}원',
+                  style: DemoTextStyles.labelSmall.copyWith(
+                    color: DemoColors.grey,
+                    fontSize: 22,
+                    fontWeight: FontWeight.w800,
+                  ),
+                );
+              },
+            ),
+            Gap(12.h),
+            Row(
+              children: [
+                Text(
+                  '최소결제금액',
+                  style: DemoTextStyles.labelSmall.copyWith(
+                    color: DemoColors.grey,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
-              );
-            }),
+                Gap(4.w),
+                _viewModel.minimumPaymentFee.ui(builder: (context, state) {
+                  final defaluValue = state.data ?? 0;
+                  _effectiveController = TextEditingController(text: '$defaluValue원');
+                  return Expanded(
+                      child: TextField(
+                    controller: _effectiveController,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.zero,
+                      isCollapsed: true,
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: DemoColors.grey,
+                          width: 1.w,
+                        ),
+                      ),
+                    ),
+                    onChanged: (value) {
+                      if (!value.endsWith('원')) {
+                        if (_effectiveController != null) {
+                          _effectiveController!.text = '$value원';
+                          _effectiveController!.selection = TextSelection.fromPosition(
+                            TextPosition(offset: _effectiveController!.text.length - 1),
+                          );
+                        }
+                      }
+
+                      if (value.isNullOrEmpty) {
+                        _viewModel.changeMinimumPayment(0);
+                      }
+
+                      if (value.endsWith('원')) {
+                        try{
+                          value = value.substring(0, value.length - 1);
+                          _viewModel.changeMinimumPayment(int.parse(value));
+                        }catch(e){
+                          _viewModel.changeMinimumPayment(0);
+                        }
+                      }
+                    },
+                  ));
+                })
+              ],
+            ),
             Gap(24.h),
             Row(
               children: [
@@ -243,6 +322,7 @@ class _UsageFeeStatementPageState extends ConsumerState<UsageFeeStatementPage> {
                     UsageFeeDetailsRoute(
                       selectedYear: _viewModel.getYear(),
                       selectedMonth: _viewModel.getMonth(),
+                      isWrittenOff: _viewModel.isWrittenMode(),
                     ),
                   ),
                   child: _buildButton(title: '이용내역'),
@@ -311,7 +391,7 @@ class _UsageFeeStatementPageState extends ConsumerState<UsageFeeStatementPage> {
   }
 
   Widget _buildComment() {
-    return  Text(
+    return Text(
       '※ 작성기준일은 현재 장기카드 대출 결제금액이  연체되었다며 안내되지 않을 수 있습니다.',
       style: DemoTextStyles.labelSmall.copyWith(
         color: DemoColors.grey,

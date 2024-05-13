@@ -17,6 +17,8 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$UsageFeeStatementState {
   int get totalUsageFee => throw _privateConstructorUsedError;
+  bool get isWrittenOff => throw _privateConstructorUsedError;
+  int get minimumPaymentFee => throw _privateConstructorUsedError;
   DateTime? get writtenDate => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -30,7 +32,11 @@ abstract class $UsageFeeStatementStateCopyWith<$Res> {
           $Res Function(UsageFeeStatementState) then) =
       _$UsageFeeStatementStateCopyWithImpl<$Res, UsageFeeStatementState>;
   @useResult
-  $Res call({int totalUsageFee, DateTime? writtenDate});
+  $Res call(
+      {int totalUsageFee,
+      bool isWrittenOff,
+      int minimumPaymentFee,
+      DateTime? writtenDate});
 }
 
 /// @nodoc
@@ -48,12 +54,22 @@ class _$UsageFeeStatementStateCopyWithImpl<$Res,
   @override
   $Res call({
     Object? totalUsageFee = null,
+    Object? isWrittenOff = null,
+    Object? minimumPaymentFee = null,
     Object? writtenDate = freezed,
   }) {
     return _then(_value.copyWith(
       totalUsageFee: null == totalUsageFee
           ? _value.totalUsageFee
           : totalUsageFee // ignore: cast_nullable_to_non_nullable
+              as int,
+      isWrittenOff: null == isWrittenOff
+          ? _value.isWrittenOff
+          : isWrittenOff // ignore: cast_nullable_to_non_nullable
+              as bool,
+      minimumPaymentFee: null == minimumPaymentFee
+          ? _value.minimumPaymentFee
+          : minimumPaymentFee // ignore: cast_nullable_to_non_nullable
               as int,
       writtenDate: freezed == writtenDate
           ? _value.writtenDate
@@ -72,7 +88,11 @@ abstract class _$$UsageFeeStatementStateImplCopyWith<$Res>
       __$$UsageFeeStatementStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int totalUsageFee, DateTime? writtenDate});
+  $Res call(
+      {int totalUsageFee,
+      bool isWrittenOff,
+      int minimumPaymentFee,
+      DateTime? writtenDate});
 }
 
 /// @nodoc
@@ -89,12 +109,22 @@ class __$$UsageFeeStatementStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? totalUsageFee = null,
+    Object? isWrittenOff = null,
+    Object? minimumPaymentFee = null,
     Object? writtenDate = freezed,
   }) {
     return _then(_$UsageFeeStatementStateImpl(
       totalUsageFee: null == totalUsageFee
           ? _value.totalUsageFee
           : totalUsageFee // ignore: cast_nullable_to_non_nullable
+              as int,
+      isWrittenOff: null == isWrittenOff
+          ? _value.isWrittenOff
+          : isWrittenOff // ignore: cast_nullable_to_non_nullable
+              as bool,
+      minimumPaymentFee: null == minimumPaymentFee
+          ? _value.minimumPaymentFee
+          : minimumPaymentFee // ignore: cast_nullable_to_non_nullable
               as int,
       writtenDate: freezed == writtenDate
           ? _value.writtenDate
@@ -107,16 +137,24 @@ class __$$UsageFeeStatementStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$UsageFeeStatementStateImpl implements _UsageFeeStatementState {
-  _$UsageFeeStatementStateImpl({required this.totalUsageFee, this.writtenDate});
+  _$UsageFeeStatementStateImpl(
+      {required this.totalUsageFee,
+      required this.isWrittenOff,
+      required this.minimumPaymentFee,
+      this.writtenDate});
 
   @override
   final int totalUsageFee;
+  @override
+  final bool isWrittenOff;
+  @override
+  final int minimumPaymentFee;
   @override
   final DateTime? writtenDate;
 
   @override
   String toString() {
-    return 'UsageFeeStatementState(totalUsageFee: $totalUsageFee, writtenDate: $writtenDate)';
+    return 'UsageFeeStatementState(totalUsageFee: $totalUsageFee, isWrittenOff: $isWrittenOff, minimumPaymentFee: $minimumPaymentFee, writtenDate: $writtenDate)';
   }
 
   @override
@@ -126,12 +164,17 @@ class _$UsageFeeStatementStateImpl implements _UsageFeeStatementState {
             other is _$UsageFeeStatementStateImpl &&
             (identical(other.totalUsageFee, totalUsageFee) ||
                 other.totalUsageFee == totalUsageFee) &&
+            (identical(other.isWrittenOff, isWrittenOff) ||
+                other.isWrittenOff == isWrittenOff) &&
+            (identical(other.minimumPaymentFee, minimumPaymentFee) ||
+                other.minimumPaymentFee == minimumPaymentFee) &&
             (identical(other.writtenDate, writtenDate) ||
                 other.writtenDate == writtenDate));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, totalUsageFee, writtenDate);
+  int get hashCode => Object.hash(
+      runtimeType, totalUsageFee, isWrittenOff, minimumPaymentFee, writtenDate);
 
   @JsonKey(ignore: true)
   @override
@@ -144,10 +187,16 @@ class _$UsageFeeStatementStateImpl implements _UsageFeeStatementState {
 abstract class _UsageFeeStatementState implements UsageFeeStatementState {
   factory _UsageFeeStatementState(
       {required final int totalUsageFee,
+      required final bool isWrittenOff,
+      required final int minimumPaymentFee,
       final DateTime? writtenDate}) = _$UsageFeeStatementStateImpl;
 
   @override
   int get totalUsageFee;
+  @override
+  bool get isWrittenOff;
+  @override
+  int get minimumPaymentFee;
   @override
   DateTime? get writtenDate;
   @override

@@ -28,8 +28,7 @@ final dateSelectedProvider = StateProvider.autoDispose<DateTime?>((ref) {
   return null;
 });
 
-final selectedTransactionTypeProvider =
-    StateProvider.autoDispose<TransactionType>((ref) {
+final selectedTransactionTypeProvider = StateProvider.autoDispose<TransactionType>((ref) {
   return TransactionType.revolving;
 });
 
@@ -81,9 +80,8 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
     // 공통 필드 유효성 검사
 
     Log.d("type $type");
-    final isCommonValid = _merchantNameController.text.isNotEmpty &&
-        _dateController.text.isNotEmpty &&
-        selectedDate != null;
+    final isCommonValid =
+        _merchantNameController.text.isNotEmpty && _dateController.text.isNotEmpty && selectedDate != null;
 
     // 트랜잭션 유형에 따른 필드 유효성 검사
     bool isTypeValid = false;
@@ -103,8 +101,7 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
             installmentbalanceAfterPaymentController.text.isNotEmpty;
         break;
       case TransactionType.annual:
-        isTypeValid = annualUsageAmount.text.isNotEmpty &&
-            annualTransactionAmount.text.isNotEmpty;
+        isTypeValid = annualUsageAmount.text.isNotEmpty && annualTransactionAmount.text.isNotEmpty;
         break;
     }
     // 공통 필드와 트랜잭션 유형 필드 모두 유효한 경우에만 true 반환
@@ -131,12 +128,9 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
           installmentEnd: int.parse(installmentEndController.text),
           interestFreeBenefit: int.parse(interestFreeBenefitController.text),
           usageAmount: int.parse(installmentUsageAmountController.text),
-          commissionOrInterest:
-              int.parse(installmentcommissionOrInterestController.text),
-          transactionAmount:
-              int.parse(installmentTransactionAmountController.text),
-          balanceAfterPayment:
-              int.parse(installmentbalanceAfterPaymentController.text),
+          commissionOrInterest: int.parse(installmentcommissionOrInterestController.text),
+          transactionAmount: int.parse(installmentTransactionAmountController.text),
+          balanceAfterPayment: int.parse(installmentbalanceAfterPaymentController.text),
           transactionType: type,
         );
       case TransactionType.annual:
@@ -169,11 +163,9 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
     installmentEndController = TextEditingController(text: '12');
     interestFreeBenefitController = TextEditingController(text: '13');
     installmentUsageAmountController = TextEditingController(text: '14');
-    installmentcommissionOrInterestController =
-        TextEditingController(text: '15');
+    installmentcommissionOrInterestController = TextEditingController(text: '15');
     installmentTransactionAmountController = TextEditingController(text: '16');
-    installmentbalanceAfterPaymentController =
-        TextEditingController(text: '17');
+    installmentbalanceAfterPaymentController = TextEditingController(text: '17');
 
     annualUsageAmount = TextEditingController(text: '20');
     annualTransactionAmount = TextEditingController(text: '20');
@@ -214,8 +206,7 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
                   builder: (context, watch, child) {
                     final selectedDate = ref.watch(dateSelectedProvider);
                     if (selectedDate != null) {
-                      _dateController.text =
-                          DateFormat('yyyy.MM.dd').format(selectedDate);
+                      _dateController.text = DateFormat('yyyy.MM.dd').format(selectedDate);
                     } else {
                       _dateController.text = '';
                     }
@@ -234,26 +225,21 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
                   bottom: 12.h,
                   child: InkWell(
                     onTap: () {
-                      final firstDayOfMonth =
-                          DateTime(widget.selectedYear, widget.selectedMonth);
-                      final lastDayOfMonth = DateTime(
-                              widget.selectedYear, widget.selectedMonth + 1)
-                          .subtract(
+                      final firstDayOfMonth = DateTime(widget.selectedYear, widget.selectedMonth);
+                      final lastDayOfMonth = DateTime(widget.selectedYear, widget.selectedMonth + 1).subtract(
                         const Duration(days: 1),
                       );
                       _showDialog(CupertinoTheme(
                         data: CupertinoThemeData(
                           textTheme: CupertinoTextThemeData(
-                            dateTimePickerTextStyle:
-                                DemoTextStyles.labelMedium.copyWith(
+                            dateTimePickerTextStyle: DemoTextStyles.labelMedium.copyWith(
                               fontSize: 20,
                               color: DemoColors.grey,
                             ),
                           ),
                         ),
                         child: CupertinoDatePicker(
-                          initialDateTime: DateTime(
-                              widget.selectedYear, widget.selectedMonth),
+                          initialDateTime: DateTime(widget.selectedYear, widget.selectedMonth),
                           mode: CupertinoDatePickerMode.date,
                           minimumYear: widget.selectedYear,
                           maximumYear: widget.selectedYear,
@@ -311,8 +297,7 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
                 Expanded(
                   child: InkWell(
                     onTap: () async {
-                      final transactionType =
-                          ref.read(selectedTransactionTypeProvider);
+                      final transactionType = ref.read(selectedTransactionTypeProvider);
                       if (!isValidField(transactionType)) {
                         Log.e('::::공백존재.. return');
                         return;
@@ -408,14 +393,10 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
               installmentStartController: installmentStartController,
               installmentEndController: installmentEndController,
               interestFreeBenefitController: interestFreeBenefitController,
-              installmentUsageAmountController:
-                  installmentUsageAmountController,
-              installmentcommissionOrInterestController:
-                  installmentcommissionOrInterestController,
-              installmentTransactionAmountController:
-                  installmentTransactionAmountController,
-              installmentbalanceAfterPaymentController:
-                  installmentbalanceAfterPaymentController,
+              installmentUsageAmountController: installmentUsageAmountController,
+              installmentcommissionOrInterestController: installmentcommissionOrInterestController,
+              installmentTransactionAmountController: installmentTransactionAmountController,
+              installmentbalanceAfterPaymentController: installmentbalanceAfterPaymentController,
             );
           case TransactionType.annual:
             return UsageFormAnnual(
@@ -466,14 +447,11 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
       children: [
         Expanded(
             child: InkWell(
-          onTap: () => ref
-              .read(selectedTransactionTypeProvider.notifier)
-              .state = TransactionType.revolving,
+          onTap: () => ref.read(selectedTransactionTypeProvider.notifier).state = TransactionType.revolving,
           child: DecoratedBox(
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.all(Radius.circular(8)),
-              color: ref.watch(selectedTransactionTypeProvider) ==
-                      TransactionType.revolving
+              color: ref.watch(selectedTransactionTypeProvider) == TransactionType.revolving
                   ? DemoColors.primaryYellowLightColor
                   : DemoColors.white,
             ),
@@ -491,14 +469,11 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
         Gap(12.w),
         Expanded(
           child: InkWell(
-            onTap: () => ref
-                .read(selectedTransactionTypeProvider.notifier)
-                .state = TransactionType.installment,
+            onTap: () => ref.read(selectedTransactionTypeProvider.notifier).state = TransactionType.installment,
             child: DecoratedBox(
               decoration: BoxDecoration(
                 borderRadius: const BorderRadius.all(Radius.circular(8)),
-                color: ref.watch(selectedTransactionTypeProvider) ==
-                        TransactionType.installment
+                color: ref.watch(selectedTransactionTypeProvider) == TransactionType.installment
                     ? DemoColors.primaryYellowLightColor
                     : DemoColors.white,
               ),
@@ -517,14 +492,11 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
         Gap(12.w),
         Expanded(
           child: InkWell(
-            onTap: () => ref
-                .read(selectedTransactionTypeProvider.notifier)
-                .state = TransactionType.annual,
+            onTap: () => ref.read(selectedTransactionTypeProvider.notifier).state = TransactionType.annual,
             child: DecoratedBox(
               decoration: BoxDecoration(
                 borderRadius: const BorderRadius.all(Radius.circular(8)),
-                color: ref.watch(selectedTransactionTypeProvider) ==
-                        TransactionType.annual
+                color: ref.watch(selectedTransactionTypeProvider) == TransactionType.annual
                     ? DemoColors.primaryYellowLightColor
                     : DemoColors.white,
               ),

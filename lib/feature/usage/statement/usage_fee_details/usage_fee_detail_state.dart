@@ -9,13 +9,11 @@ class UsageFeeDetailState with _$UsageFeeDetailState {
   factory UsageFeeDetailState({
     required List<CardTransactionItems> items,
   }) = _UsageFeeDetailState;
-
 }
-
-
 
 sealed class CardTransactionItems extends Equatable {
   const CardTransactionItems();
+
   @override
   List<Object?> get props;
 }
@@ -40,7 +38,6 @@ class CardTransactionContent extends CardTransactionItems {
 
   final CardTransactionEntity entity;
 
-
   @override
   List<Object?> get props => [entity];
 }
@@ -48,8 +45,21 @@ class CardTransactionContent extends CardTransactionItems {
 class CardTransactionFooter extends CardTransactionItems {
   const CardTransactionFooter({
     required this.transactionCount,
+    required this.totalRewardAndMembershipFee,
+    required this.revolvingSum,
+    required this.totalSum,
   });
+
   final int transactionCount;
+  final int totalRewardAndMembershipFee;
+  final int revolvingSum;
+  final int totalSum;
+
   @override
-  List<Object?> get props => [transactionCount];
+  List<Object?> get props => [
+        transactionCount,
+        totalRewardAndMembershipFee,
+        revolvingSum,
+        totalSum,
+      ];
 }

@@ -87,7 +87,7 @@ class _$AppDatabase extends AppDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `CardTransaction` (`id` INTEGER, `merchantName` TEXT NOT NULL, `usageAmount` INTEGER NOT NULL, `transactionAmount` INTEGER NOT NULL, `rewardPoints` INTEGER NOT NULL, `installmentStart` INTEGER NOT NULL, `installmentEnd` INTEGER NOT NULL, `interestFreeBenefit` INTEGER NOT NULL, `commissionOrInterest` INTEGER NOT NULL, `balanceAfterPayment` INTEGER NOT NULL, `transactionType` INTEGER NOT NULL, `createAt` INTEGER NOT NULL, PRIMARY KEY (`id`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `CardSummary` (`id` INTEGER, `totalMinimumPayment` INTEGER NOT NULL, `totalUsageAmount` INTEGER NOT NULL, `revolving` INTEGER NOT NULL, `isWrittenOff` INTEGER NOT NULL, `year` INTEGER NOT NULL, `month` INTEGER NOT NULL, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `CardSummary` (`id` TEXT NOT NULL, `totalMinimumPayment` INTEGER NOT NULL, `isWrittenOff` INTEGER NOT NULL, PRIMARY KEY (`id`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -130,11 +130,7 @@ class _$KbDao extends KbDao {
             (CardSummary item) => <String, Object?>{
                   'id': item.id,
                   'totalMinimumPayment': item.totalMinimumPayment,
-                  'totalUsageAmount': item.totalUsageAmount,
-                  'revolving': item.revolving,
-                  'isWrittenOff': item.isWrittenOff ? 1 : 0,
-                  'year': item.year,
-                  'month': item.month
+                  'isWrittenOff': item.isWrittenOff ? 1 : 0
                 }),
         _cardTransactionDeletionAdapter = DeletionAdapter(
             database,
@@ -205,21 +201,13 @@ class _$KbDao extends KbDao {
   }
 
   @override
-  Future<CardSummary?> findCardSummary(
-    int year,
-    int month,
-  ) async {
-    return _queryAdapter.query(
-        'SELECT * FROM CardSummary WHERE year = ?1 AND month = ?2',
+  Future<CardSummary?> findCardSummary(String id) async {
+    return _queryAdapter.query('SELECT * FROM CardSummary WHERE id = ?1',
         mapper: (Map<String, Object?> row) => CardSummary(
-            row['id'] as int?,
+            row['id'] as String,
             row['totalMinimumPayment'] as int,
-            row['totalUsageAmount'] as int,
-            row['revolving'] as int,
-            (row['isWrittenOff'] as int) != 0,
-            row['year'] as int,
-            row['month'] as int),
-        arguments: [year, month]);
+            (row['isWrittenOff'] as int) != 0),
+        arguments: [id]);
   }
 
   @override

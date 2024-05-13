@@ -1,4 +1,5 @@
 import 'package:kb_bank_clone/data/local/kb_dao.dart';
+import 'package:kb_bank_clone/data/local/vo/transaction_type.dart';
 import 'package:kb_bank_clone/domain/card_transaction_entity.dart';
 import 'package:kb_bank_clone/feature/usage/statement/usage_fee_details/usage_fee_detail_state.dart';
 import 'package:kb_bank_clone/utils/reactive/arc_subject.dart';
@@ -15,11 +16,18 @@ class UsageFeeDetailsViewModel implements ViewModelInterface {
     final queryTimeStamp = TimeUtils.getStartAndEndTimestamps(year, month);
 
     dao.flowCardTransactions(queryTimeStamp[0], queryTimeStamp[1]).map((event) {
+      final totalFee = event.fold<int>(
+        0,
+        (previousValue, element) => previousValue + element.usageAmount,
+      );
+
+      final revolvingFee = event.where((element) => element.transactionType == TransactionType.revolving).fold<int>(
+            0,
+            (previousValue, element) => previousValue + element.usageAmount,
+          );
+
       final header = CardTransactionHeader(
-        totalFee: event.fold<int>(
-          0,
-          (previousValue, element) => previousValue + element.usageAmount,
-        ),
+        totalFee: totalFee,
         transactionCount: event.length,
       );
       final contents = event
@@ -42,7 +50,14 @@ class UsageFeeDetailsViewModel implements ViewModelInterface {
           )
           .toList();
 
-      final footer = CardTransactionFooter(transactionCount: event.length);
+
+
+      final footer = CardTransactionFooter(
+        transactionCount: event.length,
+        totalRewardAndMembershipFee: totalFee - revolvingFee,
+        revolvingSum: revolvingFee,
+        totalSum: totalFee,
+      );
 
       if (header.transactionCount > 0) {
         return [header, ...contents, footer];

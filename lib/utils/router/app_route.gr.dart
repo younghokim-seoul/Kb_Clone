@@ -46,6 +46,7 @@ abstract class _$AppRouter extends RootStackRouter {
         child: UsageFeeDetailsPage(
           selectedYear: args.selectedYear,
           selectedMonth: args.selectedMonth,
+          isWrittenOff: args.isWrittenOff,
           key: args.key,
         ),
       );
@@ -132,6 +133,7 @@ class UsageFeeDetailsRoute extends PageRouteInfo<UsageFeeDetailsRouteArgs> {
   UsageFeeDetailsRoute({
     required int selectedYear,
     required int selectedMonth,
+    required bool isWrittenOff,
     Key? key,
     List<PageRouteInfo>? children,
   }) : super(
@@ -139,6 +141,7 @@ class UsageFeeDetailsRoute extends PageRouteInfo<UsageFeeDetailsRouteArgs> {
           args: UsageFeeDetailsRouteArgs(
             selectedYear: selectedYear,
             selectedMonth: selectedMonth,
+            isWrittenOff: isWrittenOff,
             key: key,
           ),
           initialChildren: children,
@@ -154,6 +157,7 @@ class UsageFeeDetailsRouteArgs {
   const UsageFeeDetailsRouteArgs({
     required this.selectedYear,
     required this.selectedMonth,
+    required this.isWrittenOff,
     this.key,
   });
 
@@ -161,11 +165,13 @@ class UsageFeeDetailsRouteArgs {
 
   final int selectedMonth;
 
+  final bool isWrittenOff;
+
   final Key? key;
 
   @override
   String toString() {
-    return 'UsageFeeDetailsRouteArgs{selectedYear: $selectedYear, selectedMonth: $selectedMonth, key: $key}';
+    return 'UsageFeeDetailsRouteArgs{selectedYear: $selectedYear, selectedMonth: $selectedMonth, isWrittenOff: $isWrittenOff, key: $key}';
   }
 }
 

@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_switch/flutter_switch.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:kb_bank_clone/assets/assets.gen.dart';
@@ -23,6 +24,7 @@ class UsageFeeDetailsPage extends ConsumerStatefulWidget {
   const UsageFeeDetailsPage({
     required this.selectedYear,
     required this.selectedMonth,
+    required this.isWrittenOff,
     super.key,
   });
 
@@ -30,6 +32,7 @@ class UsageFeeDetailsPage extends ConsumerStatefulWidget {
 
   final int selectedYear;
   final int selectedMonth;
+  final bool isWrittenOff;
 
   @override
   ConsumerState createState() => _UsageFeeDetailsPageState();
@@ -37,29 +40,29 @@ class UsageFeeDetailsPage extends ConsumerStatefulWidget {
 
 class _UsageFeeDetailsPageState extends ConsumerState<UsageFeeDetailsPage> {
   late UsageFeeDetailsViewModel _viewModel;
+
   @override
   void initState() {
     super.initState();
     _viewModel = ref.read(usageFeeDetailViewModelProvider);
-    _viewModel.collectCardTransactions(widget.selectedYear,widget.selectedMonth);
+    _viewModel.collectCardTransactions(widget.selectedYear, widget.selectedMonth);
 
+
+    Log.d("::::수정모드................ " + widget.isWrittenOff.toString());
   }
 
   String getCardCode() {
     final startOffset = DateTime(2022, 04);
     final endOffset = DateTime(2023, 12);
 
-    final baseDate = DateTime(widget.selectedYear,widget.selectedMonth);
-
-    Log.d('baseDate : $baseDate   offset ' + startOffset.toString()+ " | " + endOffset.toString());
+    final baseDate = DateTime(widget.selectedYear, widget.selectedMonth);
 
     if (baseDate.isAfter(startOffset) && baseDate.isBefore(endOffset)) {
       return '마스터 005';
-    }else{
+    } else {
       return '마스터 049';
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -87,37 +90,39 @@ class _UsageFeeDetailsPageState extends ConsumerState<UsageFeeDetailsPage> {
             if (item is CardTransactionHeader) {
               return _buildUsageFeeHeader(item);
             } else if (item is CardTransactionContent) {
-
-              if(item.entity.transactionType == TransactionType.installment){
+              if (item.entity.transactionType == TransactionType.installment) {
                 return _buildUsageUInstallmentContent(item.entity);
               }
 
-              if(item.entity.transactionType == TransactionType.revolving){
+              if (item.entity.transactionType == TransactionType.revolving) {
                 return _buildUsageRevolvingContent(item.entity);
               }
 
-              return _buildUsageUInstallmentContent(item.entity);
+              return _buildUsageAnnualContent(item.entity);
             } else if (item is CardTransactionFooter) {
-              return _buildUsageFeeFooter(item.transactionCount);
+              return _buildUsageFeeFooter(item);
             }
           },
         );
       }),
-      floatingActionButton: InkWell(
-          onTap: () => context.router.push(
+      floatingActionButton: widget.isWrittenOff
+          ? null
+          : InkWell(
+              onTap: () => context.router.push(
                 UsageFeeWriteRoute(
                   selectedYear: widget.selectedYear,
                   selectedMonth: widget.selectedMonth,
                 ),
               ),
-          splashColor: Colors.transparent,
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: 16.w,
-              vertical: 12.h,
+              splashColor: Colors.transparent,
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 16.w,
+                  vertical: 12.h,
+                ),
+                child: Assets.images.icFab.image(fit: BoxFit.contain, width: 48.w, height: 48.w),
+              ),
             ),
-            child: Assets.images.icFab.image(fit: BoxFit.contain, width: 48.w, height: 48.w),
-          )),
     );
   }
 
@@ -323,7 +328,6 @@ class _UsageFeeDetailsPageState extends ConsumerState<UsageFeeDetailsPage> {
     );
   }
 
-
   Widget _buildUsageRevolvingContent(CardTransactionEntity item) {
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -433,7 +437,95 @@ class _UsageFeeDetailsPageState extends ConsumerState<UsageFeeDetailsPage> {
     );
   }
 
-  Widget _buildUsageFeeFooter(int totalCount) {
+  Widget _buildUsageAnnualContent(CardTransactionEntity item) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Gap(24.h),
+        Row(
+          children: [
+            Gap(16.w),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  item.merchantName,
+                  style: DemoTextStyles.bodyLarge.copyWith(
+                    color: DemoColors.grey,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                Gap(16.h),
+                Text(
+                  "${DateFormat('yyyy.MM.dd').format(item.createAt)} | 본인 | ${getCardCode()} |",
+                  style: DemoTextStyles.bodyLarge.copyWith(
+                    color: DemoColors.primaryDivideColor,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                Text(
+                  '연회비',
+                  style: DemoTextStyles.bodyLarge.copyWith(
+                    color: DemoColors.primaryDivideColor,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                Gap(8.h),
+              ],
+            ),
+            const Spacer(),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      item.usageAmount.toCurrency(),
+                      style: DemoTextStyles.bodyLarge.copyWith(
+                        color: DemoColors.grey,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Gap(2.w),
+                    Text(
+                      "원",
+                      style: DemoTextStyles.bodyLarge.copyWith(
+                        color: DemoColors.primaryDivideColor,
+                        fontSize: 16,
+                        height: 1.5,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+                Gap(10.h),
+                Text(
+                  '이용금액 ${item.transactionAmount.toCurrency()}원',
+                  style: DemoTextStyles.bodyLarge.copyWith(
+                    color: DemoColors.primaryDivideColor,
+                    fontSize: 14,
+                    height: 1,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                Gap(6.h),
+              ],
+            ),
+            Gap(16.w),
+          ],
+        ),
+        Gap(24.h),
+        Container(color: DemoColors.primaryBoxColorLight, height: 1.h),
+      ],
+    );
+  }
+
+  Widget _buildUsageFeeFooter(CardTransactionFooter entity) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -442,7 +534,7 @@ class _UsageFeeDetailsPageState extends ConsumerState<UsageFeeDetailsPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              '본인회원 소 계 $totalCount건',
+              '본인회원 소 계 ${entity.transactionCount}건',
               style: DemoTextStyles.labelSmall.copyWith(
                 color: DemoColors.grey,
                 fontSize: 16,
@@ -450,7 +542,7 @@ class _UsageFeeDetailsPageState extends ConsumerState<UsageFeeDetailsPage> {
               ),
             ),
             Text(
-              '${2000000.toCurrency()}원',
+              '${entity.totalRewardAndMembershipFee.toCurrency()}원',
               style: DemoTextStyles.labelSmall.copyWith(
                 color: DemoColors.grey,
                 fontSize: 16,
@@ -466,7 +558,7 @@ class _UsageFeeDetailsPageState extends ConsumerState<UsageFeeDetailsPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              '합 계 $totalCount건',
+              '합 계 ${entity.transactionCount}건',
               style: DemoTextStyles.labelSmall.copyWith(
                 color: DemoColors.grey,
                 fontSize: 16,
@@ -474,7 +566,7 @@ class _UsageFeeDetailsPageState extends ConsumerState<UsageFeeDetailsPage> {
               ),
             ),
             Text(
-              '${2000000.toCurrency()}원',
+              '${entity.totalRewardAndMembershipFee.toCurrency()}원',
               style: DemoTextStyles.labelSmall.copyWith(
                 color: DemoColors.grey,
                 fontSize: 16,
@@ -498,7 +590,7 @@ class _UsageFeeDetailsPageState extends ConsumerState<UsageFeeDetailsPage> {
               ),
             ),
             Text(
-              '${0.toCurrency()}원',
+              '${entity.revolvingSum.toCurrency()}원',
               style: DemoTextStyles.labelSmall.copyWith(
                 color: DemoColors.grey,
                 fontSize: 16,
@@ -522,7 +614,7 @@ class _UsageFeeDetailsPageState extends ConsumerState<UsageFeeDetailsPage> {
               ),
             ),
             Text(
-              '${2000000.toCurrency()}원',
+              '${entity.totalSum.toCurrency()}원',
               style: DemoTextStyles.labelSmall.copyWith(
                 color: DemoColors.grey,
                 fontSize: 16,

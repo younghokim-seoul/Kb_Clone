@@ -25,6 +25,6 @@ abstract class KbDao {
   @Insert(onConflict: OnConflictStrategy.replace)
   Future<void> insertCardSummary(CardSummary model);
 
-  @Query('SELECT * FROM CardSummary WHERE year = :year AND month = :month')
-  Future<CardSummary?> findCardSummary(int year, int month);
+  @Query('SELECT * FROM CardSummary WHERE id = :id')
+  Future<CardSummary?> findCardSummary(String id);
 }

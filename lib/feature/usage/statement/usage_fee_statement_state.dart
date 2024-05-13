@@ -8,6 +8,8 @@ part 'usage_fee_statement_state.freezed.dart';
 class UsageFeeStatementState with _$UsageFeeStatementState {
   factory UsageFeeStatementState({
     required int totalUsageFee,
+    required bool isWrittenOff,
+    required int minimumPaymentFee,
     DateTime? writtenDate,
   }) = _UsageFeeStatementState;
 }
