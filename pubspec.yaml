@@ -30,7 +30,7 @@ dependencies:
   event_bus: ^2.0.0
   flutter_launcher_icons: ^0.13.1
   flutter_switch: ^0.3.2
-  keyboard_actions: ^4.2.0
+
 
 
 
