@@ -18,6 +18,8 @@ import 'package:kb_bank_clone/utils/dev_log.dart';
 import 'package:kb_bank_clone/utils/extension/margin_extension.dart';
 import 'package:kb_bank_clone/utils/extension/value_extension.dart';
 import 'package:kb_bank_clone/utils/router/app_route.dart';
+import 'package:keyboard_actions/keyboard_actions.dart';
+import 'package:keyboard_actions/keyboard_actions_config.dart';
 
 @RoutePage()
 class UsageFeeStatementPage extends ConsumerStatefulWidget {
@@ -276,7 +278,12 @@ class _UsageFeeStatementPageState extends ConsumerState<UsageFeeStatementPage> {
                   return Expanded(
                       child: TextField(
                     controller: _effectiveController,
-                    keyboardType: TextInputType.number,
+                    keyboardType: TextInputType.text,
+                    style: DemoTextStyles.labelSmall.copyWith(
+                      color: DemoColors.grey,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                    ),
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.zero,
                       isCollapsed: true,
@@ -302,10 +309,10 @@ class _UsageFeeStatementPageState extends ConsumerState<UsageFeeStatementPage> {
                       }
 
                       if (value.endsWith('원')) {
-                        try{
+                        try {
                           value = value.substring(0, value.length - 1);
                           _viewModel.changeMinimumPayment(int.parse(value));
-                        }catch(e){
+                        } catch (e) {
                           _viewModel.changeMinimumPayment(0);
                         }
                       }

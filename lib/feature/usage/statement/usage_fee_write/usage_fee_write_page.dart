@@ -148,27 +148,27 @@ class _UsageFeeWritePageState extends ConsumerState<UsageFeeWritePage> {
     _viewModel = ref.read(usageFeeWriteViewModelProvider);
     _dateController = TextEditingController();
     _merchantNameController = TextEditingController();
-    _amountController = TextEditingController(text: '10');
-    _paymentType = TextEditingController(text: '10');
-    _reward = TextEditingController(text: '10');
-    _commission = TextEditingController(text: '10');
-    _usageAmount = TextEditingController(text: '10');
-    _balance = TextEditingController(text: '10');
+    _amountController = TextEditingController();
+    _paymentType = TextEditingController();
+    _reward = TextEditingController();
+    _commission = TextEditingController();
+    _usageAmount = TextEditingController();
+    _balance = TextEditingController();
 
-    _revolvingUsageAmount = TextEditingController(text: '10');
-    _revolvingTransactionAmount = TextEditingController(text: '10');
-    _revolvingRewardPoints = TextEditingController(text: '10');
+    _revolvingUsageAmount = TextEditingController();
+    _revolvingTransactionAmount = TextEditingController();
+    _revolvingRewardPoints = TextEditingController();
 
-    installmentStartController = TextEditingController(text: '2');
-    installmentEndController = TextEditingController(text: '12');
-    interestFreeBenefitController = TextEditingController(text: '13');
-    installmentUsageAmountController = TextEditingController(text: '14');
-    installmentcommissionOrInterestController = TextEditingController(text: '15');
-    installmentTransactionAmountController = TextEditingController(text: '16');
-    installmentbalanceAfterPaymentController = TextEditingController(text: '17');
+    installmentStartController = TextEditingController();
+    installmentEndController = TextEditingController();
+    interestFreeBenefitController = TextEditingController();
+    installmentUsageAmountController = TextEditingController();
+    installmentcommissionOrInterestController = TextEditingController();
+    installmentTransactionAmountController = TextEditingController();
+    installmentbalanceAfterPaymentController = TextEditingController();
 
-    annualUsageAmount = TextEditingController(text: '20');
-    annualTransactionAmount = TextEditingController(text: '20');
+    annualUsageAmount = TextEditingController();
+    annualTransactionAmount = TextEditingController();
   }
 
   @override
