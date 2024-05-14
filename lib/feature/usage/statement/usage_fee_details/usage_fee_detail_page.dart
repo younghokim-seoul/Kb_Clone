@@ -49,10 +49,9 @@ class _UsageFeeDetailsPageState extends ConsumerState<UsageFeeDetailsPage> {
   }
 
   String getCardCode(DateTime targetTime) {
-    final startOffset = DateTime(2022, 04);
-    final endOffset = DateTime(2023, 12);
+    final endOffset = DateTime(2023, 12,1);
 
-    if (targetTime.isAfter(startOffset) && targetTime.isBefore(endOffset)) {
+    if (targetTime.isBefore(endOffset)) {
       return '마스터 005';
     } else {
       return '마스터 049';
