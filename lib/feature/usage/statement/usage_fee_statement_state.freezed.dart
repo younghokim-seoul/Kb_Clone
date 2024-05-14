@@ -18,7 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$UsageFeeStatementState {
   int get totalUsageFee => throw _privateConstructorUsedError;
   bool get isWrittenOff => throw _privateConstructorUsedError;
-  int get minimumPaymentFee => throw _privateConstructorUsedError;
+  String get minimumPaymentFee => throw _privateConstructorUsedError;
   DateTime? get writtenDate => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -35,7 +35,7 @@ abstract class $UsageFeeStatementStateCopyWith<$Res> {
   $Res call(
       {int totalUsageFee,
       bool isWrittenOff,
-      int minimumPaymentFee,
+      String minimumPaymentFee,
       DateTime? writtenDate});
 }
 
@@ -70,7 +70,7 @@ class _$UsageFeeStatementStateCopyWithImpl<$Res,
       minimumPaymentFee: null == minimumPaymentFee
           ? _value.minimumPaymentFee
           : minimumPaymentFee // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String,
       writtenDate: freezed == writtenDate
           ? _value.writtenDate
           : writtenDate // ignore: cast_nullable_to_non_nullable
@@ -91,7 +91,7 @@ abstract class _$$UsageFeeStatementStateImplCopyWith<$Res>
   $Res call(
       {int totalUsageFee,
       bool isWrittenOff,
-      int minimumPaymentFee,
+      String minimumPaymentFee,
       DateTime? writtenDate});
 }
 
@@ -125,7 +125,7 @@ class __$$UsageFeeStatementStateImplCopyWithImpl<$Res>
       minimumPaymentFee: null == minimumPaymentFee
           ? _value.minimumPaymentFee
           : minimumPaymentFee // ignore: cast_nullable_to_non_nullable
-              as int,
+              as String,
       writtenDate: freezed == writtenDate
           ? _value.writtenDate
           : writtenDate // ignore: cast_nullable_to_non_nullable
@@ -148,7 +148,7 @@ class _$UsageFeeStatementStateImpl implements _UsageFeeStatementState {
   @override
   final bool isWrittenOff;
   @override
-  final int minimumPaymentFee;
+  final String minimumPaymentFee;
   @override
   final DateTime? writtenDate;
 
@@ -188,7 +188,7 @@ abstract class _UsageFeeStatementState implements UsageFeeStatementState {
   factory _UsageFeeStatementState(
       {required final int totalUsageFee,
       required final bool isWrittenOff,
-      required final int minimumPaymentFee,
+      required final String minimumPaymentFee,
       final DateTime? writtenDate}) = _$UsageFeeStatementStateImpl;
 
   @override
@@ -196,7 +196,7 @@ abstract class _UsageFeeStatementState implements UsageFeeStatementState {
   @override
   bool get isWrittenOff;
   @override
-  int get minimumPaymentFee;
+  String get minimumPaymentFee;
   @override
   DateTime? get writtenDate;
   @override

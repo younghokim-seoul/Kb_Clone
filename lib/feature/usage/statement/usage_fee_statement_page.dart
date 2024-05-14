@@ -270,8 +270,8 @@ class _UsageFeeStatementPageState extends ConsumerState<UsageFeeStatementPage> {
                 ),
                 Gap(4.w),
                 _viewModel.minimumPaymentFee.ui(builder: (context, state) {
-                  final defaluValue = state.data ?? 0;
-                  _effectiveController = TextEditingController(text: '$defaluValue원');
+                  final defaluValue = state.data ?? "";
+                  _effectiveController = TextEditingController(text: '$defaluValue');
                   return Expanded(
                       child: TextField(
                     controller: _effectiveController,
@@ -300,19 +300,7 @@ class _UsageFeeStatementPageState extends ConsumerState<UsageFeeStatementPage> {
                           );
                         }
                       }
-
-                      if (value.isNullOrEmpty) {
-                        _viewModel.changeMinimumPayment(0);
-                      }
-
-                      if (value.endsWith('원')) {
-                        try {
-                          value = value.substring(0, value.length - 1);
-                          _viewModel.changeMinimumPayment(int.parse(value));
-                        } catch (e) {
-                          _viewModel.changeMinimumPayment(0);
-                        }
-                      }
+                      _viewModel.changeMinimumPayment(value);
                     },
                   ));
                 })

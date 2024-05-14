@@ -9,7 +9,7 @@ class UsageFeeStatementState with _$UsageFeeStatementState {
   factory UsageFeeStatementState({
     required int totalUsageFee,
     required bool isWrittenOff,
-    required int minimumPaymentFee,
+    required String minimumPaymentFee,
     DateTime? writtenDate,
   }) = _UsageFeeStatementState;
 }

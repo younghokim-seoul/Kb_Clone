@@ -21,7 +21,7 @@ class UsageFeeStatementViewModel implements ViewModelInterface {
   final offsetStart = DateTime(2022, 4);
   final offsetEnd = DateTime(2024, 4, 30);
 
-  final minimumPaymentFee = 0.sbj;
+  final minimumPaymentFee = "".sbj;
 
   void subScribePaymentEvent() {
     paymentAddEvent = eventBus.on<PaymentAddEvent>().listen((event) {
@@ -46,18 +46,18 @@ class UsageFeeStatementViewModel implements ViewModelInterface {
       (previousValue, element) => previousValue + element.usageAmount,
     );
 
-    minimumPaymentFee.val = summaryItem?.totalMinimumPayment ?? 0;
+    minimumPaymentFee.val = summaryItem?.totalMinimumPayment ?? "";
     usageFeeStatementState.val = UsageFeeStatementState(
       totalUsageFee: totalFee,
       isWrittenOff: summaryItem?.isWrittenOff ?? false,
-      minimumPaymentFee: summaryItem?.totalMinimumPayment ?? 0,
+      minimumPaymentFee: summaryItem?.totalMinimumPayment ?? "",
       writtenDate: items.isNotEmpty ? items.last.createAt : null,
     );
 
     Log.d(":::usageFeeStatementState ${usageFeeStatementState.val}");
   }
 
-  void changeMinimumPayment(int value) async {
+  void changeMinimumPayment(String value) async {
     final summaryItem = await dao.findCardSummary(getSummaryKey());
     final isWrittenMode = (usageFeeStatementState.val as UsageFeeStatementState).isWrittenOff;
     if (summaryItem == null) {
@@ -74,7 +74,7 @@ class UsageFeeStatementViewModel implements ViewModelInterface {
     final summaryItem = await dao.findCardSummary(getSummaryKey());
     if (summaryItem == null) {
       Log.d("toggle db is null new Insert");
-      await dao.insertCardSummary(CardSummary(getSummaryKey(), 0, true));
+      await dao.insertCardSummary(CardSummary(getSummaryKey(), "", true));
       usageFeeStatementState.val = usageState.copyWith(isWrittenOff: true);
     } else {
       Log.d("toggle db data " + summaryItem.toString());

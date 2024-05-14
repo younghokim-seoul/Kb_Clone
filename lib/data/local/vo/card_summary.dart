@@ -11,7 +11,7 @@ class CardSummary extends Equatable {
 
   factory CardSummary.create({
     required String id,
-    required int totalMinimumPayment,
+    required String totalMinimumPayment,
     required bool isWrittenOff,
   }) {
     return CardSummary(
@@ -24,13 +24,13 @@ class CardSummary extends Equatable {
   @primaryKey
   final String id;
 
-  final int totalMinimumPayment;
+  final String totalMinimumPayment;
   final bool isWrittenOff;
 
 
   CardSummary copyWith({
     String? id,
-    int? totalMinimumPayment,
+    String? totalMinimumPayment,
     bool? isWrittenOff,
   }) {
     return CardSummary(

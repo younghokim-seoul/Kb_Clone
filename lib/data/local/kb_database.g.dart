@@ -87,7 +87,7 @@ class _$AppDatabase extends AppDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `CardTransaction` (`id` INTEGER, `merchantName` TEXT NOT NULL, `usageAmount` INTEGER NOT NULL, `transactionAmount` INTEGER NOT NULL, `rewardPoints` INTEGER NOT NULL, `installmentStart` INTEGER NOT NULL, `installmentEnd` INTEGER NOT NULL, `interestFreeBenefit` INTEGER NOT NULL, `commissionOrInterest` INTEGER NOT NULL, `balanceAfterPayment` INTEGER NOT NULL, `transactionType` INTEGER NOT NULL, `createAt` INTEGER NOT NULL, `displayDateTime` INTEGER NOT NULL, PRIMARY KEY (`id`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `CardSummary` (`id` TEXT NOT NULL, `totalMinimumPayment` INTEGER NOT NULL, `isWrittenOff` INTEGER NOT NULL, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `CardSummary` (`id` TEXT NOT NULL, `totalMinimumPayment` TEXT NOT NULL, `isWrittenOff` INTEGER NOT NULL, PRIMARY KEY (`id`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -210,7 +210,7 @@ class _$KbDao extends KbDao {
     return _queryAdapter.query('SELECT * FROM CardSummary WHERE id = ?1',
         mapper: (Map<String, Object?> row) => CardSummary(
             row['id'] as String,
-            row['totalMinimumPayment'] as int,
+            row['totalMinimumPayment'] as String,
             (row['isWrittenOff'] as int) != 0),
         arguments: [id]);
   }
