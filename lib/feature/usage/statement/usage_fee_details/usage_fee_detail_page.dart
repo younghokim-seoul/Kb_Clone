@@ -243,7 +243,7 @@ class _UsageFeeDetailsPageState extends ConsumerState<UsageFeeDetailsPage> {
                     ),
                     Gap(4.w),
                     Text(
-                      "-${item.interestFreeBenefit}원",
+                      '-${item.interestFreeBenefit.toCurrency()}원',
                       style: DemoTextStyles.bodyLarge.copyWith(
                         color: DemoColors.primaryDivideColor,
                         fontSize: 12,
@@ -372,7 +372,7 @@ class _UsageFeeDetailsPageState extends ConsumerState<UsageFeeDetailsPage> {
                     ),
                     Gap(4.w),
                     Text(
-                      "${item.rewardPoints}원",
+                      '${item.rewardPoints.toCurrency()}원',
                       style: DemoTextStyles.bodyLarge.copyWith(
                         color: DemoColors.primaryDivideColor,
                         fontSize: 12,
